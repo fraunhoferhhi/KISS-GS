@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "artifact": "viewer",
+  "fingerprint": "4ccc0f3ea8c1f11bb6a32724a0e8634cf4f27238f966922d9d8e38b35af7c765",
+  "ffsplat": "ddd7128c653b42a82d27466afb6a1f311f078de8",
+  "config": "build/scenes.yaml",
+  "sizes": [
+    "XXS",
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "XXL"
+  ],
+  "scene_count": 21,
+  "bytes": 796516367
+}

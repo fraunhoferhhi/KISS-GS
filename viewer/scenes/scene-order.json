@@ -1,0 +1,897 @@
+{
+  "version": 2,
+  "sizes": [
+    "XXS",
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "XXL"
+  ],
+  "defaultSize": "M",
+  "scenes": [
+    {
+      "index": 1,
+      "id": "XXS/MipNeRF360-Garden",
+      "tier": "XXS",
+      "name": "MipNeRF360-Garden"
+    },
+    {
+      "index": 2,
+      "id": "XXS/MipNeRF360-Bicycle",
+      "tier": "XXS",
+      "name": "MipNeRF360-Bicycle"
+    },
+    {
+      "index": 3,
+      "id": "XXS/MipNeRF360-Bonsai",
+      "tier": "XXS",
+      "name": "MipNeRF360-Bonsai"
+    },
+    {
+      "index": 4,
+      "id": "XXS/MipNeRF360-Counter",
+      "tier": "XXS",
+      "name": "MipNeRF360-Counter"
+    },
+    {
+      "index": 5,
+      "id": "XXS/MipNeRF360-Flowers",
+      "tier": "XXS",
+      "name": "MipNeRF360-Flowers"
+    },
+    {
+      "index": 6,
+      "id": "XXS/MipNeRF360-Kitchen",
+      "tier": "XXS",
+      "name": "MipNeRF360-Kitchen"
+    },
+    {
+      "index": 7,
+      "id": "XXS/MipNeRF360-Room",
+      "tier": "XXS",
+      "name": "MipNeRF360-Room"
+    },
+    {
+      "index": 8,
+      "id": "XXS/MipNeRF360-Stump",
+      "tier": "XXS",
+      "name": "MipNeRF360-Stump"
+    },
+    {
+      "index": 9,
+      "id": "XXS/MipNeRF360-Treehill",
+      "tier": "XXS",
+      "name": "MipNeRF360-Treehill"
+    },
+    {
+      "index": 10,
+      "id": "XXS/TanksAndTemples-Train",
+      "tier": "XXS",
+      "name": "TanksAndTemples-Train"
+    },
+    {
+      "index": 11,
+      "id": "XXS/TanksAndTemples-Truck",
+      "tier": "XXS",
+      "name": "TanksAndTemples-Truck"
+    },
+    {
+      "index": 12,
+      "id": "XXS/DeepBlending-Drjohnson",
+      "tier": "XXS",
+      "name": "DeepBlending-Drjohnson"
+    },
+    {
+      "index": 13,
+      "id": "XXS/DeepBlending-Playroom",
+      "tier": "XXS",
+      "name": "DeepBlending-Playroom"
+    },
+    {
+      "index": 14,
+      "id": "XXS/SyntheticNeRF-Chair",
+      "tier": "XXS",
+      "name": "SyntheticNeRF-Chair"
+    },
+    {
+      "index": 15,
+      "id": "XXS/SyntheticNeRF-Drums",
+      "tier": "XXS",
+      "name": "SyntheticNeRF-Drums"
+    },
+    {
+      "index": 16,
+      "id": "XXS/SyntheticNeRF-Ficus",
+      "tier": "XXS",
+      "name": "SyntheticNeRF-Ficus"
+    },
+    {
+      "index": 17,
+      "id": "XXS/SyntheticNeRF-Hotdog",
+      "tier": "XXS",
+      "name": "SyntheticNeRF-Hotdog"
+    },
+    {
+      "index": 18,
+      "id": "XXS/SyntheticNeRF-Lego",
+      "tier": "XXS",
+      "name": "SyntheticNeRF-Lego"
+    },
+    {
+      "index": 19,
+      "id": "XXS/SyntheticNeRF-Materials",
+      "tier": "XXS",
+      "name": "SyntheticNeRF-Materials"
+    },
+    {
+      "index": 20,
+      "id": "XXS/SyntheticNeRF-Mic",
+      "tier": "XXS",
+      "name": "SyntheticNeRF-Mic"
+    },
+    {
+      "index": 21,
+      "id": "XXS/SyntheticNeRF-Ship",
+      "tier": "XXS",
+      "name": "SyntheticNeRF-Ship"
+    },
+    {
+      "index": 22,
+      "id": "XS/MipNeRF360-Garden",
+      "tier": "XS",
+      "name": "MipNeRF360-Garden"
+    },
+    {
+      "index": 23,
+      "id": "XS/MipNeRF360-Bicycle",
+      "tier": "XS",
+      "name": "MipNeRF360-Bicycle"
+    },
+    {
+      "index": 24,
+      "id": "XS/MipNeRF360-Bonsai",
+      "tier": "XS",
+      "name": "MipNeRF360-Bonsai"
+    },
+    {
+      "index": 25,
+      "id": "XS/MipNeRF360-Counter",
+      "tier": "XS",
+      "name": "MipNeRF360-Counter"
+    },
+    {
+      "index": 26,
+      "id": "XS/MipNeRF360-Flowers",
+      "tier": "XS",
+      "name": "MipNeRF360-Flowers"
+    },
+    {
+      "index": 27,
+      "id": "XS/MipNeRF360-Kitchen",
+      "tier": "XS",
+      "name": "MipNeRF360-Kitchen"
+    },
+    {
+      "index": 28,
+      "id": "XS/MipNeRF360-Room",
+      "tier": "XS",
+      "name": "MipNeRF360-Room"
+    },
+    {
+      "index": 29,
+      "id": "XS/MipNeRF360-Stump",
+      "tier": "XS",
+      "name": "MipNeRF360-Stump"
+    },
+    {
+      "index": 30,
+      "id": "XS/MipNeRF360-Treehill",
+      "tier": "XS",
+      "name": "MipNeRF360-Treehill"
+    },
+    {
+      "index": 31,
+      "id": "XS/TanksAndTemples-Train",
+      "tier": "XS",
+      "name": "TanksAndTemples-Train"
+    },
+    {
+      "index": 32,
+      "id": "XS/TanksAndTemples-Truck",
+      "tier": "XS",
+      "name": "TanksAndTemples-Truck"
+    },
+    {
+      "index": 33,
+      "id": "XS/DeepBlending-Drjohnson",
+      "tier": "XS",
+      "name": "DeepBlending-Drjohnson"
+    },
+    {
+      "index": 34,
+      "id": "XS/DeepBlending-Playroom",
+      "tier": "XS",
+      "name": "DeepBlending-Playroom"
+    },
+    {
+      "index": 35,
+      "id": "XS/SyntheticNeRF-Chair",
+      "tier": "XS",
+      "name": "SyntheticNeRF-Chair"
+    },
+    {
+      "index": 36,
+      "id": "XS/SyntheticNeRF-Drums",
+      "tier": "XS",
+      "name": "SyntheticNeRF-Drums"
+    },
+    {
+      "index": 37,
+      "id": "XS/SyntheticNeRF-Ficus",
+      "tier": "XS",
+      "name": "SyntheticNeRF-Ficus"
+    },
+    {
+      "index": 38,
+      "id": "XS/SyntheticNeRF-Hotdog",
+      "tier": "XS",
+      "name": "SyntheticNeRF-Hotdog"
+    },
+    {
+      "index": 39,
+      "id": "XS/SyntheticNeRF-Lego",
+      "tier": "XS",
+      "name": "SyntheticNeRF-Lego"
+    },
+    {
+      "index": 40,
+      "id": "XS/SyntheticNeRF-Materials",
+      "tier": "XS",
+      "name": "SyntheticNeRF-Materials"
+    },
+    {
+      "index": 41,
+      "id": "XS/SyntheticNeRF-Mic",
+      "tier": "XS",
+      "name": "SyntheticNeRF-Mic"
+    },
+    {
+      "index": 42,
+      "id": "XS/SyntheticNeRF-Ship",
+      "tier": "XS",
+      "name": "SyntheticNeRF-Ship"
+    },
+    {
+      "index": 43,
+      "id": "S/MipNeRF360-Garden",
+      "tier": "S",
+      "name": "MipNeRF360-Garden"
+    },
+    {
+      "index": 44,
+      "id": "S/MipNeRF360-Bicycle",
+      "tier": "S",
+      "name": "MipNeRF360-Bicycle"
+    },
+    {
+      "index": 45,
+      "id": "S/MipNeRF360-Bonsai",
+      "tier": "S",
+      "name": "MipNeRF360-Bonsai"
+    },
+    {
+      "index": 46,
+      "id": "S/MipNeRF360-Counter",
+      "tier": "S",
+      "name": "MipNeRF360-Counter"
+    },
+    {
+      "index": 47,
+      "id": "S/MipNeRF360-Flowers",
+      "tier": "S",
+      "name": "MipNeRF360-Flowers"
+    },
+    {
+      "index": 48,
+      "id": "S/MipNeRF360-Kitchen",
+      "tier": "S",
+      "name": "MipNeRF360-Kitchen"
+    },
+    {
+      "index": 49,
+      "id": "S/MipNeRF360-Room",
+      "tier": "S",
+      "name": "MipNeRF360-Room"
+    },
+    {
+      "index": 50,
+      "id": "S/MipNeRF360-Stump",
+      "tier": "S",
+      "name": "MipNeRF360-Stump"
+    },
+    {
+      "index": 51,
+      "id": "S/MipNeRF360-Treehill",
+      "tier": "S",
+      "name": "MipNeRF360-Treehill"
+    },
+    {
+      "index": 52,
+      "id": "S/TanksAndTemples-Train",
+      "tier": "S",
+      "name": "TanksAndTemples-Train"
+    },
+    {
+      "index": 53,
+      "id": "S/TanksAndTemples-Truck",
+      "tier": "S",
+      "name": "TanksAndTemples-Truck"
+    },
+    {
+      "index": 54,
+      "id": "S/DeepBlending-Drjohnson",
+      "tier": "S",
+      "name": "DeepBlending-Drjohnson"
+    },
+    {
+      "index": 55,
+      "id": "S/DeepBlending-Playroom",
+      "tier": "S",
+      "name": "DeepBlending-Playroom"
+    },
+    {
+      "index": 56,
+      "id": "S/SyntheticNeRF-Chair",
+      "tier": "S",
+      "name": "SyntheticNeRF-Chair"
+    },
+    {
+      "index": 57,
+      "id": "S/SyntheticNeRF-Drums",
+      "tier": "S",
+      "name": "SyntheticNeRF-Drums"
+    },
+    {
+      "index": 58,
+      "id": "S/SyntheticNeRF-Ficus",
+      "tier": "S",
+      "name": "SyntheticNeRF-Ficus"
+    },
+    {
+      "index": 59,
+      "id": "S/SyntheticNeRF-Hotdog",
+      "tier": "S",
+      "name": "SyntheticNeRF-Hotdog"
+    },
+    {
+      "index": 60,
+      "id": "S/SyntheticNeRF-Lego",
+      "tier": "S",
+      "name": "SyntheticNeRF-Lego"
+    },
+    {
+      "index": 61,
+      "id": "S/SyntheticNeRF-Materials",
+      "tier": "S",
+      "name": "SyntheticNeRF-Materials"
+    },
+    {
+      "index": 62,
+      "id": "S/SyntheticNeRF-Mic",
+      "tier": "S",
+      "name": "SyntheticNeRF-Mic"
+    },
+    {
+      "index": 63,
+      "id": "S/SyntheticNeRF-Ship",
+      "tier": "S",
+      "name": "SyntheticNeRF-Ship"
+    },
+    {
+      "index": 64,
+      "id": "M/MipNeRF360-Garden",
+      "tier": "M",
+      "name": "MipNeRF360-Garden"
+    },
+    {
+      "index": 65,
+      "id": "M/MipNeRF360-Bicycle",
+      "tier": "M",
+      "name": "MipNeRF360-Bicycle"
+    },
+    {
+      "index": 66,
+      "id": "M/MipNeRF360-Bonsai",
+      "tier": "M",
+      "name": "MipNeRF360-Bonsai"
+    },
+    {
+      "index": 67,
+      "id": "M/MipNeRF360-Counter",
+      "tier": "M",
+      "name": "MipNeRF360-Counter"
+    },
+    {
+      "index": 68,
+      "id": "M/MipNeRF360-Flowers",
+      "tier": "M",
+      "name": "MipNeRF360-Flowers"
+    },
+    {
+      "index": 69,
+      "id": "M/MipNeRF360-Kitchen",
+      "tier": "M",
+      "name": "MipNeRF360-Kitchen"
+    },
+    {
+      "index": 70,
+      "id": "M/MipNeRF360-Room",
+      "tier": "M",
+      "name": "MipNeRF360-Room"
+    },
+    {
+      "index": 71,
+      "id": "M/MipNeRF360-Stump",
+      "tier": "M",
+      "name": "MipNeRF360-Stump"
+    },
+    {
+      "index": 72,
+      "id": "M/MipNeRF360-Treehill",
+      "tier": "M",
+      "name": "MipNeRF360-Treehill"
+    },
+    {
+      "index": 73,
+      "id": "M/TanksAndTemples-Train",
+      "tier": "M",
+      "name": "TanksAndTemples-Train"
+    },
+    {
+      "index": 74,
+      "id": "M/TanksAndTemples-Truck",
+      "tier": "M",
+      "name": "TanksAndTemples-Truck"
+    },
+    {
+      "index": 75,
+      "id": "M/DeepBlending-Drjohnson",
+      "tier": "M",
+      "name": "DeepBlending-Drjohnson"
+    },
+    {
+      "index": 76,
+      "id": "M/DeepBlending-Playroom",
+      "tier": "M",
+      "name": "DeepBlending-Playroom"
+    },
+    {
+      "index": 77,
+      "id": "M/SyntheticNeRF-Chair",
+      "tier": "M",
+      "name": "SyntheticNeRF-Chair"
+    },
+    {
+      "index": 78,
+      "id": "M/SyntheticNeRF-Drums",
+      "tier": "M",
+      "name": "SyntheticNeRF-Drums"
+    },
+    {
+      "index": 79,
+      "id": "M/SyntheticNeRF-Ficus",
+      "tier": "M",
+      "name": "SyntheticNeRF-Ficus"
+    },
+    {
+      "index": 80,
+      "id": "M/SyntheticNeRF-Hotdog",
+      "tier": "M",
+      "name": "SyntheticNeRF-Hotdog"
+    },
+    {
+      "index": 81,
+      "id": "M/SyntheticNeRF-Lego",
+      "tier": "M",
+      "name": "SyntheticNeRF-Lego"
+    },
+    {
+      "index": 82,
+      "id": "M/SyntheticNeRF-Materials",
+      "tier": "M",
+      "name": "SyntheticNeRF-Materials"
+    },
+    {
+      "index": 83,
+      "id": "M/SyntheticNeRF-Mic",
+      "tier": "M",
+      "name": "SyntheticNeRF-Mic"
+    },
+    {
+      "index": 84,
+      "id": "M/SyntheticNeRF-Ship",
+      "tier": "M",
+      "name": "SyntheticNeRF-Ship"
+    },
+    {
+      "index": 85,
+      "id": "L/MipNeRF360-Garden",
+      "tier": "L",
+      "name": "MipNeRF360-Garden"
+    },
+    {
+      "index": 86,
+      "id": "L/MipNeRF360-Bicycle",
+      "tier": "L",
+      "name": "MipNeRF360-Bicycle"
+    },
+    {
+      "index": 87,
+      "id": "L/MipNeRF360-Bonsai",
+      "tier": "L",
+      "name": "MipNeRF360-Bonsai"
+    },
+    {
+      "index": 88,
+      "id": "L/MipNeRF360-Counter",
+      "tier": "L",
+      "name": "MipNeRF360-Counter"
+    },
+    {
+      "index": 89,
+      "id": "L/MipNeRF360-Flowers",
+      "tier": "L",
+      "name": "MipNeRF360-Flowers"
+    },
+    {
+      "index": 90,
+      "id": "L/MipNeRF360-Kitchen",
+      "tier": "L",
+      "name": "MipNeRF360-Kitchen"
+    },
+    {
+      "index": 91,
+      "id": "L/MipNeRF360-Room",
+      "tier": "L",
+      "name": "MipNeRF360-Room"
+    },
+    {
+      "index": 92,
+      "id": "L/MipNeRF360-Stump",
+      "tier": "L",
+      "name": "MipNeRF360-Stump"
+    },
+    {
+      "index": 93,
+      "id": "L/MipNeRF360-Treehill",
+      "tier": "L",
+      "name": "MipNeRF360-Treehill"
+    },
+    {
+      "index": 94,
+      "id": "L/TanksAndTemples-Train",
+      "tier": "L",
+      "name": "TanksAndTemples-Train"
+    },
+    {
+      "index": 95,
+      "id": "L/TanksAndTemples-Truck",
+      "tier": "L",
+      "name": "TanksAndTemples-Truck"
+    },
+    {
+      "index": 96,
+      "id": "L/DeepBlending-Drjohnson",
+      "tier": "L",
+      "name": "DeepBlending-Drjohnson"
+    },
+    {
+      "index": 97,
+      "id": "L/DeepBlending-Playroom",
+      "tier": "L",
+      "name": "DeepBlending-Playroom"
+    },
+    {
+      "index": 98,
+      "id": "L/SyntheticNeRF-Chair",
+      "tier": "L",
+      "name": "SyntheticNeRF-Chair"
+    },
+    {
+      "index": 99,
+      "id": "L/SyntheticNeRF-Drums",
+      "tier": "L",
+      "name": "SyntheticNeRF-Drums"
+    },
+    {
+      "index": 100,
+      "id": "L/SyntheticNeRF-Ficus",
+      "tier": "L",
+      "name": "SyntheticNeRF-Ficus"
+    },
+    {
+      "index": 101,
+      "id": "L/SyntheticNeRF-Hotdog",
+      "tier": "L",
+      "name": "SyntheticNeRF-Hotdog"
+    },
+    {
+      "index": 102,
+      "id": "L/SyntheticNeRF-Lego",
+      "tier": "L",
+      "name": "SyntheticNeRF-Lego"
+    },
+    {
+      "index": 103,
+      "id": "L/SyntheticNeRF-Materials",
+      "tier": "L",
+      "name": "SyntheticNeRF-Materials"
+    },
+    {
+      "index": 104,
+      "id": "L/SyntheticNeRF-Mic",
+      "tier": "L",
+      "name": "SyntheticNeRF-Mic"
+    },
+    {
+      "index": 105,
+      "id": "L/SyntheticNeRF-Ship",
+      "tier": "L",
+      "name": "SyntheticNeRF-Ship"
+    },
+    {
+      "index": 106,
+      "id": "XL/MipNeRF360-Garden",
+      "tier": "XL",
+      "name": "MipNeRF360-Garden"
+    },
+    {
+      "index": 107,
+      "id": "XL/MipNeRF360-Bicycle",
+      "tier": "XL",
+      "name": "MipNeRF360-Bicycle"
+    },
+    {
+      "index": 108,
+      "id": "XL/MipNeRF360-Bonsai",
+      "tier": "XL",
+      "name": "MipNeRF360-Bonsai"
+    },
+    {
+      "index": 109,
+      "id": "XL/MipNeRF360-Counter",
+      "tier": "XL",
+      "name": "MipNeRF360-Counter"
+    },
+    {
+      "index": 110,
+      "id": "XL/MipNeRF360-Flowers",
+      "tier": "XL",
+      "name": "MipNeRF360-Flowers"
+    },
+    {
+      "index": 111,
+      "id": "XL/MipNeRF360-Kitchen",
+      "tier": "XL",
+      "name": "MipNeRF360-Kitchen"
+    },
+    {
+      "index": 112,
+      "id": "XL/MipNeRF360-Room",
+      "tier": "XL",
+      "name": "MipNeRF360-Room"
+    },
+    {
+      "index": 113,
+      "id": "XL/MipNeRF360-Stump",
+      "tier": "XL",
+      "name": "MipNeRF360-Stump"
+    },
+    {
+      "index": 114,
+      "id": "XL/MipNeRF360-Treehill",
+      "tier": "XL",
+      "name": "MipNeRF360-Treehill"
+    },
+    {
+      "index": 115,
+      "id": "XL/TanksAndTemples-Train",
+      "tier": "XL",
+      "name": "TanksAndTemples-Train"
+    },
+    {
+      "index": 116,
+      "id": "XL/TanksAndTemples-Truck",
+      "tier": "XL",
+      "name": "TanksAndTemples-Truck"
+    },
+    {
+      "index": 117,
+      "id": "XL/DeepBlending-Drjohnson",
+      "tier": "XL",
+      "name": "DeepBlending-Drjohnson"
+    },
+    {
+      "index": 118,
+      "id": "XL/DeepBlending-Playroom",
+      "tier": "XL",
+      "name": "DeepBlending-Playroom"
+    },
+    {
+      "index": 119,
+      "id": "XL/SyntheticNeRF-Chair",
+      "tier": "XL",
+      "name": "SyntheticNeRF-Chair"
+    },
+    {
+      "index": 120,
+      "id": "XL/SyntheticNeRF-Drums",
+      "tier": "XL",
+      "name": "SyntheticNeRF-Drums"
+    },
+    {
+      "index": 121,
+      "id": "XL/SyntheticNeRF-Ficus",
+      "tier": "XL",
+      "name": "SyntheticNeRF-Ficus"
+    },
+    {
+      "index": 122,
+      "id": "XL/SyntheticNeRF-Hotdog",
+      "tier": "XL",
+      "name": "SyntheticNeRF-Hotdog"
+    },
+    {
+      "index": 123,
+      "id": "XL/SyntheticNeRF-Lego",
+      "tier": "XL",
+      "name": "SyntheticNeRF-Lego"
+    },
+    {
+      "index": 124,
+      "id": "XL/SyntheticNeRF-Materials",
+      "tier": "XL",
+      "name": "SyntheticNeRF-Materials"
+    },
+    {
+      "index": 125,
+      "id": "XL/SyntheticNeRF-Mic",
+      "tier": "XL",
+      "name": "SyntheticNeRF-Mic"
+    },
+    {
+      "index": 126,
+      "id": "XL/SyntheticNeRF-Ship",
+      "tier": "XL",
+      "name": "SyntheticNeRF-Ship"
+    },
+    {
+      "index": 127,
+      "id": "XXL/MipNeRF360-Garden",
+      "tier": "XXL",
+      "name": "MipNeRF360-Garden"
+    },
+    {
+      "index": 128,
+      "id": "XXL/MipNeRF360-Bicycle",
+      "tier": "XXL",
+      "name": "MipNeRF360-Bicycle"
+    },
+    {
+      "index": 129,
+      "id": "XXL/MipNeRF360-Bonsai",
+      "tier": "XXL",
+      "name": "MipNeRF360-Bonsai"
+    },
+    {
+      "index": 130,
+      "id": "XXL/MipNeRF360-Counter",
+      "tier": "XXL",
+      "name": "MipNeRF360-Counter"
+    },
+    {
+      "index": 131,
+      "id": "XXL/MipNeRF360-Flowers",
+      "tier": "XXL",
+      "name": "MipNeRF360-Flowers"
+    },
+    {
+      "index": 132,
+      "id": "XXL/MipNeRF360-Kitchen",
+      "tier": "XXL",
+      "name": "MipNeRF360-Kitchen"
+    },
+    {
+      "index": 133,
+      "id": "XXL/MipNeRF360-Room",
+      "tier": "XXL",
+      "name": "MipNeRF360-Room"
+    },
+    {
+      "index": 134,
+      "id": "XXL/MipNeRF360-Stump",
+      "tier": "XXL",
+      "name": "MipNeRF360-Stump"
+    },
+    {
+      "index": 135,
+      "id": "XXL/MipNeRF360-Treehill",
+      "tier": "XXL",
+      "name": "MipNeRF360-Treehill"
+    },
+    {
+      "index": 136,
+      "id": "XXL/TanksAndTemples-Train",
+      "tier": "XXL",
+      "name": "TanksAndTemples-Train"
+    },
+    {
+      "index": 137,
+      "id": "XXL/TanksAndTemples-Truck",
+      "tier": "XXL",
+      "name": "TanksAndTemples-Truck"
+    },
+    {
+      "index": 138,
+      "id": "XXL/DeepBlending-Drjohnson",
+      "tier": "XXL",
+      "name": "DeepBlending-Drjohnson"
+    },
+    {
+      "index": 139,
+      "id": "XXL/DeepBlending-Playroom",
+      "tier": "XXL",
+      "name": "DeepBlending-Playroom"
+    },
+    {
+      "index": 140,
+      "id": "XXL/SyntheticNeRF-Chair",
+      "tier": "XXL",
+      "name": "SyntheticNeRF-Chair"
+    },
+    {
+      "index": 141,
+      "id": "XXL/SyntheticNeRF-Drums",
+      "tier": "XXL",
+      "name": "SyntheticNeRF-Drums"
+    },
+    {
+      "index": 142,
+      "id": "XXL/SyntheticNeRF-Ficus",
+      "tier": "XXL",
+      "name": "SyntheticNeRF-Ficus"
+    },
+    {
+      "index": 143,
+      "id": "XXL/SyntheticNeRF-Hotdog",
+      "tier": "XXL",
+      "name": "SyntheticNeRF-Hotdog"
+    },
+    {
+      "index": 144,
+      "id": "XXL/SyntheticNeRF-Lego",
+      "tier": "XXL",
+      "name": "SyntheticNeRF-Lego"
+    },
+    {
+      "index": 145,
+      "id": "XXL/SyntheticNeRF-Materials",
+      "tier": "XXL",
+      "name": "SyntheticNeRF-Materials"
+    },
+    {
+      "index": 146,
+      "id": "XXL/SyntheticNeRF-Mic",
+      "tier": "XXL",
+      "name": "SyntheticNeRF-Mic"
+    },
+    {
+      "index": 147,
+      "id": "XXL/SyntheticNeRF-Ship",
+      "tier": "XXL",
+      "name": "SyntheticNeRF-Ship"
+    }
+  ]
+}

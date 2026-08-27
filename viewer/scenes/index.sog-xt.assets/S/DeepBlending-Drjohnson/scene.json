@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "metadata": {
+    "url": "meta.json",
+    "bytes": 4132
+  },
+  "planes": {
+    "mask": {
+      "url": "active_mask.webp",
+      "bytes": 168
+    },
+    "positionCoarse": {
+      "url": "means_bytes_1.webp",
+      "bytes": 145410
+    },
+    "positionDetail": {
+      "url": "means_bytes_0.webp",
+      "bytes": 323164
+    },
+    "baseColor": {
+      "url": "f_dc.webp",
+      "bytes": 265888
+    },
+    "opacity": {
+      "url": "opacities.webp",
+      "bytes": 100146
+    },
+    "scales": {
+      "url": "scales.webp",
+      "bytes": 302276
+    },
+    "rotations": {
+      "url": "quaternions.webp",
+      "bytes": 219696
+    },
+    "shCentroids": {
+      "url": "f_rest_centroids.webp",
+      "bytes": 355680
+    },
+    "shLabels": {
+      "url": "f_rest_labels.webp",
+      "bytes": 219304
+    }
+  }
+}
