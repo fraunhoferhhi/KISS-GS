@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "artifact": "page",
+  "page": {
+    "commit": "dcb0e62ba4b0609161eb922ea315be6965ea4cc2",
+    "dirty": false,
+    "sections": [
+      "tldr",
+      "intro",
+      "size",
+      "pipeline",
+      "scenes",
+      "popspa",
+      "bytes",
+      "sorting",
+      "symmetry",
+      "results",
+      "quality",
+      "ablation",
+      "untold",
+      "simple",
+      "cite"
+    ]
+  },
+  "viewer": {
+    "public_base": "viewer/scenes",
+    "expected": {
+      "fingerprint": "4ccc0f3ea8c1f11bb6a32724a0e8634cf4f27238f966922d9d8e38b35af7c765",
+      "ffsplat": "ddd7128c653b42a82d27466afb6a1f311f078de8",
+      "config": "build/scenes.yaml",
+      "scene_count": 21
+    }
+  },
+  "data": {
+    "rd": {
+      "compactionRe": null,
+      "compressionRe": "^(?!.*SOG-XT-1425).*",
+      "deepblendingSizesRe": null,
+      "externalRoots": [
+        "/data/gaussian_splatting/3DGS.zip/results"
+      ],
+      "ffsplatRoots": [
+        "/data/gaussian_splatting/kiss-gs/260302-sog/sog",
+        "/data/gaussian_splatting/kiss-gs/260302-spz/spz",
+        "/data/gaussian_splatting/kiss-gs/260304-results-SOG-XT-1425-1504-POPSpa/metrics",
+        "/data/gaussian_splatting/kiss-gs/260304-results-SOG-XT-1504-INRIA-40k/metrics",
+        "/data/gaussian_splatting/kiss-gs/260305-results-SOG-XT-FT-1504-qq=99-POPSpa/metrics"
+      ],
+      "hacppRoots": [
+        "/data/gaussian_splatting/kiss-gs/260630-results-hacpp-lowrate-highrate_1600px/44000"
+      ],
+      "missingInputRoots": [],
+      "pareto": false,
+      "sizesRe": "^(?:XXS|XS|S|M|L|XL|XXL)$"
+    }
+  }
+}

@@ -1,0 +1,309 @@
+{
+  "schema": 1,
+  "generator": "explanation-assets",
+  "generator_version": 1,
+  "target": "make explanation-assets",
+  "source": {
+    "input": "/data/gaussian_splatting/kiss-gs/260219-popspa/gsplat_popspa_erank_M_1/360/garden/point_cloud/iteration_40000/point_cloud.ply",
+    "input_sha256": "572a0059c7481b5c253dfd0afced5a3e0c1c07fcd9824676f39d5cfd57f0b89d",
+    "scene": "MipNeRF360-Garden",
+    "tier": "M",
+    "compaction": "POPSpa (erank), 40k iterations",
+    "ffsplat": "0ce7d9b386b1147387eecbc83ca221b673108538",
+    "device": "cuda:0",
+    "seed": 42,
+    "seed_note": "build/encode_planes.py seeds random, numpy and torch before encoding; PLAS draws its per-iteration block offset from numpy, which nothing else seeds",
+    "determinism": "bit-exact for every plane the figures show: repeated runs of one configuration produce identical planes, and each ablation is asserted to change only the planes its one differing transform can reach. The spherical-harmonic codebook planes are excluded and recorded as such: their k-means is nondeterministic on the GPU between two identical runs, and no figure shows them."
+  },
+  "runs": {
+    "full": {
+      "template": "sog_xt_1504_full",
+      "template_sha256": "0a4ababfab3473b833c7a29b51a74881598b43c1321e56bb1e1f5aa95824f53f",
+      "seconds": 7.4,
+      "planes": {
+        "active_mask.webp": 264,
+        "f_dc.webp": 526632,
+        "f_rest_centroids.webp": 665642,
+        "f_rest_labels.webp": 451786,
+        "means_bytes_0.webp": 594692,
+        "means_bytes_1.webp": 304444,
+        "opacities.webp": 203990,
+        "quaternions.webp": 731598,
+        "scales.webp": 608586
+      },
+      "paired_with_full": null
+    },
+    "no_plas": {
+      "template": "sog_xt_1504_loo_no_prim_plas_sort_webp",
+      "template_sha256": "2786a9c18ea59cb9cf899deeb3b298e04e44e7ff69e47bb5532ee43e65aad9f4",
+      "seconds": 5.7,
+      "planes": {
+        "active_mask.webp": 60,
+        "f_dc.webp": 553670,
+        "f_rest_centroids.webp": 667390,
+        "f_rest_labels.webp": 481034,
+        "means_bytes_0.webp": 768206,
+        "means_bytes_1.webp": 638074,
+        "opacities.webp": 206450,
+        "quaternions.webp": 741084,
+        "scales.webp": 618592
+      },
+      "paired_with_full": null
+    },
+    "no_pras": {
+      "template": "sog_xt_1504_no_covsym",
+      "template_sha256": "72d6bffe6c6d5814e10f5b6802d2525596b5a5b4904a0e80cc090ba326c986c4",
+      "seconds": 6.0,
+      "planes": {
+        "active_mask.webp": 264,
+        "f_dc.webp": 526632,
+        "f_rest_centroids.webp": 665250,
+        "f_rest_labels.webp": 454138,
+        "means_bytes_0.webp": 594692,
+        "means_bytes_1.webp": 304444,
+        "opacities.webp": 203990,
+        "quaternions.webp": 669598,
+        "scales.webp": 660720
+      },
+      "paired_with_full": {
+        "identical": [
+          "active_mask",
+          "f_dc",
+          "means_bytes_0",
+          "means_bytes_1",
+          "opacities"
+        ],
+        "allowed_to_differ": [
+          "quaternions",
+          "scales"
+        ],
+        "excluded_as_nondeterministic": [
+          "f_rest_centroids",
+          "f_rest_labels"
+        ]
+      }
+    }
+  },
+  "data": {
+    "figures": [
+      {
+        "key": "positions_unsorted",
+        "variant": "no_plas",
+        "plane": "means_bytes_1",
+        "description": "position high byte, primitives in storage order",
+        "webp": "plas/positions_unsorted.webp",
+        "image": "plas/positions_unsorted.png",
+        "encoded_bytes": 638074,
+        "width": 512,
+        "height": 512
+      },
+      {
+        "key": "positions_sorted",
+        "variant": "full",
+        "plane": "means_bytes_1",
+        "description": "position high byte, after PLAS sorting",
+        "webp": "plas/positions_sorted.webp",
+        "image": "plas/positions_sorted.png",
+        "encoded_bytes": 304444,
+        "width": 512,
+        "height": 512
+      },
+      {
+        "key": "colours_unsorted",
+        "variant": "no_plas",
+        "plane": "f_dc",
+        "description": "base colour, primitives in storage order",
+        "webp": "plas/colours_unsorted.webp",
+        "image": "plas/colours_unsorted.png",
+        "encoded_bytes": 553670,
+        "width": 512,
+        "height": 512
+      },
+      {
+        "key": "colours_sorted",
+        "variant": "full",
+        "plane": "f_dc",
+        "description": "base colour, after PLAS sorting",
+        "webp": "plas/colours_sorted.webp",
+        "image": "plas/colours_sorted.png",
+        "encoded_bytes": 526632,
+        "width": 512,
+        "height": 512
+      },
+      {
+        "key": "quaternions_pras_off",
+        "variant": "no_pras",
+        "plane": "quaternions",
+        "description": "rotation grid with PRAS disabled",
+        "webp": "plas/quaternions_pras_off.webp",
+        "image": "plas/quaternions_pras_off.png",
+        "encoded_bytes": 669598,
+        "width": 512,
+        "height": 512
+      },
+      {
+        "key": "quaternions_pras_on",
+        "variant": "full",
+        "plane": "quaternions",
+        "description": "rotation grid as shipped, with PRAS",
+        "webp": "plas/quaternions_pras_on.webp",
+        "image": "plas/quaternions_pras_on.png",
+        "encoded_bytes": 731598,
+        "width": 512,
+        "height": 512
+      },
+      {
+        "key": "scales_pras_off",
+        "variant": "no_pras",
+        "plane": "scales",
+        "description": "scale grid with PRAS disabled",
+        "webp": "plas/scales_pras_off.webp",
+        "image": "plas/scales_pras_off.png",
+        "encoded_bytes": 660720,
+        "width": 512,
+        "height": 512
+      },
+      {
+        "key": "scales_pras_on",
+        "variant": "full",
+        "plane": "scales",
+        "description": "scale grid as shipped, with PRAS",
+        "webp": "plas/scales_pras_on.webp",
+        "image": "plas/scales_pras_on.png",
+        "encoded_bytes": 608586,
+        "width": 512,
+        "height": 512
+      }
+    ]
+  },
+  "produced": [
+    {
+      "path": "plas/positions_unsorted.webp",
+      "sha256": "b50125e9a1ff8b1d1d417031b30d58eecdd700d9ef3b182d33f50850e6bb2b5d",
+      "bytes": 638074,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_loo_no_prim_plas_sort_webp / means_bytes_1"
+    },
+    {
+      "path": "plas/positions_unsorted.png",
+      "sha256": "33ea32053843cdce666a837959f1def4beb2865e8b944131f7d5dd6e42bcb7aa",
+      "bytes": 704087,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_loo_no_prim_plas_sort_webp / means_bytes_1"
+    },
+    {
+      "path": "plas/positions_sorted.webp",
+      "sha256": "47569ae883db72aed877908c82fa372d45d9712a01112bf46cc5935b13bc71ab",
+      "bytes": 304444,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_full / means_bytes_1"
+    },
+    {
+      "path": "plas/positions_sorted.png",
+      "sha256": "45ab3abcfe2db643494ff801815430f4d1225926d83da1cbf1a1b4cef9bc71ef",
+      "bytes": 340674,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_full / means_bytes_1"
+    },
+    {
+      "path": "plas/colours_unsorted.webp",
+      "sha256": "c8a933340a2f761525da8bad136b9a2e7ea7c84c4a198c9f0767595afe0da9dc",
+      "bytes": 553670,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_loo_no_prim_plas_sort_webp / f_dc"
+    },
+    {
+      "path": "plas/colours_unsorted.png",
+      "sha256": "b88197bf0b931340678665415c722a33badbf60d2fbde28273591a9c2f311c60",
+      "bytes": 676299,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_loo_no_prim_plas_sort_webp / f_dc"
+    },
+    {
+      "path": "plas/colours_sorted.webp",
+      "sha256": "1054cf14e658c4c195d594377f3c981cadccdc9050dfa8c94d2a1bf092b4a372",
+      "bytes": 526632,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_full / f_dc"
+    },
+    {
+      "path": "plas/colours_sorted.png",
+      "sha256": "ff1eae96925a1d7d12ad7b1498bd1d5d0ad8cc545f5bb13075bd327e36cff43d",
+      "bytes": 654099,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_full / f_dc"
+    },
+    {
+      "path": "plas/quaternions_pras_off.webp",
+      "sha256": "d2e22516837549950db57eeda3b3aec336fe800b14b57efd8218b36154ccb597",
+      "bytes": 669598,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_no_covsym / quaternions"
+    },
+    {
+      "path": "plas/quaternions_pras_off.png",
+      "sha256": "35855aedd193bce9cb039a6d2e6dcb35b3f0ee3bdad55102f05538b6cef2b388",
+      "bytes": 704894,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_no_covsym / quaternions"
+    },
+    {
+      "path": "plas/quaternions_pras_on.webp",
+      "sha256": "21808f3d29581128a2ea9e3f5445f66bd7982db0856857bda5a12269f6aee644",
+      "bytes": 731598,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_full / quaternions"
+    },
+    {
+      "path": "plas/quaternions_pras_on.png",
+      "sha256": "2a613faf3d114ebd3539458310c4d332128f5c7589ffb089340221df72c8749a",
+      "bytes": 769913,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_full / quaternions"
+    },
+    {
+      "path": "plas/scales_pras_off.webp",
+      "sha256": "f71bbf7e4380e38ddf75b7a1c0d9b4d47438347ea761c31fda83bd68ca69627e",
+      "bytes": 660720,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_no_covsym / scales"
+    },
+    {
+      "path": "plas/scales_pras_off.png",
+      "sha256": "603b595cc95a893bac0cc8cf5adf27adfc5d86f6fc2002755f23f0033c17e7dc",
+      "bytes": 738397,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_no_covsym / scales"
+    },
+    {
+      "path": "plas/scales_pras_on.webp",
+      "sha256": "2a9dec7e8fca4acea0a0234451c4e9174078da89be9516ab0961fef37dc02c20",
+      "bytes": 608586,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_full / scales"
+    },
+    {
+      "path": "plas/scales_pras_on.png",
+      "sha256": "f485aca4af8615d76d928c0fb4038f0b99772e4d561bcebff3ed0b4aaecc1566",
+      "bytes": 673292,
+      "width": 512,
+      "height": 512,
+      "source": "sog_xt_1504_full / scales"
+    }
+  ]
+}

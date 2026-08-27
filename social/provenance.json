@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "generator": "social_preview",
+  "generator_version": 1,
+  "target": "make social-asset",
+  "source": {
+    "kind": "screenshot of the built page in its renderer-off state, clean view",
+    "page_commit": "a680f7d32fa0270308af222cf57c98ece63c844b",
+    "fallback_sha256": "4b841deaa3653cdee1bbe0c505718aeffc40c0abc29f5912c8994388d6bae869",
+    "viewport": {
+      "width": 1200,
+      "height": 630
+    },
+    "note": "the live renderer is not in the picture; the stage shows the committed still"
+  },
+  "produced": [
+    {
+      "path": "social/preview.jpg",
+      "sha256": "24e4574d9ffe134bd0440e55fa338f95595c3b6dfde72f6ca4f6f085822d9864",
+      "bytes": 177683,
+      "source": "fallback/garden.webp + the page chrome",
+      "width": 1200,
+      "height": 630
+    }
+  ]
+}

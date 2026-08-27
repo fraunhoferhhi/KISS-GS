@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "generator": "previews",
+  "generator_version": 1,
+  "target": "make preview-assets",
+  "source": {
+    "kind": "viewer scene-texture readback",
+    "spec": "build/previews.json",
+    "camera": "each scene's own reset camera, cut to rather than glided to",
+    "fit": "cover-fitted into the card size from the viewer's own frame",
+    "viewer_fingerprint": "302a8e6d93514f2a6859830ecc9a426fe08e866d9383083ad7d318c10d6a59f2",
+    "ffsplat": "f25bdabb7f82a8c1a517b3730a43e67492cc9901",
+    "note": "read back through the viewer's debug hook, never screenshotted: headless Chrome reports a black canvas for a healthy swapchain"
+  },
+  "produced": [
+    {
+      "path": "previews/garden.webp",
+      "sha256": "afb6789ed31eb8094f9778e2ae4099ea9ecb8c965badec4281715a88bda5a15f",
+      "bytes": 43630,
+      "source": "M/MipNeRF360-Garden",
+      "width": 480,
+      "height": 270,
+      "scene": "MipNeRF360-Garden",
+      "tier": "M",
+      "non_black_pixels": 840958
+    },
+    {
+      "path": "previews/lego.webp",
+      "sha256": "edd0a181e1c956a437702455c484a29f4705537a7965181fa7493263bce7102d",
+      "bytes": 9362,
+      "source": "M/SyntheticNeRF-Lego",
+      "width": 480,
+      "height": 270,
+      "scene": "SyntheticNeRF-Lego",
+      "tier": "M",
+      "non_black_pixels": 840960
+    },
+    {
+      "path": "previews/counter.webp",
+      "sha256": "6d4db3fcecd8279c9d004ddcfc339118fb3260d7af5fd51bf57d68ced2b30fa3",
+      "bytes": 22894,
+      "source": "M/MipNeRF360-Counter",
+      "width": 480,
+      "height": 270,
+      "scene": "MipNeRF360-Counter",
+      "tier": "M",
+      "non_black_pixels": 840803
+    }
+  ]
+}

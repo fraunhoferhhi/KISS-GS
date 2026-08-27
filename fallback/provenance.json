@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "generator": "fallback",
+  "generator_version": 1,
+  "target": "make fallback",
+  "source": {
+    "kind": "viewer scene-texture readback",
+    "scene": "MipNeRF360-Garden",
+    "tier": "M",
+    "camera": "the viewer's own default, cut to rather than glided to",
+    "viewer_fingerprint": "2b5ebac4f0f2dee2250cf9577b990b3883f348ac5ad3682df1ee31695ec190a7",
+    "ffsplat": "0ce7d9b386b1147387eecbc83ca221b673108538",
+    "non_black_pixels": 840958,
+    "note": "read back through the viewer's debug hook, never screenshotted: headless Chrome reports a black canvas for a healthy swapchain"
+  },
+  "produced": [
+    {
+      "path": "fallback/garden.webp",
+      "sha256": "4b841deaa3653cdee1bbe0c505718aeffc40c0abc29f5912c8994388d6bae869",
+      "bytes": 222930,
+      "source": "M/MipNeRF360-Garden",
+      "width": 1280,
+      "height": 657
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "generator": "paper-assets",
+  "generator_version": 1,
+  "target": "make paper-assets",
+  "source": {
+    "repo": "KISS-GS-paper (camera ready)",
+    "commit": "e5943d06adca1d396234f18a4c858c5791fffbe3",
+    "note": "artefacts the page shows as the paper printed them; the rate-distortion plots the page draws itself come from assets/rd/rd.json instead"
+  },
+  "produced": [
+    {
+      "path": "decode_sogxt.py",
+      "sha256": "05ddc2cb9a243ffc5a231cee987cd0aa4e0d28230a8d537c0cd8dab051876573",
+      "bytes": 7745,
+      "source": "paper/sec/code/decode_msog_numpy_45ch_single_column.py",
+      "method": "copied verbatim",
+      "source_sha256": "05ddc2cb9a243ffc5a231cee987cd0aa4e0d28230a8d537c0cd8dab051876573"
+    }
+  ]
+}

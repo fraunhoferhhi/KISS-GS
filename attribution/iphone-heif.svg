@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">iPhone displaying a photo</title>
+  <desc id="desc">A small illustration of a phone with a landscape photo on its screen.</desc>
+  <rect width="96" height="96" rx="18" fill="#fff0e6"/>
+  <rect x="25" y="5" width="46" height="86" rx="10" fill="#16202c"/>
+  <rect x="29" y="10" width="38" height="76" rx="7" fill="#f5f7f9"/>
+  <rect x="41" y="13" width="14" height="3" rx="1.5" fill="#5b6a7a"/>
+  <rect x="33" y="22" width="30" height="39" rx="3" fill="#9bd8df"/>
+  <circle cx="54" cy="31" r="4" fill="#ffca5f"/>
+  <path d="M33 53 42 43l7 7 5-6 9 10v7H33Z" fill="#15803d"/>
+  <path d="M33 57 43 48l6 5 6-4 8 7v5H33Z" fill="#2563eb" opacity=".72"/>
+  <rect x="35" y="67" width="22" height="3" rx="1.5" fill="#c5ced7"/>
+  <rect x="35" y="73" width="17" height="3" rx="1.5" fill="#c5ced7"/>
+  <rect x="41" y="82" width="14" height="2" rx="1" fill="#5b6a7a"/>
+</svg>

@@ -1,0 +1,657 @@
+{
+  "schema": 1,
+  "generator": "gallery-assets",
+  "generator_version": 1,
+  "target": "make gallery-assets",
+  "source": {
+    "repo": "KISS-GS-paper (camera ready)",
+    "figure": "paper/fig/bicycle.tex",
+    "figure_sha256": "51b08b223d63ca38d5d3d2e473817ff6387063f07769efd3409673a2056fda29",
+    "commit": "e5943d06adca1d396234f18a4c858c5791fffbe3",
+    "view": "view_0017",
+    "scene": "MipNeRF360-Bicycle"
+  },
+  "data": {
+    "view": "held-out Bicycle view 17",
+    "zooms": [
+      "full",
+      "zoom_4x",
+      "zoom_8x",
+      "zoom_12x"
+    ],
+    "rows": [
+      {
+        "key": "ground_truth",
+        "label": "Ground truth",
+        "kind": "truth",
+        "psnr": null,
+        "lpips": null,
+        "size_mb": null,
+        "images": [
+          {
+            "zoom": "full",
+            "path": "bicycle/view_0017/ground_truth/full.jpg",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_4x",
+            "path": "bicycle/view_0017/ground_truth/zoom_4x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_8x",
+            "path": "bicycle/view_0017/ground_truth/zoom_8x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_12x",
+            "path": "bicycle/view_0017/ground_truth/zoom_12x.png",
+            "width": 480,
+            "height": 318
+          }
+        ]
+      },
+      {
+        "key": "INRIA_40k",
+        "label": "INRIA 3DGS .ply",
+        "kind": "reference",
+        "psnr": "24.806",
+        "lpips": "0.1662",
+        "size_mb": "1334.9",
+        "images": [
+          {
+            "zoom": "full",
+            "path": "bicycle/view_0017/INRIA_40k/full.jpg",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_4x",
+            "path": "bicycle/view_0017/INRIA_40k/zoom_4x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_8x",
+            "path": "bicycle/view_0017/INRIA_40k/zoom_8x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_12x",
+            "path": "bicycle/view_0017/INRIA_40k/zoom_12x.png",
+            "width": 480,
+            "height": 318
+          }
+        ]
+      },
+      {
+        "key": "HAC_low-rate",
+        "label": "HAC++ low-rate",
+        "kind": "reference",
+        "psnr": "25.223",
+        "lpips": "0.2533",
+        "size_mb": "13.8",
+        "images": [
+          {
+            "zoom": "full",
+            "path": "bicycle/view_0017/HAC_low-rate/full.jpg",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_4x",
+            "path": "bicycle/view_0017/HAC_low-rate/zoom_4x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_8x",
+            "path": "bicycle/view_0017/HAC_low-rate/zoom_8x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_12x",
+            "path": "bicycle/view_0017/HAC_low-rate/zoom_12x.png",
+            "width": 480,
+            "height": 318
+          }
+        ]
+      },
+      {
+        "key": "HAC_high-rate",
+        "label": "HAC++ high-rate",
+        "kind": "reference",
+        "psnr": "25.023",
+        "lpips": "0.2174",
+        "size_mb": "33.5",
+        "images": [
+          {
+            "zoom": "full",
+            "path": "bicycle/view_0017/HAC_high-rate/full.jpg",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_4x",
+            "path": "bicycle/view_0017/HAC_high-rate/zoom_4x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_8x",
+            "path": "bicycle/view_0017/HAC_high-rate/zoom_8x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_12x",
+            "path": "bicycle/view_0017/HAC_high-rate/zoom_12x.png",
+            "width": 480,
+            "height": 318
+          }
+        ]
+      },
+      {
+        "key": "POPSpa-128k_SOG-XT-FT",
+        "label": "KISS-GS 128k",
+        "kind": "ours",
+        "psnr": "24.949",
+        "lpips": "0.3474",
+        "size_mb": "1.9",
+        "images": [
+          {
+            "zoom": "full",
+            "path": "bicycle/view_0017/POPSpa-128k_SOG-XT-FT/full.jpg",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_4x",
+            "path": "bicycle/view_0017/POPSpa-128k_SOG-XT-FT/zoom_4x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_8x",
+            "path": "bicycle/view_0017/POPSpa-128k_SOG-XT-FT/zoom_8x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_12x",
+            "path": "bicycle/view_0017/POPSpa-128k_SOG-XT-FT/zoom_12x.png",
+            "width": 480,
+            "height": 318
+          }
+        ]
+      },
+      {
+        "key": "POPSpa-256k_SOG-XT-FT",
+        "label": "KISS-GS 256k",
+        "kind": "ours",
+        "psnr": "25.613",
+        "lpips": "0.2925",
+        "size_mb": "3.7",
+        "images": [
+          {
+            "zoom": "full",
+            "path": "bicycle/view_0017/POPSpa-256k_SOG-XT-FT/full.jpg",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_4x",
+            "path": "bicycle/view_0017/POPSpa-256k_SOG-XT-FT/zoom_4x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_8x",
+            "path": "bicycle/view_0017/POPSpa-256k_SOG-XT-FT/zoom_8x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_12x",
+            "path": "bicycle/view_0017/POPSpa-256k_SOG-XT-FT/zoom_12x.png",
+            "width": 480,
+            "height": 318
+          }
+        ]
+      },
+      {
+        "key": "POPSpa-512k_SOG-XT-FT",
+        "label": "KISS-GS 512k",
+        "kind": "ours",
+        "psnr": "25.973",
+        "lpips": "0.2380",
+        "size_mb": "7.4",
+        "images": [
+          {
+            "zoom": "full",
+            "path": "bicycle/view_0017/POPSpa-512k_SOG-XT-FT/full.jpg",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_4x",
+            "path": "bicycle/view_0017/POPSpa-512k_SOG-XT-FT/zoom_4x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_8x",
+            "path": "bicycle/view_0017/POPSpa-512k_SOG-XT-FT/zoom_8x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_12x",
+            "path": "bicycle/view_0017/POPSpa-512k_SOG-XT-FT/zoom_12x.png",
+            "width": 480,
+            "height": 318
+          }
+        ]
+      },
+      {
+        "key": "POPSpa-1024k_SOG-XT-FT",
+        "label": "KISS-GS 1024k",
+        "kind": "ours",
+        "psnr": "25.990",
+        "lpips": "0.1812",
+        "size_mb": "13.5",
+        "images": [
+          {
+            "zoom": "full",
+            "path": "bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/full.jpg",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_4x",
+            "path": "bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/zoom_4x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_8x",
+            "path": "bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/zoom_8x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_12x",
+            "path": "bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/zoom_12x.png",
+            "width": 480,
+            "height": 318
+          }
+        ]
+      },
+      {
+        "key": "POPSpa-2048k_SOG-XT-FT",
+        "label": "KISS-GS 2048k",
+        "kind": "ours",
+        "psnr": "25.663",
+        "lpips": "0.1515",
+        "size_mb": "25.0",
+        "images": [
+          {
+            "zoom": "full",
+            "path": "bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/full.jpg",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_4x",
+            "path": "bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/zoom_4x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_8x",
+            "path": "bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/zoom_8x.png",
+            "width": 480,
+            "height": 319
+          },
+          {
+            "zoom": "zoom_12x",
+            "path": "bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/zoom_12x.png",
+            "width": 480,
+            "height": 318
+          }
+        ]
+      }
+    ]
+  },
+  "produced": [
+    {
+      "path": "bicycle/view_0017/ground_truth/full.jpg",
+      "sha256": "92a47c58c42b14a025bd79088988f250e10a10fb0bc3460eee3953f831ee8911",
+      "bytes": 46704,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/ground_truth/full.jpg",
+      "source_sha256": "92a47c58c42b14a025bd79088988f250e10a10fb0bc3460eee3953f831ee8911"
+    },
+    {
+      "path": "bicycle/view_0017/ground_truth/zoom_4x.png",
+      "sha256": "d1f82a2b701e0e2852b9d9dd50adb42e38dd9d43f5c49c1b692a2d62bfad37e0",
+      "bytes": 225613,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/ground_truth/zoom_4x.png",
+      "source_sha256": "d1f82a2b701e0e2852b9d9dd50adb42e38dd9d43f5c49c1b692a2d62bfad37e0"
+    },
+    {
+      "path": "bicycle/view_0017/ground_truth/zoom_8x.png",
+      "sha256": "87a035b1ff2bbfb37d126bc85bb9cf2ef32d0111f049c35198f851d898b519ec",
+      "bytes": 69692,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/ground_truth/zoom_8x.png",
+      "source_sha256": "87a035b1ff2bbfb37d126bc85bb9cf2ef32d0111f049c35198f851d898b519ec"
+    },
+    {
+      "path": "bicycle/view_0017/ground_truth/zoom_12x.png",
+      "sha256": "a140cb8d3d094838ce0e7ebf301983a297061ef1d7f91da2df4e2f8585edebe5",
+      "bytes": 33953,
+      "width": 480,
+      "height": 318,
+      "source": "paper/assets/bicycle/view_0017/ground_truth/zoom_12x.png",
+      "source_sha256": "a140cb8d3d094838ce0e7ebf301983a297061ef1d7f91da2df4e2f8585edebe5"
+    },
+    {
+      "path": "bicycle/view_0017/INRIA_40k/full.jpg",
+      "sha256": "0d7859f0a103ab74dcec9b1912f4984c16d7e579ac9220660cc51e8177e67967",
+      "bytes": 45354,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/INRIA_40k/full.jpg",
+      "source_sha256": "0d7859f0a103ab74dcec9b1912f4984c16d7e579ac9220660cc51e8177e67967"
+    },
+    {
+      "path": "bicycle/view_0017/INRIA_40k/zoom_4x.png",
+      "sha256": "c98843431986c8a4dab5609cf0035f6612622f4c9f9e451f670680d180cf2286",
+      "bytes": 213522,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/INRIA_40k/zoom_4x.png",
+      "source_sha256": "c98843431986c8a4dab5609cf0035f6612622f4c9f9e451f670680d180cf2286"
+    },
+    {
+      "path": "bicycle/view_0017/INRIA_40k/zoom_8x.png",
+      "sha256": "00dc72a6259a5fc5fcc4b5d57fa4ef6ebf19093f7c0f34a0869dee60b825f784",
+      "bytes": 67221,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/INRIA_40k/zoom_8x.png",
+      "source_sha256": "00dc72a6259a5fc5fcc4b5d57fa4ef6ebf19093f7c0f34a0869dee60b825f784"
+    },
+    {
+      "path": "bicycle/view_0017/INRIA_40k/zoom_12x.png",
+      "sha256": "b4459c9ada343e41118a0de9516abaf88ba6e04814791bdd339c8a5aa632855c",
+      "bytes": 33296,
+      "width": 480,
+      "height": 318,
+      "source": "paper/assets/bicycle/view_0017/INRIA_40k/zoom_12x.png",
+      "source_sha256": "b4459c9ada343e41118a0de9516abaf88ba6e04814791bdd339c8a5aa632855c"
+    },
+    {
+      "path": "bicycle/view_0017/HAC_low-rate/full.jpg",
+      "sha256": "911ffc7841ad67a9caba085220f7e890b8e584420c24b5fcee13dbb42dca15c8",
+      "bytes": 45589,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/HAC_low-rate/full.jpg",
+      "source_sha256": "911ffc7841ad67a9caba085220f7e890b8e584420c24b5fcee13dbb42dca15c8"
+    },
+    {
+      "path": "bicycle/view_0017/HAC_low-rate/zoom_4x.png",
+      "sha256": "8dcc3118dc34af5c3674cf395019c0624d2b00fc189c48f6ee2f81857505e1f6",
+      "bytes": 187955,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/HAC_low-rate/zoom_4x.png",
+      "source_sha256": "8dcc3118dc34af5c3674cf395019c0624d2b00fc189c48f6ee2f81857505e1f6"
+    },
+    {
+      "path": "bicycle/view_0017/HAC_low-rate/zoom_8x.png",
+      "sha256": "d89a1aef0381efafb89081c790173aeaf88ebdf2fa17ef2efb6564f0fea239bc",
+      "bytes": 60552,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/HAC_low-rate/zoom_8x.png",
+      "source_sha256": "d89a1aef0381efafb89081c790173aeaf88ebdf2fa17ef2efb6564f0fea239bc"
+    },
+    {
+      "path": "bicycle/view_0017/HAC_low-rate/zoom_12x.png",
+      "sha256": "0d2c9caa7481716fde0fcc180903ac66e2be6ba6f299ec0b9a9fe522ca098413",
+      "bytes": 29855,
+      "width": 480,
+      "height": 318,
+      "source": "paper/assets/bicycle/view_0017/HAC_low-rate/zoom_12x.png",
+      "source_sha256": "0d2c9caa7481716fde0fcc180903ac66e2be6ba6f299ec0b9a9fe522ca098413"
+    },
+    {
+      "path": "bicycle/view_0017/HAC_high-rate/full.jpg",
+      "sha256": "cf1f5ce605fac9f41cf5a49164a6afe7e685f9df8659a272cee7f8ad80f547e5",
+      "bytes": 44603,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/HAC_high-rate/full.jpg",
+      "source_sha256": "cf1f5ce605fac9f41cf5a49164a6afe7e685f9df8659a272cee7f8ad80f547e5"
+    },
+    {
+      "path": "bicycle/view_0017/HAC_high-rate/zoom_4x.png",
+      "sha256": "f389fed4b011920e3054062e10b3c97a66bc1ec41287b73597b8fa252dc6c5fb",
+      "bytes": 197365,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/HAC_high-rate/zoom_4x.png",
+      "source_sha256": "f389fed4b011920e3054062e10b3c97a66bc1ec41287b73597b8fa252dc6c5fb"
+    },
+    {
+      "path": "bicycle/view_0017/HAC_high-rate/zoom_8x.png",
+      "sha256": "1e9b3705924700c496ee761e248e79cec86950a02c94ffe3311c9f5f1d96c27a",
+      "bytes": 62788,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/HAC_high-rate/zoom_8x.png",
+      "source_sha256": "1e9b3705924700c496ee761e248e79cec86950a02c94ffe3311c9f5f1d96c27a"
+    },
+    {
+      "path": "bicycle/view_0017/HAC_high-rate/zoom_12x.png",
+      "sha256": "3697168c539eba3c9c5033fcb23f552964289b866b0e213cc977cfcfd59c15ec",
+      "bytes": 31234,
+      "width": 480,
+      "height": 318,
+      "source": "paper/assets/bicycle/view_0017/HAC_high-rate/zoom_12x.png",
+      "source_sha256": "3697168c539eba3c9c5033fcb23f552964289b866b0e213cc977cfcfd59c15ec"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-128k_SOG-XT-FT/full.jpg",
+      "sha256": "3b41f7a60eb51929cf66b4b3e7452d25ceaddf4e02b55b860913659349731462",
+      "bytes": 43072,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-128k_SOG-XT-FT/full.jpg",
+      "source_sha256": "3b41f7a60eb51929cf66b4b3e7452d25ceaddf4e02b55b860913659349731462"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-128k_SOG-XT-FT/zoom_4x.png",
+      "sha256": "50626f01fcf4bab45ae521c446f115bd86e7bdcbd6da2604da04a69b68d21771",
+      "bytes": 174026,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-128k_SOG-XT-FT/zoom_4x.png",
+      "source_sha256": "50626f01fcf4bab45ae521c446f115bd86e7bdcbd6da2604da04a69b68d21771"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-128k_SOG-XT-FT/zoom_8x.png",
+      "sha256": "2ac47fa863085022ddb97a30a134186e563a678278cfeb401e57621692d1592b",
+      "bytes": 55465,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-128k_SOG-XT-FT/zoom_8x.png",
+      "source_sha256": "2ac47fa863085022ddb97a30a134186e563a678278cfeb401e57621692d1592b"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-128k_SOG-XT-FT/zoom_12x.png",
+      "sha256": "a5e10d97e7527befebd1fa59dc330079430c39b8f227201c6ff47f7997699cb1",
+      "bytes": 27081,
+      "width": 480,
+      "height": 318,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-128k_SOG-XT-FT/zoom_12x.png",
+      "source_sha256": "a5e10d97e7527befebd1fa59dc330079430c39b8f227201c6ff47f7997699cb1"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-256k_SOG-XT-FT/full.jpg",
+      "sha256": "45be125f7a2eeff0fc0f0426d8f488911d5f278f739b2ab16f5b24cf25a5cedd",
+      "bytes": 44186,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-256k_SOG-XT-FT/full.jpg",
+      "source_sha256": "45be125f7a2eeff0fc0f0426d8f488911d5f278f739b2ab16f5b24cf25a5cedd"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-256k_SOG-XT-FT/zoom_4x.png",
+      "sha256": "69d7359f4f37b82a8b5f8f406807de3d07a59c70187edf9aa22f0a5ff03640d5",
+      "bytes": 187279,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-256k_SOG-XT-FT/zoom_4x.png",
+      "source_sha256": "69d7359f4f37b82a8b5f8f406807de3d07a59c70187edf9aa22f0a5ff03640d5"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-256k_SOG-XT-FT/zoom_8x.png",
+      "sha256": "54087ceea43a4c72c88dcac5d4450b35794955d199cf2bea1f922a05d3c8ee30",
+      "bytes": 59004,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-256k_SOG-XT-FT/zoom_8x.png",
+      "source_sha256": "54087ceea43a4c72c88dcac5d4450b35794955d199cf2bea1f922a05d3c8ee30"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-256k_SOG-XT-FT/zoom_12x.png",
+      "sha256": "4883dc12a2bdb5977669695619c4491562b314a5f6231481dab52f759cf83516",
+      "bytes": 28988,
+      "width": 480,
+      "height": 318,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-256k_SOG-XT-FT/zoom_12x.png",
+      "source_sha256": "4883dc12a2bdb5977669695619c4491562b314a5f6231481dab52f759cf83516"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-512k_SOG-XT-FT/full.jpg",
+      "sha256": "f5d279b39050218426a077272e972f5484c214d7ff15a4f4cde14b640d114bb4",
+      "bytes": 44781,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-512k_SOG-XT-FT/full.jpg",
+      "source_sha256": "f5d279b39050218426a077272e972f5484c214d7ff15a4f4cde14b640d114bb4"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-512k_SOG-XT-FT/zoom_4x.png",
+      "sha256": "c8a64ecb194d1ca39990e13684ea3f356932bb8fb82739c3749b675be2b7021d",
+      "bytes": 196009,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-512k_SOG-XT-FT/zoom_4x.png",
+      "source_sha256": "c8a64ecb194d1ca39990e13684ea3f356932bb8fb82739c3749b675be2b7021d"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-512k_SOG-XT-FT/zoom_8x.png",
+      "sha256": "ed6c7a0420280c9bf17c8c6e50a3ea24e2266aaa1a789c7f93cd76ff7894bed6",
+      "bytes": 61499,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-512k_SOG-XT-FT/zoom_8x.png",
+      "source_sha256": "ed6c7a0420280c9bf17c8c6e50a3ea24e2266aaa1a789c7f93cd76ff7894bed6"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-512k_SOG-XT-FT/zoom_12x.png",
+      "sha256": "4a5793c6e4295048b90965e70d115a10eb1195f89567ee453e8a085ada5bf6ed",
+      "bytes": 30187,
+      "width": 480,
+      "height": 318,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-512k_SOG-XT-FT/zoom_12x.png",
+      "source_sha256": "4a5793c6e4295048b90965e70d115a10eb1195f89567ee453e8a085ada5bf6ed"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/full.jpg",
+      "sha256": "6faf835f506ae391b7a1ab7a9e8cc9c3dabbafa9db55c4977ebe04212d645e0d",
+      "bytes": 44542,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/full.jpg",
+      "source_sha256": "6faf835f506ae391b7a1ab7a9e8cc9c3dabbafa9db55c4977ebe04212d645e0d"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/zoom_4x.png",
+      "sha256": "5329e8d1e2f5044bba176e0cfb8dcba5edf46b53c86d9ea0095d6817dd9293b1",
+      "bytes": 203133,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/zoom_4x.png",
+      "source_sha256": "5329e8d1e2f5044bba176e0cfb8dcba5edf46b53c86d9ea0095d6817dd9293b1"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/zoom_8x.png",
+      "sha256": "ef80a04274dfbb1dd2b18c55c7884cc51735ccd713c0686829c5f8e0919093af",
+      "bytes": 63390,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/zoom_8x.png",
+      "source_sha256": "ef80a04274dfbb1dd2b18c55c7884cc51735ccd713c0686829c5f8e0919093af"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/zoom_12x.png",
+      "sha256": "54f5931ee31a2fc6e70a06718802a2e0f20d8103795c9641fa0d20d667b15c1c",
+      "bytes": 31340,
+      "width": 480,
+      "height": 318,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-1024k_SOG-XT-FT/zoom_12x.png",
+      "source_sha256": "54f5931ee31a2fc6e70a06718802a2e0f20d8103795c9641fa0d20d667b15c1c"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/full.jpg",
+      "sha256": "37fc0850effbc48dcf23fe60b1c3b020b80caa15eba8475a3761abe9e2c16dd8",
+      "bytes": 44623,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/full.jpg",
+      "source_sha256": "37fc0850effbc48dcf23fe60b1c3b020b80caa15eba8475a3761abe9e2c16dd8"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/zoom_4x.png",
+      "sha256": "5863152b8408ddaf505ded893f7c6e833e8c2f35b8bf63efc459f4802e431aca",
+      "bytes": 207422,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/zoom_4x.png",
+      "source_sha256": "5863152b8408ddaf505ded893f7c6e833e8c2f35b8bf63efc459f4802e431aca"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/zoom_8x.png",
+      "sha256": "3b600a1c4f30c1076674171a4139e018f77dcc1719db0f08ee4660255b0a5dd3",
+      "bytes": 65241,
+      "width": 480,
+      "height": 319,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/zoom_8x.png",
+      "source_sha256": "3b600a1c4f30c1076674171a4139e018f77dcc1719db0f08ee4660255b0a5dd3"
+    },
+    {
+      "path": "bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/zoom_12x.png",
+      "sha256": "e2a44276e5cbdf040a2c17ab39701c7621d9d5d2f236ddd35d4687c68c164520",
+      "bytes": 31992,
+      "width": 480,
+      "height": 318,
+      "source": "paper/assets/bicycle/view_0017/POPSpa-2048k_SOG-XT-FT/zoom_12x.png",
+      "source_sha256": "e2a44276e5cbdf040a2c17ab39701c7621d9d5d2f236ddd35d4687c68c164520"
+    }
+  ]
+}
