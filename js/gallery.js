@@ -44,6 +44,25 @@ const imageReady = (image) => {
   });
 };
 
+const GALLERY_NUDGE_KEY = "kissgs:gallery-nudge";
+const GALLERY_NUDGE_MS = 8_000;
+
+const nudgeSeen = () => {
+  try {
+    return window.sessionStorage.getItem(GALLERY_NUDGE_KEY) === "shown";
+  } catch {
+    return false;
+  }
+};
+
+const rememberNudge = () => {
+  try {
+    window.sessionStorage.setItem(GALLERY_NUDGE_KEY, "shown");
+  } catch {
+    // Blocked storage costs at most one extra nudge on the next page load.
+  }
+};
+
 /** @param {HTMLElement} host @param {GalleryRow} shown @param {GalleryRow} ours @param {GalleryRow} reference */
 const renderMetrics = (host, shown, ours, reference) => {
   /** @param {string} label @param {string} value */
@@ -87,11 +106,17 @@ export const initGallery = async (host, data) => {
   const zoomButtons = /** @type {HTMLButtonElement[]} */ (
     [...host.querySelectorAll("[data-gallery-zoom]")]
   );
-  const frame = /** @type {HTMLButtonElement | null} */ (host.querySelector("[data-gallery-frame]"));
+  const sourcePanels = /** @type {HTMLElement[]} */ (
+    [...host.querySelectorAll("[data-gallery-source]")]
+  );
+  const showButtons = /** @type {HTMLButtonElement[]} */ (
+    [...host.querySelectorAll("[data-gallery-show]")]
+  );
+  const frame = /** @type {HTMLElement | null} */ (host.querySelector("[data-gallery-frame]"));
   const metricsHost = /** @type {HTMLElement | null} */ (host.querySelector("[data-gallery-metrics]"));
-  const pill = /** @type {HTMLElement | null} */ (host.querySelector("[data-gallery-pill]"));
   const readout = /** @type {HTMLElement | null} */ (host.querySelector("[data-gallery-readout]"));
-  if (!referenceSelect || !oursSelect || !frame || !metricsHost || !pill) return;
+  if (!referenceSelect || !oursSelect || !frame || !metricsHost
+      || sourcePanels.length !== 2 || showButtons.length !== 2) return;
 
   let referenceKey = referenceSelect.value;
   let oursKey = oursSelect.value;
@@ -99,14 +124,26 @@ export const initGallery = async (host, data) => {
     zoomButtons.find((button) => button.getAttribute("aria-pressed") === "true")?.dataset.zoom
       || zoomButtons[0]?.dataset.zoom || "full",
   );
-  let held = false;
+  /** @type {"reference" | "ours"} */
+  let persistentSource = "ours";
   let hovered = false;
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  /** @type {HTMLElement | null} */
+  let nudge = null;
+  let nudgeTimer = 0;
+
+  const dismissNudge = () => {
+    if (nudgeTimer) window.clearTimeout(nudgeTimer);
+    nudgeTimer = 0;
+    nudge?.remove();
+    nudge = null;
+  };
 
   const render = () => {
     const reference = rows.get(referenceKey);
     const ours = rows.get(oursKey);
     if (!reference || !ours) return;
-    const showingReference = held || hovered;
+    const showingReference = hovered ? persistentSource === "ours" : persistentSource === "reference";
     const shown = showingReference ? reference : ours;
     const entry = shown.images[zoom];
     if (!entry) return;
@@ -120,21 +157,33 @@ export const initGallery = async (host, data) => {
       if (!image.src.endsWith(sourceEntry.path)) image.src = sourceEntry.path;
       image.width = sourceEntry.width;
       image.height = sourceEntry.height;
-      image.alt = role === "ours" ? `${source.label}, ${data.view}` : "";
       image.toggleAttribute("data-visible", source === shown);
     }
 
-    frame.setAttribute("aria-pressed", String(held));
     frame.dataset.showing = showingReference ? "reference" : "ours";
     host.dataset.showing = frame.dataset.showing;
-    pill.textContent = showingReference ? `Reference · ${reference.label}` : `Ours · ${ours.label}`;
-    // The name starts with the visible pill, so what a reader sees is in what a
-    // screen reader hears (F2.6, label-content-name-mismatch).
+    const identity = showingReference ? `Reference · ${reference.label}` : `Ours · ${ours.label}`;
     frame.setAttribute(
       "aria-label",
-      `Showing ${pill.textContent}. ${metricsSentence(shown)}. Press to ${held ? "restore" : "reveal"} ${held ? ours.label : reference.label}.`,
+      `Showing ${identity}. ${metricsSentence(shown)}.`,
     );
     renderMetrics(metricsHost, shown, ours, reference);
+
+    for (const panel of sourcePanels) {
+      panel.toggleAttribute("data-showing", panel.dataset.gallerySource === frame.dataset.showing);
+    }
+    for (const button of showButtons) {
+      const role = button.dataset.galleryShow;
+      const showing = role === frame.dataset.showing;
+      button.setAttribute("aria-pressed", String(showing));
+      button.textContent = showing ? "Showing" : "Show";
+      button.setAttribute(
+        "aria-label",
+        showing
+          ? `${role === "reference" ? "Reference" : "KISS-GS"} image showing`
+          : `Show ${role === "reference" ? "reference" : "KISS-GS"} image`,
+      );
+    }
 
     referenceSelect.value = referenceKey;
     oursSelect.value = oursKey;
@@ -176,22 +225,27 @@ export const initGallery = async (host, data) => {
       announce(`Magnification: ${button.textContent?.trim()}.`);
     });
   }
+  for (const button of showButtons) {
+    button.addEventListener("click", () => {
+      persistentSource = button.dataset.galleryShow === "reference" ? "reference" : "ours";
+      hovered = false;
+      dismissNudge();
+      render();
+      const shown = rows.get(persistentSource === "reference" ? referenceKey : oursKey);
+      if (shown) announce(`Showing ${metricsSentence(shown)}.`);
+    });
+  }
 
   frame.addEventListener("pointerenter", (event) => {
-    if (/** @type {PointerEvent} */ (event).pointerType === "touch") return;
+    if (!finePointer || /** @type {PointerEvent} */ (event).pointerType === "touch") return;
     hovered = true;
+    dismissNudge();
     render();
   });
   frame.addEventListener("pointerleave", () => {
+    if (!finePointer) return;
     hovered = false;
     render();
-  });
-  frame.addEventListener("click", () => {
-    held = !held;
-    hovered = false;
-    render();
-    const shown = rows.get(held ? referenceKey : oursKey);
-    if (shown) announce(`Showing ${metricsSentence(shown)}.`);
   });
 
   render();
@@ -205,7 +259,16 @@ export const initGallery = async (host, data) => {
   await Promise.all(images.map(imageReady));
   referenceSelect.disabled = false;
   oursSelect.disabled = false;
-  frame.disabled = false;
-  for (const button of [...budgetButtons, ...zoomButtons]) button.disabled = false;
+  for (const button of [...budgetButtons, ...zoomButtons, ...showButtons]) button.disabled = false;
+  if (finePointer && !nudgeSeen()) {
+    rememberNudge();
+    nudge = document.createElement("span");
+    nudge.className = "gal-nudge";
+    nudge.setAttribute("data-gallery-nudge", "");
+    nudge.setAttribute("role", "status");
+    nudge.textContent = "Hover to switch images";
+    frame.append(nudge);
+    nudgeTimer = window.setTimeout(dismissNudge, GALLERY_NUDGE_MS);
+  }
   host.setAttribute("data-ready", "");
 };

@@ -233,7 +233,7 @@
     --gallery-radius: 10px;
     --gallery-control-gap: 12px;
     --gallery-panel-pad: 14px;
-    --gallery-pill-inset: 12px;
+    --gallery-nudge-inset: 12px;
     --waterfall-gap: 14px;
     --waterfall-bar-h: 32px;
     /* M12: the four-stage strip that replaced the paper's Fig. 1, and the
@@ -2852,7 +2852,7 @@
   .waterfall .who { text-align: right; font-size: 0.9375rem; }
   .waterfall .who small { display: block; color: var(--muted); font-weight: 400; font-size: 0.875rem; }
   .waterfall .track { display: flex; align-items: center; gap: 10px; }
-  .waterfall .bar { height: var(--waterfall-bar-h); border-radius: var(--r-control); min-width: 8px; flex: none; }
+  .waterfall .bar { height: var(--waterfall-bar-h); border-radius: var(--r-control); min-width: 4px; flex: none; }
   .waterfall .s1 { background: linear-gradient(90deg, #9ca3af, #6b7280); }
   .waterfall .s2 { background: linear-gradient(90deg, #60a5fa, #2563eb); }
   .waterfall .s3 { background: linear-gradient(90deg, var(--green-400), var(--green-600)); }
@@ -2868,12 +2868,6 @@
   }
   .waterfall .sz { min-width: 0; font-family: var(--mono); font-size: 0.875rem; }
   .waterfall .sz > b { display: block; color: var(--ink); }
-  .waterfall .size-comparison { display: flex; align-items: center; gap: 7px; min-width: 0; margin-top: 2px; }
-  .waterfall .size-comparison .small {
-    min-width: 0; color: var(--muted); font-family: var(--sans); font-size: 0.875rem; line-height: 1.3;
-  }
-  .waterfall .size-symbol { width: 28px; flex: 0 0 28px; font-size: 1.4375rem; line-height: 1; text-align: center; }
-  .waterfall .size-symbol-image { height: 28px; object-fit: contain; }
   .waterfall .sz small { display: block; font-family: var(--sans); color: var(--muted); font-size: 0.875rem; }
   .waterfall .stage-explains {
     grid-column: 1 / -1;
@@ -3206,20 +3200,62 @@
     display: grid;
     grid-template-columns: minmax(180px, .9fr) minmax(330px, 1.4fr);
     gap: var(--gallery-control-gap);
-    align-items: end;
+    align-items: stretch;
+  }
+  .gal-source {
+    display: grid;
+    align-content: end;
+    gap: 8px;
+    min-width: 0;
     padding: var(--gallery-panel-pad);
     border: var(--line-w) solid var(--line);
     border-radius: var(--gallery-radius);
     background: color-mix(in srgb, var(--figure-surface) 74%, var(--page));
+    outline: 2px solid transparent;
+    outline-offset: 2px;
   }
-  .gal-choose { display: grid; gap: 6px; min-width: 0; font-size: 0.875rem; }
-  .gal-choose > span,
-  .gal-budget-choices > legend {
+  .gal-source-reference[data-showing] { outline-color: var(--ink); }
+  .gal-source-ours[data-showing] { outline-color: var(--brand); }
+  .gal-source-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .gal-source-label {
+    min-width: 0;
+    overflow: hidden;
     color: var(--muted);
-    font-weight: 600;
+    font-size: 0.875rem;
+    font-weight: 700;
     letter-spacing: .35px;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .gal-source-head button {
+    flex: 0 0 auto;
+    min-width: 74px;
+    height: var(--control-h);
+    padding: 0 12px;
+    border: var(--control-outline-w) solid var(--control-outline);
+    border-radius: var(--r-control);
+    background: var(--control-surface);
+    color: var(--ink);
+    font: 600 0.875rem/1 var(--font-controls);
+    cursor: pointer;
+  }
+  .gal-source-head button:disabled { cursor: default; }
+  .gal-source-head button:hover { color: var(--brand); }
+  .gal-source-head button[aria-pressed="true"] {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: #fff;
+  }
+  .gal-source-reference .gal-source-head button[aria-pressed="true"] {
+    border-color: var(--ink);
+    background: var(--ink);
+  }
+  .gal-choose { display: grid; gap: 6px; min-width: 0; font-size: 0.875rem; }
   .gal-choose select {
     width: 100%;
     min-width: 0;
@@ -3233,7 +3269,6 @@
     font-size: 0.875rem;
   }
   .gal-budget-choices { min-width: 0; padding: 0; border: 0; }
-  .gal-budget-choices > legend { margin-bottom: 6px; font-size: 0.875rem; }
   .gal-budget-segments {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -3264,22 +3299,16 @@
   }
   .gal-budget-segments button[aria-pressed="true"] + button { border-left-color: var(--brand); }
   .gal-budget-compact { display: none; }
-  .gal-howto {
-    margin: 9px 2px;
-    color: var(--muted);
-    font-size: 0.875rem;
-    line-height: 1.45;
-  }
   .gal-frame {
     display: block;
     position: relative;
     width: 100%;
+    margin-top: 10px;
     padding: 0;
     border: 0;
     border-radius: var(--gallery-radius);
     overflow: hidden;
     background: var(--dark);
-    cursor: pointer;
     line-height: 0;
   }
   /* Both selected images remain laid out and loaded; reveal is instant. */
@@ -3297,38 +3326,34 @@
     image-rendering: auto;
   }
   .gal-frame img:not([data-visible]) { opacity: 0; }
-  .gal-pill {
+  .gal-nudge {
     position: absolute;
-    top: var(--gallery-pill-inset);
-    display: flex;
-    gap: 7px;
-    align-items: baseline;
-    max-width: calc(100% - 2 * var(--gallery-pill-inset));
-    padding: 6px 12px;
+    left: 50%;
+    bottom: var(--gallery-nudge-inset);
+    z-index: 1;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    max-width: calc(100% - 2 * var(--gallery-nudge-inset));
+    padding: 7px 13px;
     border: 1px solid color-mix(in srgb, white 24%, transparent);
     border-radius: 999px;
     box-shadow: 0 4px 18px rgb(10 42 34 / 22%);
+    background: color-mix(in srgb, var(--dark) 90%, transparent);
     color: #fff;
-    font-size: 0.875rem;
-    line-height: 1.35;
+    font: 600 0.875rem/1.35 var(--font-controls);
+    pointer-events: none;
     white-space: nowrap;
     backdrop-filter: blur(7px);
+    animation: gal-nudge-in .28s ease-out both;
   }
-  /* Spatial position repeats the controls' ownership: reference is left and
-     charcoal; ours is right and carries the page's identity green. */
-  .gal-frame[data-showing="reference"] .gal-pill {
-    left: var(--gallery-pill-inset);
-    right: auto;
-    background: color-mix(in srgb, var(--dark) 90%, transparent);
+  @keyframes gal-nudge-in {
+    from { opacity: 0; transform: translate(-50%, 6px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
   }
-  .gal-frame[data-showing="ours"] .gal-pill {
-    right: var(--gallery-pill-inset);
-    left: auto;
-    background: color-mix(in srgb, var(--brand) 90%, transparent);
+  @media (prefers-reduced-motion: reduce) {
+    .gal-nudge { animation: none; }
   }
-  .gal-pill > span { font-size: 0.875rem; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; }
-  .gal-pill > b { overflow: hidden; text-overflow: ellipsis; }
-  .gal-frame[aria-pressed="true"] { outline: 2px solid var(--brand); outline-offset: 2px; }
   .gal-metrics {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3384,6 +3409,7 @@
     .gal-zooms { grid-template-columns: 1fr; }
   }
   @container (max-width: 390px) {
+    .gal-source-head button { min-width: 68px; }
     .gal-metrics { grid-template-columns: 1fr; }
     .gal-metrics > div { padding: 8px 0 0; border-top: 1px solid var(--line); border-left: 0; }
     .gal-metrics > div:first-child { padding-top: 0; border-top: 0; }
@@ -3528,14 +3554,6 @@
     .plane-card-toggle button.switch { height: auto; min-height: 44px; min-width: 44px; padding: 0 7px; }
     .disclosure > summary { padding-block: 11px; }
   }
-  /* The gallery's how-to speaks to the pointer the visitor has (F2.3). */
-  .gal-howto [data-hint="touch"] { display: none; }
-  /* The same query the stage tip uses in controls.js, so the two never disagree. */
-  @media (hover: none), (pointer: coarse) {
-    .gal-howto [data-hint="pointer"] { display: none; }
-    .gal-howto [data-hint="touch"] { display: inline; }
-  }
-
   /* F2.4 (V3-BK): the story on paper — no surfaces, black text, figures whole,
      external links followed by their address, wide tables scaled to the page. */
   @media print {
@@ -3546,6 +3564,7 @@
       background: #fff !important;
       break-inside: avoid;
     }
+    .gal-nudge { display: none; }
     table, .stage-strip, .gallery, .claim, .waterfall { break-inside: avoid; }
     .bib { background: #fff; color: #000; border: 1px solid #000; }
     a { color: #000; }

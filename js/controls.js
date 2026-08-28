@@ -353,7 +353,7 @@ export const stageTip = (tip) => {
     if (webgl2) tip.dataset.hint = "webgl2";
     else delete tip.dataset.hint;
     if (webgl2 && !hint.textContent) {
-      hint.textContent = "Running on WebGL2 — a WebGPU browser renders this faster.";
+      hint.textContent = "Running on WebGL2. A WebGPU browser renders this faster.";
     }
   };
 };

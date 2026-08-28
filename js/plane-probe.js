@@ -881,7 +881,7 @@ export const planeProbe = (details, manifest, bridge) => {
       bridge.stopSteering();
       if (readout) {
         readout.textContent =
-          `Pixel ${u}, ${v} — pruned by the active mask, so there is no Gaussian here.`;
+          `Pixel ${u}, ${v}: pruned by the active mask, so there is no Gaussian here.`;
       }
       return;
     }

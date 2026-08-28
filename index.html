@@ -280,7 +280,7 @@ data-locked aria-describedby="positionCoarse-locked-tip-band" disabled>
   <span class="switch-track" data-switch-track aria-hidden="true">
     <i class="switch-thumb" data-switch-thumb><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 5.5h7v5h-7zM4 5.5V4a2 2 0 0 1 4 0v1.5"></path></svg></i>
   </span>
-  <span class="attribute-chip-label">Position (coarse)</span>  <span class="tip" role="tooltip" id="positionCoarse-locked-tip-band">Always on — without coarse positions every splat collapses to one point and there is no scene.</span>  <span class="attribute-chip-short" aria-hidden="true">XYZ</span></button>
+  <span class="attribute-chip-label">Position (coarse)</span>  <span class="tip" role="tooltip" id="positionCoarse-locked-tip-band">Always on: without coarse positions every splat collapses to one point and there is no scene.</span>  <span class="attribute-chip-short" aria-hidden="true">XYZ</span></button>
 
             <button type="button" class="switch" role="switch" data-attribute-toggle="positionDetail"
         aria-checked="true"
@@ -379,11 +379,12 @@ disabled>
   </div>
 
     <div class="prose"><p><strong>TL;DR: KISS-GS compresses 3D Gaussian Splatting scenes 228× at the
-quality of vanilla 3DGS and stores them as nine ordinary images.</strong></p>
+quality of vanilla 3DGS and stores each scene as nine ordinary images.</strong></p>
 <p>KISS-GS is a compression pipeline for 3D Gaussian Splatting scenes. Its output is a set of
-ordinary images that any device can decode, and at the quality of the uncompressed reference
-those images are 85× to 319× smaller than the vanilla 3DGS
-<code>.ply</code>. On the two real-world benchmarks, Mip-NeRF 360 and Tanks and Temples, no published
+ordinary images that any device can decode. The 228× is the Mip-NeRF 360
+average at the quality of the uncompressed reference; the factor depends on the dataset,
+85× on Deep Blending, 228× on Mip-NeRF 360 and
+319× on Tanks and Temples. On Mip-NeRF 360 and Tanks and Temples no published
 method reaches that quality from a smaller file. The paper makes four contributions.</p>
 <ul>
 <li><strong>A modular pipeline whose gains are attributable.</strong> Reconstruction, compaction, encoding and
@@ -397,11 +398,11 @@ schemes. It earns the largest share of the reduction, before any encoding happen
 <li><strong>SOG-XT: attributes stored as sorted images.</strong> Extends the popular Self-Organizing Gaussians
 format with a view-dependent color codebook that is itself sorted into a 2D image, so its
 indices compress like every other plane. → <a href="#sorting">Encoding</a></li>
-<li><strong>PRAS: one spelling per Gaussian.</strong> A Gaussian’s rotation and scale can be written
-48 equivalent ways. PRAS picks, for every primitive, the one that makes the
-attribute images smoothest, so they survive a coarser quantizer. → <a href="#symmetry">PRAS</a></li>
+<li><strong>PRAS: one form per Gaussian.</strong> A Gaussian’s rotation and scale can be written
+48 equivalent ways. PRAS picks, for every primitive, the one closest to a
+smoothed version of its neighbors, so the attribute images survive a coarser quantizer. → <a href="#symmetry">PRAS</a></li>
 </ul>
-<p>Decoding is a few image decodes and lookups, nothing more. Whether that counts as
+<p>Decoding is a few image decodes and codebook lookups, nothing more. Whether that counts as
 <a href="#simple">keeping it simple</a> is a question we come back to at the end.</p>
 </div>
   </div>
@@ -415,8 +416,9 @@ attribute images smoothest, so they survive a coarser quantizer. → <a href="#s
 browser.</strong> It is the <span data-scene-label="dataset">Mip-NeRF 360</span> <strong><span data-scene-label="scene">Garden</span></strong> scene, and it arrived as a SOG-XT container: nine
 ordinary images and a small text file. <a href="#bytes">What is inside</a> shows the images themselves.</p>
 <p>Go on, drag it. <code>WASD</code> moves you around. It is a renderer, not a video.</p>
-<p>The usual way to store this scene is a vanilla 3DGS <code>.ply</code>, which on Mip-NeRF 360 averages
-738 MB. KISS-GS files for the same dataset are <strong>228×
+<p>The usual way to store this scene is a vanilla 3DGS <code>.ply</code>: the output of the original INRIA
+implementation, and the reference every compression paper measures against. On Mip-NeRF 360 it
+averages 738 MB. KISS-GS files for the same dataset are <strong>228×
 smaller</strong> at the same PSNR. We still find it a little absurd how much detail fits in a file this
 size.</p>
 <p>How small can it go before it stops looking like this? That is the next question. After it, how
@@ -480,22 +482,26 @@ live scene; the other methods join it in the <a href="#results">results</a>.</p>
 <p>The slider moves one number: <strong>how many primitives the scene keeps</strong> after compaction, a stage
 the next section explains. That is the <em>primary</em> rate knob, and it also makes the scene cheaper
 to render, encode and decode. Reaching the same file size with more primitives and heavier
-compression would cost more on all three for no gain. The paper measures seven budgets, each a
-doubling of the last, which is why the size axis is logarithmic and the points sit evenly along
-it.</p>
-<p>One shared encoding recipe covers all seven, from a few thousand primitives to several million,
-and it is the same recipe that encodes the vanilla INRIA baseline. The budget is the primary knob
-and not the only parameter: the color codebook’s side length is derived from the primitive count
-and then clamped, and the smallest budget is set lower for the Blender objects than for the real
-captures.</p>
+compression would cost more on all three for no gain. The paper measures seven budgets per scene,
+each a doubling of the last, which is why the size axis is logarithmic and the points sit evenly
+along it.</p>
+<p>The budgets themselves depend on the dataset, and they are the only setting that changes between
+datasets: a Blender object needs far fewer primitives than a real-world capture, so its ladder
+starts lower and ends lower. Everything else is shared. The compaction recipe and the encoder’s
+settings are the same for every scene, from a few thousand primitives to several million, and the
+same encoder settings also encode the vanilla 3DGS baseline. The budget is the primary knob and
+not the only parameter: the color codebook’s side length is derived from the primitive count after
+compaction and then clamped. The concrete numbers are in the renderer: pick scenes from different
+datasets, run the slider from end to end, and read the primitive count and the file size off the
+scene card.</p>
 <p>The live scene is at <span data-stat="bytes">3.94 MB</span>, and the slider above moves it as well. Two encodings seen from two different positions cannot be compared, so turn <strong>Motion</strong>
 off when you want the camera to hold still.</p>
 <p>Quality stops climbing before the track runs out. On 4 of the
 21 scenes the paper’s best measured PSNR is not at the largest size:
 Treehill peaks at 3.73 MB and has given back
 0.21 dB by 25.08 MB. Past some budget
-the extra Gaussians go into detail the training views never resolved well enough to reward, so
-the curve flattens and then bends slightly down.</p>
+the extra Gaussians likely overfit: they model detail the training views do not support well, and
+the held-out test views do not reward it, so the curve flattens and then dips.</p>
 </div>  </div>
 </section><section id="pipeline" data-section tabindex="-1" aria-labelledby="pipeline-title" class="">
   <div class="wrap">
@@ -505,7 +511,7 @@ the curve flattens and then bends slightly down.</p>
 
     <div class="prose"><p><strong>Four stages, each handing on a standard 3DGS scene, so every factor has a stage that earned
 it.</strong> Most compression papers report one number at the end of a pipeline that fuses half a dozen
-tricks, which makes it impossible to tell which trick did the work. Was it the change in
+tricks, which makes it hard to tell which trick did the work. Was it the change in
 representation, the encoding or the clever training? We call that the <strong>attribution gap</strong>, and
 closing it is why KISS-GS is built the way it is.</p>
 </div>
@@ -546,8 +552,9 @@ closing it is why KISS-GS is built the way it is.</p>
     </ol>
 <div class="prose">
 <p>Measured on Mip-NeRF 360, at the quality of the uncompressed reference, here is what each stage
-bought. The top bar is that reference, the INRIA <code>.ply</code> the field compares against; our own
-pipeline starts from a gsplat reconstruction of the same scenes.</p>
+bought. The top bar is that reference, the vanilla 3DGS <code>.ply</code> the field compares against, which the
+plots below call INRIA-Q; our own pipeline starts from a gsplat MCMC reconstruction of the same
+scenes (30k iterations, default parameters).</p>
 </div>
     <ol class="waterfall" data-source="paper-fig-1">
       <li data-stage-step>
@@ -561,28 +568,20 @@ pipeline starts from a gsplat reconstruction of the same scenes.</p>
         </div>
         <div class="sz">
           <b>738 MB</b>
-          <span class="size-comparison">
-            <span class="size-symbol" aria-hidden="true">💽</span>
-            <span class="small">most of a dual-layer DVD</span>
-          </span>
           <small>the reference, not our input</small>
         </div>
       </li>
       <li data-stage-step>
         <div class="who">
           <b>POPSpa</b>
-          <small>compaction — prune, optimize, prune again</small>
+          <small>compaction: prune, optimize, prune again</small>
         </div>
         <div class="track">
           <div class="bar s2" data-stage-bar
-               style="width: 25.24%"></div>
+               style="width: 6.37%"></div>
 <span class="factor">÷ 15.7</span>        </div>
         <div class="sz">
           <b>47 MB</b>
-          <span class="size-comparison">
-            <span class="size-symbol" aria-hidden="true">💿</span>
-            <span class="small">a music album</span>
-          </span>
           <small>fewer, better primitives</small>
         </div>
         <p class="stage-explains small" data-stage-explains>The biggest share, and it happens before any encoding: reference quality from far fewer primitives, which also render, encode and decode faster.
@@ -591,18 +590,14 @@ pipeline starts from a gsplat reconstruction of the same scenes.</p>
       <li data-stage-step>
         <div class="who">
           <b>SOG-XT</b>
-          <small>encoding — sort, quantize, save as images</small>
+          <small>encoding: sort, quantize, save as images</small>
         </div>
         <div class="track">
           <div class="bar s3" data-stage-bar
-               style="width: 9.81%"></div>
+               style="width: 0.96%"></div>
 <span class="factor">÷ 6.6</span>        </div>
         <div class="sz">
           <b>7.1 MB</b>
-          <span class="size-comparison">
-            <span class="size-symbol" aria-hidden="true">📧</span>
-            <span class="small">an email attachment</span>
-          </span>
           <small>nine small images</small>
         </div>
         <p class="stage-explains small" data-stage-explains>Pure post-processing: no training loop, no cameras. The same settings encode any standard .ply, including the INRIA baseline.
@@ -611,18 +606,14 @@ pipeline starts from a gsplat reconstruction of the same scenes.</p>
       <li data-stage-step>
         <div class="who">
           <b>fine-tuning</b>
-          <small>adaptation — codec in the loop, optional</small>
+          <small>adaptation: codec in the loop, optional</small>
         </div>
         <div class="track">
           <div class="bar s4" data-stage-bar
-               style="width: 6.58%"></div>
+               style="width: 0.43%"></div>
 <span class="factor">÷ 2.2</span>        </div>
         <div class="sz">
           <b>3.2 MB</b>
-          <span class="size-comparison">
-            <img class="size-symbol size-symbol-image" src="attribution/iphone-heif.svg" alt="Illustration of an iPhone displaying a photo" width="96" height="96">
-            <span class="small">about one iPhone HEIF photo</span>
-          </span>
           <small>same PSNR as the .ply</small>
         </div>
         <p class="stage-explains small" data-stage-explains>Optional. Needs a GPU and the training views; the same nine images come out with better values in them, and the decoder does not change.
@@ -632,13 +623,36 @@ pipeline starts from a gsplat reconstruction of the same scenes.</p>
     <p class="total small">
       15.7 × 6.6 × 2.2
       = <b>228× smaller</b>, at the same quality.
-      Bar widths are square-rooted, or the last three would be invisible.
     </p>
 <div class="prose prose-after">
 <p>Two of those factors are the paper’s contributions and get a section each further down:
-<strong>POPSpa</strong> compacts, <strong>SOG-XT</strong> encodes. The reconstruction is off-the-shelf gsplat, and the
+<strong>POPSpa</strong> compacts, <strong>SOG-XT</strong> encodes. The reconstruction is off-the-shelf gsplat MCMC, and the
 encoding-aware fine-tuning is optional: it changes nothing about the file or the decoder.</p>
-</div>      <p class="source-note small" data-source="paper-fig-1">Source: paper Fig. 1 and Sec. 3, with the baseline synchronized to the paper intro's 738 MB INRIA-Q value. The strip states each stage's module and what it hands on; the paper's own figure also contrasts per-stage alternatives with integrated methods.</p>
+<details class="disclosure">
+<summary>How the fine-tuning stage works</summary>
+<p><strong>Fine-tuning is optional and changes the values, not the format:</strong> the same nine images come
+out, with better numbers in them. Each step runs the <strong>codec round trip inside the training
+loop</strong>: the current Gaussians are written to the quantized planes exactly as SOG-XT stores them,
+decoded, rendered, and the rendering loss is backpropagated through that round trip, with a
+<strong>straight-through estimator</strong> standing in for the gradient that rounding does not have.
+Positions, scales, rotations, opacities and base color are all trained this way; view-dependent
+color through its codebook, whose <strong>centroids are re-averaged every step</strong> while the assignments
+stay fixed.</p>
+<p><strong>The layout stays fixed.</strong> The active mask, the PLAS order and the sorted codebook grid are set
+at the start; the PLAS sort is not differentiable, and re-sorting would hand the optimizer a new
+layout to start over from. <strong>PRAS is re-run twice</strong> during the run, because it changes only which
+form of a covariance is stored, never the layout. Light total-variation losses on the quantized
+planes push the same way.</p>
+<p>It runs for 4k iterations and buys
+2.2× on Mip-NeRF 360 at reference quality. It is also the <strong>most expensive
+stage for its size</strong>: on Bicycle at 512k primitives, encoding takes half a minute and fine-tuning
+seven, and it <strong>needs a GPU and the training views</strong>, which the post-hoc encoder does not. Worth
+running when bytes matter more than encoder minutes and the cameras are at hand; a bare <code>.ply</code>
+stops after SOG-XT and forgoes only this factor. The decoder cannot tell the difference. The trick
+rests on the quantizer being ours and holding still; a lossy image codec induces a loss of the
+same kind but owns its quantizer, opaque to the training loop, which is why lossy codecs are in
+the <a href="#untold">graveyard</a> and this stage is not.</p>
+</details></div>      <p class="source-note small" data-source="paper-fig-1">Source: paper Fig. 1 and Sec. 3, with the baseline synchronized to the paper intro's 738 MB INRIA-Q value. The strip states each stage's module and what it hands on; the paper's own figure also contrasts per-stage alternatives with integrated methods.</p>
 
   </div>
 </section><section id="scenes" data-section tabindex="-1" aria-labelledby="scenes-title" class="band">
@@ -731,7 +745,7 @@ finished 3DGS scene: score and prune, optimize and sparsify, score and prune aga
           <b>Score, then prune</b>
           <a class="recipe-credit" href="https://arxiv.org/abs/2602.06830" rel="noopener">GaussianPOP</a>
         </div>
-        <p class="small">For every primitive, estimate how much the rendered image would change if it were removed — the squared color difference between the render with it and the render without it, accumulated over all the training views. One efficient single pass produces that score for every primitive at once, and the lowest-scoring fraction goes.
+        <p class="small">For every primitive, estimate how much the rendered image would change if it were removed. The score is the squared color difference between the render with it and the render without it, accumulated over all the training views. One efficient single pass produces that score for every primitive at once, and the lowest-scoring fraction goes.
 </p>
       </li>
       <li data-recipe-step>
@@ -758,7 +772,7 @@ finished 3DGS scene: score and prune, optimize and sparsify, score and prune aga
           <b>Score again, then refine</b>
 <span class="recipe-iters">5k iterations</span>          <a class="recipe-credit" href="https://arxiv.org/abs/2602.06830" rel="noopener">GaussianPOP</a>
         </div>
-        <p class="small">Redistribution makes a second set of primitives redundant, so the scores are recomputed and a second prune removes them. A final 5k iterations recover what the two prunes cost — 10k of post-processing in total, against the 30k the reconstruction itself took.
+        <p class="small">Redistribution makes a second set of primitives redundant, so the scores are recomputed and a second prune removes them. A final 5k iterations recover what the two prunes cost: 10k of post-processing in total, against the 30k the reconstruction itself took.
 </p>
       </li>
     </ol>
@@ -829,7 +843,7 @@ data-locked aria-describedby="positionCoarse-locked-tip-legend" disabled>
   <span class="switch-track" data-switch-track aria-hidden="true">
     <i class="switch-thumb" data-switch-thumb><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 5.5h7v5h-7zM4 5.5V4a2 2 0 0 1 4 0v1.5"></path></svg></i>
   </span>
-  <span class="byte-stack-name">Position (coarse)</span>  <span class="tip" role="tooltip" id="positionCoarse-locked-tip-legend">Always on — without coarse positions every splat collapses to one point and there is no scene.</span></button>
+  <span class="byte-stack-name">Position (coarse)</span>  <span class="tip" role="tooltip" id="positionCoarse-locked-tip-legend">Always on: without coarse positions every splat collapses to one point and there is no scene.</span></button>
 
             <span data-stack-label aria-label="219,606 bytes">219.6 kB</span>
             <span data-stack-percent>5.6%</span>
@@ -946,7 +960,7 @@ depends on that split.</p>
 </div>
     <div class="prose inspector-lead">
       <h3 id="plane-inspector-title">Attribute inspector</h3>
-      <p>The planes the bar counts are these images — the actual files the renderer fetched for this scene.</p>
+      <p>The planes the bar counts are these images, the actual files the renderer fetched for this scene.</p>
     </div>
     <details class="plane-disclosure" id="plane-disclosure" data-plane-disclosure
              aria-labelledby="plane-inspector-title"
@@ -959,8 +973,9 @@ depends on that split.</p>
       </summary>
       <div class="prose plane-inspector-intro">
         <p>
-          These are the files, exactly as the scene above is shipping them — the same
-          URLs the renderer fetched. They are laid out by PLAS, so a bright patch is a
+          These are the files, exactly as the scene above is shipping them. The renderer
+          fetched these same URLs. They are laid out by PLAS, the sort the
+          <a href="#sorting">Encoding</a> section explains, so a bright patch is a
           region of the scene, and one pixel is one Gaussian in every plane at once:
           <b>point at a pixel and the renderer moves to that primitive</b>. Tap or
           click to keep it; arrow keys step pixel by pixel once an image has focus.
@@ -990,7 +1005,7 @@ data-locked aria-describedby="positionCoarse-locked-tip-card" disabled>
   <span class="switch-track" data-switch-track aria-hidden="true">
     <i class="switch-thumb" data-switch-thumb><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 5.5h7v5h-7zM4 5.5V4a2 2 0 0 1 4 0v1.5"></path></svg></i>
   </span>
-  <span class="plane-toggle-label">Coarse position</span>  <span class="tip" role="tooltip" id="positionCoarse-locked-tip-card">Always on — without coarse positions every splat collapses to one point and there is no scene.</span>  <span class="attribute-chip-short" aria-hidden="true">XYZ</span></button>
+  <span class="plane-toggle-label">Coarse position</span>  <span class="tip" role="tooltip" id="positionCoarse-locked-tip-card">Always on: without coarse positions every splat collapses to one point and there is no scene.</span>  <span class="attribute-chip-short" aria-hidden="true">XYZ</span></button>
 
       </span>
     </div>
@@ -1404,16 +1419,19 @@ data-plane-probeable>
   </div>
 
 
-    <div class="prose"><p><strong>Sorted images compress; SOG-XT sorts both the primitives and the color codebook with PLAS.</strong>
+    <div class="prose"><p><strong>Sorted images compress; SOG-XT sorts both the primitives and the color codebook with PLAS, Parallel Linear Assignment Sorting.</strong>
 A 3D scene has no natural order. Training hands you the primitives as a list in whatever order
 they happened to be created, and if you pour that list into a 2D grid you get noise. Image codecs
 are good at many things; noise is not one of them.</p>
 <p>So we sort. The idea comes from
 <a href="https://fraunhoferhhi.github.io/Self-Organizing-Gaussians/">Self-Organizing Gaussians</a>: store
-each attribute as an image, arranged so that neighbours in the scene are neighbours in the image,
-and let an ordinary image codec do the rest. <strong>PLAS</strong> (Parallel Linear Assignment Sorting) does
-the arranging, coarse-to-fine over the whole grid at once. Nothing is dropped or approximated; it
-is the same values in a better order. The two images below come from real encoder runs on the
+each attribute as an image, arranged so that neighbors in the scene are neighbors in the image,
+and let an ordinary image codec do the rest. <strong>PLAS</strong> does the arranging, coarse-to-fine over the
+whole grid at once. It computes one permutation, from the positions, and that one permutation is
+applied to every attribute. So the same pixel is the same Gaussian in every plane, and the planes
+need no index to tie them together: the correspondence <em>is</em> the pixel position, and everything
+that follows on this page rests on it. Nothing is dropped or approximated; it is the same values
+in a better order. The two images below come from real encoder runs on the
 same scene and differ only in whether PLAS ran, so the byte counts under them are what the order
 alone is worth.</p>
 </div>
@@ -1429,15 +1447,15 @@ alone is worth.</p>
 <picture><source srcset="plas/positions_sorted.webp" type="image/webp">      <img src="plas/positions_sorted.png" alt="the same positions after PLAS" loading="lazy" width="512" height="512">
 </picture>      <figcaption>
         <b>the same positions after PLAS</b>
-<span class="figure-bytes" data-plane-bytes>304 kB</span><span class="small">neighbours in the scene are neighbours in the image</span>      </figcaption>
+<span class="figure-bytes" data-plane-bytes>304 kB</span><span class="small">neighbors in the scene are neighbors in the image</span>      </figcaption>
     </figure>
-<p class="pair-caption small" data-pair-caption>Sorting alone: 638 → 304 kB, −52 % on this plane. The same 262,144 values in both images — only their arrangement changes.</p>  </div>
+<p class="pair-caption small" data-pair-caption>Sorting alone: 638 → 304 kB, −52 % on this plane. The same 262,144 values in both images, only their arrangement changes.</p>  </div>
 
 
 <div class="prose prose-after">
 <p>That is one plane. Across the whole container, switching primitive sorting off costs
 <strong>615 kB</strong> on
-Bicycle at 256k primitives, with no measurable change in quality.</p>
+Bicycle at 256k primitives, for a quality difference in the third decimal of PSNR.</p>
 <h3>Where SOG-XT stands</h3>
 <p>If you know SOG you may wonder what is new. Two things happened after it was published. The
 original coupled its layout to training, with densification, a smoothness regularizer and
@@ -1450,20 +1468,24 @@ post-training encoder in the same sense: it runs on any compacted scene and need
 no renderer. It differs from <code>.sog</code> in how it sorts.</p>
 <p>Positions first. They are stored as a coarse byte and a fine byte, and the obvious thing is to
 sort by the coarse byte alone. We sort by <strong>both</strong>, the coarse byte weighted heavily and the fine
-byte lightly, and apply that one permutation to every attribute. The fine byte gets a vote, so it
+byte lightly. The fine byte gets a vote, so it
 stops being pure noise.</p>
 <h3>The codebook gets sorted too</h3>
 <p>View-dependent color is far too big to store per primitive, so it is vector-quantized: k-means
 reduces the spherical-harmonic coefficients to a codebook and each primitive keeps an index.
 <code>.sog</code> stores that codebook as a lexicographically sorted list, an order the codec cannot use,
 because two centroids next to each other in it need not look anything alike.</p>
-<p>So we sort the codebook too, <strong>with PLAS, into 2D</strong>, and store each primitive’s assignment as a
-pair of 8-bit <em>U</em> and <em>V</em> channels into that grid. Now the index planes are smooth images like
-every other plane, because neighbouring primitives point at neighbouring centroids. Packing the
-labels as UV pairs alone is worth
+<p>So we sort the codebook too, <strong>with PLAS, into 2D</strong>. The centroid grid becomes a smooth image in
+its own right, and each primitive’s assignment is stored as its centroid’s <em>U</em> and <em>V</em> coordinates
+in that grid, two 8-bit channels. Most of the gain is in the centroid planes. The index planes gain
+less, but they do gain: the primitives are sorted by position, and neighbors on a surface tend to
+share a view-dependent color, so they often point at nearby centroids, which after the sort have
+nearby coordinates. The index planes end up smoother than a random codebook order would leave
+them, though nowhere near as smooth as the positions. That is also where the UV packing earns its
 <strong>12 kB</strong> at no cost in
-quality, and the codebook grid stays a well-behaved image: its side follows from the number of
-active primitives and is clamped, so it has at most 256 ×
+quality: both channels are coordinates in a smooth grid, where one flat index split into two bytes
+would leave its low byte as noise. The codebook grid itself stays a well-behaved image: its side
+follows from the number of active primitives after compaction and is clamped, so it has at most 256 ×
 256 = 65536 entries.</p>
 </div>      <p class="source-note small" data-source="paper-encoding-and-ablation">Source: paper Sec. 4. Both images are planes from real encoder runs on the same Garden compaction output, differing only in whether PLAS sorting ran; the byte counts are those planes' own encoded sizes.</p>
 
@@ -1474,32 +1496,36 @@ active primitives and is clamped, so it has at most 256 ×
 <span class="kicker">SOG-XT · PRAS</span>    <h2 id="symmetry-title">The 48 disguises of a Gaussian</h2>
   </div>
 
-    <div class="prose"><p><strong>Every Gaussian has 48 equivalent spellings; PRAS picks the smooth one, so a
+    <div class="prose"><p><strong>Every Gaussian has 48 equivalent forms, rotation-and-scale tuples that
+describe the same ellipsoid; PRAS picks, for each one, the form closest to a smoothed target, so a
 coarser quantizer suffices.</strong> Here is the quirk behind that. A primitive’s shape is a covariance
 matrix, but nobody stores the matrix. Everyone stores a rotation quaternion and three scales, and
 that mapping is <strong>one-to-many</strong>: permute the scales, flip the eigenvector directions, negate the
 quaternion, and you get completely different numbers describing <em>exactly</em> the same ellipsoid.</p>
 <p>Multiply the three sources of redundancy together and you get those 48
-equally valid spellings. Which one a Gaussian ends up with is an accident of training. So the
+equally valid forms. Which one a Gaussian ends up with is an accident of training. So the
 rotation and scale grids we sorted so carefully are full of variance that carries no information:
-two neighbours with near-identical shapes can be written in different disguises, and the codec
+two neighbors with near-identical shapes can be written in different disguises, and the codec
 dutifully spends bits on the difference.</p>
 <p><strong>PRAS</strong> (Parallel Representative Assignment Smoothing) fixes that. Like PLAS it works
 coarse-to-fine: blur the current grids to get a smooth target, then for every primitive try all
-48 spellings and keep the one closest to that target. The search never leaves
-the equivalence class, so <strong>every covariance stays unchanged up to floating-point round-off</strong>.
-Geometry and grid positions are untouched; only the spelling changes.</p>
-<p>What do we get for it? A coarser quantizer. A smoother grid survives coarser quantization, so
+48 forms and keep the one closest to that target. Put more formally, PRAS
+chooses a representative of each Gaussian’s equivalence class, and it chooses locally, per
+primitive against a blurred target, not as a global optimum. The search never leaves the class, so
+<strong>every covariance stays unchanged up to floating-point round-off</strong>. Geometry and grid positions
+are untouched; only the form changes.</p>
+<p>What do we get for it? Not a smaller file directly. PRAS’s gain is indirect: it is what licenses a
+coarser quantizer. A smoother grid survives coarser quantization, so
 with PRAS the quaternions are stored at <strong>q=99</strong>
 (100 levels per channel), where without it we find that
 q=255, the full 8-bit 256, is
 needed for comparable quality. On Bicycle at 256k primitives that coarser quantizer is worth
 <strong>161,748 B</strong>.</p>
-<p>To be fair to the leave-one-out table, PRAS’s own row points the other way. Remove PRAS but keep
-q=99, and the file gets 11,810 B <em>smaller</em> and
+<p>Read that way, the leave-one-out table’s own PRAS row is no contradiction, although it points the
+other way: remove PRAS but keep q=99, and the file gets 11,810 B <em>smaller</em> and
 0.1104 dB worse, because the smoothed values sit a little away from where the
-rest of the pipeline had settled. Same measurement, two sides: the saving is in the quantizer
-setting, and the direct row is what it costs to be allowed to use it.</p>
+rest of the pipeline had settled. Two rows, one measurement: the saving is in the quantizer
+setting, and the direct row is the price of being allowed to use it.</p>
 </div>
 
     <ul class="sources">
@@ -1536,7 +1562,7 @@ setting, and the direct row is what it costs to be allowed to use it.</p>
 <picture><source srcset="plas/scales_pras_on.webp" type="image/webp">      <img src="plas/scales_pras_on.png" alt="the same scales after PRAS" loading="lazy" width="512" height="512">
 </picture>      <figcaption>
         <b>the same scales after PRAS</b>
-<span class="small">every covariance identical — only which of the equivalent spellings is stored</span>      </figcaption>
+<span class="small">every covariance identical; only the stored form changes</span>      </figcaption>
     </figure>
   </div>
 
@@ -1550,7 +1576,7 @@ setting, and the direct row is what it costs to be allowed to use it.</p>
 <span class="kicker">Evidence</span>    <h2 id="results-title">How it compares</h2>
   </div>
 
-    <div class="prose"><p><strong>On Mip-NeRF 360 and Tanks and Temples no method reaches vanilla quality from a file as small as
+    <div class="prose"><p><strong>On Mip-NeRF 360 and Tanks and Temples no method reaches vanilla 3DGS quality from a file as small as
 ours; on Deep Blending HAC++ stays ahead.</strong> Rate–distortion curves again, now for every method
 and dataset: pick any file size, read off the quality, and a curve that sits above another
 everywhere wins at every operating point.</p>
@@ -1607,8 +1633,9 @@ everywhere wins at every operating point.</p>
     </noscript>
 
 <div class="prose prose-after">
-<p>The horizontal INRIA-Q rule is the uncompressed reference: vanilla INRIA 3DGS, trained for 40k
-iterations to match our own total optimization budget. The question the table below answers is
+<p>The horizontal INRIA-Q rule is the uncompressed reference: vanilla 3DGS trained with the original
+INRIA code for 40k iterations, to match our own total optimization budget. INRIA-Q is its name in
+every plot and table here. The question the table below answers is
 how small a file each method needs to <em>reach</em> that rule.</p>
 <p>KISS-GS and HAC++ are both recomputed here, on the same images, at the same resolutions, with the
 same metric implementations. The faint curves are values their authors published; we plot them
@@ -1623,10 +1650,10 @@ standard-splat reconstructions we take as input, and the gap is there <em>before
 On both scenes, compressed HAC++ scores above uncompressed vanilla 3DGS. The paper calls this its
 main boundary. It sits in the reconstruction stage, the one stage a modular pipeline lets someone
 else replace.</p>
-<p>One thing is easy to miss in a table of PSNR. Many published methods never reach reference
-quality on the perceptual <strong>LPIPS</strong> metric at <em>any</em> of their operating points, even while their
-PSNR looks strong; switch the plot’s metric, or open the full grid, and those rows are empty.
-Ours are not.</p>
+<p>One thing is easy to miss in a table of PSNR. Several published methods never reach reference
+quality on the perceptual <strong>LPIPS</strong> metric at <em>any</em> of their operating points, even where their
+PSNR looks strong; switch the plot’s metric, or open the full grid, and their LPIPS cells stay
+empty. KISS-GS reaches the reference on all three metrics on Mip-NeRF 360 and Tanks and Temples.</p>
 </div>
 
     <div class="scroller">
@@ -1730,83 +1757,88 @@ Ours are not.</p>
 </section><section id="quality" data-section tabindex="-1" aria-labelledby="quality-title" class="band">
   <div class="wrap wide">
       <div class="sec-head">
-<span class="kicker">Side by side</span>    <h2 id="quality-title">Can you spot the difference?</h2>
+<span class="kicker">Interactive comparison</span>    <h2 id="quality-title">Can you spot the difference?</h2>
   </div>
 
     <div class="prose"><p><strong>The same held-out view, from a gigabyte-scale <code>.ply</code> and from a compact KISS-GS container.</strong>
-Look first, then reveal the selected reference: four references, five KISS-GS budgets and four
-magnifications are available without moving the camera.</p>
+Choose one of four references and one of five KISS-GS budgets. The image switches in place, with
+four magnifications available without moving the camera.</p>
 </div>
 
     <div class="gallery" data-gallery data-gallery-view="held-out Bicycle view 17">
-      <div class="gal-controls">
-        <label class="gal-choose gal-reference-choice">
-          <span>Reference</span>
-          <select disabled data-gallery-choice="reference">
-            <option value="ground_truth" >Ground truth</option>
-            <option value="INRIA_40k" selected>INRIA 3DGS .ply</option>
-            <option value="HAC_low-rate" >HAC++ low-rate</option>
-            <option value="HAC_high-rate" >HAC++ high-rate</option>
-          </select>
-        </label>
-
-        <fieldset class="gal-budget-choices">
-          <legend>Ours · KISS-GS</legend>
-          <div class="gal-budget-segments" role="group" aria-label="KISS-GS size">
-            <button type="button" disabled data-gallery-budget="POPSpa-128k_SOG-XT-FT"
-                    aria-pressed="false">
-              128k
-            </button>
-            <button type="button" disabled data-gallery-budget="POPSpa-256k_SOG-XT-FT"
-                    aria-pressed="false">
-              256k
-            </button>
-            <button type="button" disabled data-gallery-budget="POPSpa-512k_SOG-XT-FT"
-                    aria-pressed="true">
-              512k
-            </button>
-            <button type="button" disabled data-gallery-budget="POPSpa-1024k_SOG-XT-FT"
-                    aria-pressed="false">
-              1024k
-            </button>
-            <button type="button" disabled data-gallery-budget="POPSpa-2048k_SOG-XT-FT"
-                    aria-pressed="false">
-              2048k
-            </button>
+      <div class="gal-controls" role="group" aria-label="Images to compare">
+        <div class="gal-source gal-source-reference" data-gallery-source="reference">
+          <div class="gal-source-head">
+            <span class="gal-source-label">Reference</span>
+            <button type="button" disabled data-gallery-show="reference" aria-pressed="false"
+                    aria-label="Show reference image">Show</button>
           </div>
-        </fieldset>
+          <label class="gal-choose gal-reference-choice">
+            <span class="sr-only">Reference reconstruction</span>
+            <select disabled data-gallery-choice="reference">
+              <option value="ground_truth" >Ground truth</option>
+              <option value="INRIA_40k" selected>INRIA 3DGS .ply</option>
+              <option value="HAC_low-rate" >HAC++ low-rate</option>
+              <option value="HAC_high-rate" >HAC++ high-rate</option>
+            </select>
+          </label>
+        </div>
 
-        <label class="gal-choose gal-budget-compact">
-          <span>Ours · KISS-GS</span>
-          <select disabled data-gallery-choice="ours">
-            <option value="POPSpa-128k_SOG-XT-FT" >KISS-GS 128k</option>
-            <option value="POPSpa-256k_SOG-XT-FT" >KISS-GS 256k</option>
-            <option value="POPSpa-512k_SOG-XT-FT" selected>KISS-GS 512k</option>
-            <option value="POPSpa-1024k_SOG-XT-FT" >KISS-GS 1024k</option>
-            <option value="POPSpa-2048k_SOG-XT-FT" >KISS-GS 2048k</option>
-          </select>
-        </label>
+        <div class="gal-source gal-source-ours" data-gallery-source="ours" data-showing>
+          <div class="gal-source-head">
+            <span class="gal-source-label">Ours · KISS-GS</span>
+            <button type="button" disabled data-gallery-show="ours" aria-pressed="true"
+                    aria-label="KISS-GS image showing">Showing</button>
+          </div>
+          <fieldset class="gal-budget-choices">
+            <legend class="sr-only">KISS-GS size</legend>
+            <div class="gal-budget-segments" role="group" aria-label="KISS-GS size">
+              <button type="button" disabled data-gallery-budget="POPSpa-128k_SOG-XT-FT"
+                      aria-pressed="false">
+                128k
+              </button>
+              <button type="button" disabled data-gallery-budget="POPSpa-256k_SOG-XT-FT"
+                      aria-pressed="false">
+                256k
+              </button>
+              <button type="button" disabled data-gallery-budget="POPSpa-512k_SOG-XT-FT"
+                      aria-pressed="true">
+                512k
+              </button>
+              <button type="button" disabled data-gallery-budget="POPSpa-1024k_SOG-XT-FT"
+                      aria-pressed="false">
+                1024k
+              </button>
+              <button type="button" disabled data-gallery-budget="POPSpa-2048k_SOG-XT-FT"
+                      aria-pressed="false">
+                2048k
+              </button>
+            </div>
+          </fieldset>
+
+          <label class="gal-choose gal-budget-compact">
+            <span class="sr-only">KISS-GS size</span>
+            <select disabled data-gallery-choice="ours">
+              <option value="POPSpa-128k_SOG-XT-FT" >KISS-GS 128k</option>
+              <option value="POPSpa-256k_SOG-XT-FT" >KISS-GS 256k</option>
+              <option value="POPSpa-512k_SOG-XT-FT" selected>KISS-GS 512k</option>
+              <option value="POPSpa-1024k_SOG-XT-FT" >KISS-GS 1024k</option>
+              <option value="POPSpa-2048k_SOG-XT-FT" >KISS-GS 2048k</option>
+            </select>
+          </label>
+        </div>
       </div>
 
-      <p class="gal-howto gal-interactive-note">
-        <span data-hint="pointer">Hover the image to reveal the reference. Tap or press Enter to hold it.</span>
-        <span data-hint="touch">Tap the image to show the reference; tap again to go back.</span>
-      </p>
-
-      <button type="button" class="gal-frame" disabled data-gallery-frame aria-pressed="false"
-              style="--gal-aspect: 480 / 319"
-              aria-label="Showing Ours · KISS-GS 512k. KISS-GS 512k · 7.4 MB · 25.973 dB PSNR · 0.2380 LPIPS">
-        <img data-gallery-image="ours" data-visible src="bicycle/view_0017/POPSpa-512k_SOG-XT-FT/full.jpg"
-             width="480" height="319"
-             alt="KISS-GS 512k, held-out Bicycle view 17" loading="lazy" decoding="async">
-        <img data-gallery-image="reference" src="bicycle/view_0017/INRIA_40k/full.jpg"
+      <div class="gal-frame" data-gallery-frame role="img"
+           style="--gal-aspect: 480 / 319"
+           aria-label="Showing Ours · KISS-GS 512k. KISS-GS 512k · 7.4 MB · 25.973 dB PSNR · 0.2380 LPIPS">
+        <img data-gallery-image="ours" data-visible src="bicycle/view_0017/POPSpa-512k_SOG-XT-FT/zoom_8x.png"
              width="480" height="319"
              alt="" aria-hidden="true" loading="lazy" decoding="async">
-        <span class="gal-pill" aria-hidden="true">
-          <span>Showing</span>
-          <b data-gallery-pill>Ours · KISS-GS 512k</b>
-        </span>
-      </button>
+        <img data-gallery-image="reference" src="bicycle/view_0017/INRIA_40k/zoom_8x.png"
+             width="480" height="319"
+             alt="" aria-hidden="true" loading="lazy" decoding="async">
+      </div>
 
       <dl class="gal-metrics" data-gallery-metrics>
         <div><dt>Size</dt><dd>7.4 MB</dd></div>
@@ -1819,11 +1851,11 @@ magnifications are available without moving the camera.</p>
         <span class="gal-zoom-label" id="quality-zoom-label">Magnification</span>
         <div class="tabs quiet" role="group" aria-labelledby="quality-zoom-label">
           <button type="button" class="tab" disabled data-gallery-zoom data-zoom="full"
-                  aria-pressed="true">Full view</button>
+                  aria-pressed="false">Full view</button>
           <button type="button" class="tab" disabled data-gallery-zoom data-zoom="zoom_4x"
                   aria-pressed="false">4×</button>
           <button type="button" class="tab" disabled data-gallery-zoom data-zoom="zoom_8x"
-                  aria-pressed="false">8×</button>
+                  aria-pressed="true">8×</button>
           <button type="button" class="tab" disabled data-gallery-zoom data-zoom="zoom_12x"
                   aria-pressed="false">12×</button>
         </div>
@@ -1838,9 +1870,8 @@ magnifications are available without moving the camera.</p>
     <noscript>
       <style>
         #quality .gal-controls, #quality .gal-zooms,
-        #quality .gal-status, #quality .gal-interactive-note,
+        #quality .gal-status,
         #quality [data-gallery-image="reference"] { display: none; }
-        #quality .gal-frame { cursor: default; }
       </style>
     </noscript>
 
@@ -1850,7 +1881,7 @@ magnifications are available without moving the camera.</p>
 smaller file is also the better one. There is a plain reason: compaction spends 10k extra
 iterations refining what it keeps, and pruning the primitives that were overfitting the training
 views tends to help on novel ones.</p>
-<p>Magnify to 8× or 12× and the trade becomes visible. Our smallest budgets lose high-frequency
+<p>At 8× or 12× the trade becomes visible. Our smallest budgets lose high-frequency
 texture: thin geometry and foliage go soft. HAC++ at a comparable size keeps more PSNR and loses
 more of the perceptual detail that LPIPS measures. Those are different failures, and they are
 easier to judge here than in either metric.</p>
@@ -1872,7 +1903,7 @@ turn, on Bicycle at 256k primitives, and each line below is what removing it doe
     <ul class="claims" data-ablation-claims>
       <li data-ablation-claim="view-dependent color codebooks" data-ablation-bytes="3434816">
         <p class="claim">Coding view-dependent color through a codebook is worth 3.43 MB, and it costs 0.232 dB of quality.</p>
-<p class="claim-note small">the file nearly doubles without it — the single biggest lever here</p>        <div class="claim-bar" aria-hidden="true">
+<p class="claim-note small">the file nearly doubles without it, the single biggest lever here</p>        <div class="claim-bar" aria-hidden="true">
           <i class="grow"
              style="width: 100.0%"></i>
         </div>
@@ -1914,7 +1945,7 @@ turn, on Bicycle at 256k primitives, and each line below is what removing it doe
       </li>
       <li data-ablation-claim="PRAS" data-ablation-bytes="-11810">
         <p class="claim">PRAS costs 11.8 kB, and it buys 0.110 dB.</p>
-<p class="claim-note small">the only row that trades the other way, and its own row is not its argument — what PRAS is really worth is the coarser quaternion quantizer it makes possible</p>        <div class="claim-bar" aria-hidden="true">
+<p class="claim-note small">the only row that trades the other way. Its own row is not its argument: what PRAS is really worth is the coarser quaternion quantizer it makes possible</p>        <div class="claim-bar" aria-hidden="true">
           <i class="shrink"
              style="width: 0.3%"></i>
         </div>
@@ -2026,22 +2057,28 @@ tried and gave up on. Some we tried too early and they might work now; some sure
 people’s papers. A sampler:</p>
 <ul>
 <li><em>One canonical form for rotation and scale.</em> Flipping quaternion signs, fixing a canonical
-quaternion, three-channel quaternions with renormalization, other covariance parameterizations
-such as the matrix logarithm. None was a clean win over the whole scene set, and the ones that
-did win were too expensive to decode. PRAS came out of giving up on it: keep every valid
-spelling and choose one per primitive.</li>
+quaternion, three-channel quaternions with renormalization, other covariance parameterizations.
+As pure post-hoc re-parameterizations of a finished scene, and with a decoder that has to stay a
+few array operations, none was a clean win over the whole scene set, and the ones that did win
+were too expensive to decode. A parameterization the reconstruction is trained in from the start
+is a different experiment, and this list says nothing about it. PRAS came out of giving up on
+the post-hoc route: keep every valid form and choose one per primitive.</li>
 <li><em>Sorting more than once.</em> The idea is appealing: sort with PLAS, fine-tune to repair the
 quantization errors, then sort again because the fine-tuned values have a new structure. But
 the sort is not differentiable, so every re-sort restarts the optimization from a new layout,
 and that may be why it never paid off for us. (We do re-run PRAS during fine-tuning; it keeps
-the layout and only changes spellings.)</li>
+the layout and only changes forms.)</li>
 <li><em>More vector quantization.</em> Codebooks for attributes other than color, residual vector
 quantization (standard in several 3DGS compression methods), separate codebooks per
 spherical-harmonic band. Nothing convincing.</li>
 <li><em>Lossy image codecs.</em> The most tempting one: swap the lossless codec for a lossy one and win a
 large factor. Except the attribute grids are not natural images. Every pixel is one primitive
 and every value matters, especially after quantization, and on scenes with few primitives lossy
-coding is actively harmful.</li>
+coding is actively harmful. It is also the mirror image of <a href="#pipeline">fine-tuning</a>. Both accept
+a loss induced by quantization; the difference is who owns the quantizer. In fine-tuning it is
+ours, a fixed and known step the training can adapt to. A lossy codec owns its own,
+content-adaptive and opaque to the training loop, so there is nothing fixed to adapt to, and the
+loss simply lands on the scene.</li>
 </ul>
 <p><strong>Small things.</strong> WebP’s slowest encoding method (<code>method=6</code>) buys a few percent over the
 <code>method=4</code> the paper uses, at a much longer encoding time; 4 is the knee, nearly as small and
@@ -2074,8 +2111,8 @@ doing this:</p>
 <p>That asymmetry is the point of the paper. Put the complexity where it runs once; keep it out of
 the place that runs everywhere. State-of-the-art 3DGS compression does not need a complicated
 deployment stack.</p>
-<p>You have been looking at the proof the whole time. The live scene arrived as those same
-nine images, went through those same operations in your browser, and has been rendering as
+<p>The proof has been on screen the whole time. The live scene arrived as those same nine images,
+went through those same operations in your browser, and has been rendering as
 ordinary 3D Gaussians while you read about how it got that small.</p>
 </div>
 
@@ -2086,7 +2123,7 @@ ordinary 3D Gaussians while you read about how it got that small.</p>
       </li>
       <li data-decoder-step="decode each plane as an ordinary image">
         <b>decode each plane as an ordinary image</b>
-        <span class="small">nine images, one per attribute group, through whatever the platform already has — in a browser, that is the built-in WebP decoder</span>
+        <span class="small">nine images, one per attribute group, through whatever the platform already has; in a browser, that is the built-in WebP decoder</span>
       </li>
       <li data-decoder-step="map every byte back into its range">
         <b>map every byte back into its range</b>
@@ -2132,7 +2169,7 @@ ordinary 3D Gaussians while you read about how it got that small.</p>
       </ul>
       <p class="small">
         Reference Python decoder on a Threadripper PRO 5955WX; medians over seven kept runs, file
-        reads included, PLY writing excluded. Unoptimized and single-threaded — the point is the
+        reads included, PLY writing excluded. Unoptimized and single-threaded; the point is the
         order of magnitude, not the milliseconds.
       </p>
     </details>
