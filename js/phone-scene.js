@@ -60,6 +60,8 @@ export const sceneToggle = ({ split, button, bridge }) => {
     const label = shown ? "Hide scene" : "Show scene";
     button.setAttribute("aria-label", label);
     button.title = label;
+    const text = button.querySelector("[data-scene-toggle-text]");
+    if (text) text.textContent = label;
   };
   button.addEventListener("click", () => {
     const hidden = split.dataset.scene !== "hidden";

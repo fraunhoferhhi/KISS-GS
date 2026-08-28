@@ -2127,32 +2127,51 @@
        would shrink it and resize the canvas), the iframe stays alive and the
        scene stays decoded. The breadcrumb's `top` and the sections' scroll
        margins follow through the one variable. */
+    /* The same control grammar as every other page button (`.btn`): the tokens,
+       not the class, so the bar's rules stay the bar's. */
     #scene-toggle {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 7px;
       flex: 0 0 auto;
-      width: 44px;
-      height: 44px;
+      height: var(--control-h);
       margin: 0;
-      padding: 0;
-      border: 0;
-      border-radius: 8px;
-      background: transparent;
-      color: var(--muted);
+      padding: 0 13px 0 11px;
+      border: var(--control-outline-w) solid var(--control-outline);
+      border-radius: var(--r-control);
+      background: var(--paper);
+      color: var(--ink-soft);
+      font-family: var(--font-controls);
+      font-size: var(--control-font-size);
+      font-weight: var(--control-font-weight);
+      line-height: 1;
+      white-space: nowrap;
       cursor: pointer;
     }
     #scene-toggle svg {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
+      flex: none;
       fill: none;
       stroke: currentColor;
-      stroke-width: 1.4;
+      stroke-width: 1.5;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
-    #scene-toggle[aria-pressed="true"] { color: var(--brand); }
+    /* One icon per state: eye-off beside "Hide scene", eye beside "Show scene". */
+    #scene-toggle[aria-pressed="true"] .icon-show { display: none; }
+    #scene-toggle[aria-pressed="false"] .icon-hide { display: none; }
+    /* With the scene gone, the button is the way back: the `.btn:hover` colors. */
+    #scene-toggle:hover,
+    #scene-toggle[aria-pressed="false"] { color: var(--brand); border-color: var(--brand); }
     #scene-toggle:disabled { cursor: default; opacity: 0.55; }
+    /* The narrowest phones keep the icon and the 44 px target; the text yields
+       at the same 340 px line where the strip's wordmark does. */
+    @media (max-width: 339px) {
+      #scene-toggle { padding: 0; width: var(--control-h); }
+      #scene-toggle [data-scene-toggle-text] { display: none; }
+    }
     #split[data-scene="hidden"] { --phone-panel-h: 0px; }
     #split[data-scene="hidden"] #viewer-panel {
       height: 0;
