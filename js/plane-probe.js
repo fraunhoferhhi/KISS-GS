@@ -990,7 +990,7 @@ export const planeProbe = (details, manifest, bridge) => {
   };
   if (codebook) {
     codebook.tabIndex = 0;
-    codebook.setAttribute("aria-label", "Colour codebook: inspect one coefficient texel");
+    codebook.setAttribute("aria-label", "Color codebook: inspect one coefficient texel");
     codebook.addEventListener("pointermove", (event) => {
       if (pinned) return;
       const [u, v] = pixelAt(codebook, /** @type {PointerEvent} */ (event));

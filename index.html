@@ -91,12 +91,12 @@
         </svg>
         <span>Paper</span>
       </a>
-      <a class="btn" href="https://github.com/w-m/ffsplat/">
+      <span class="btn" aria-disabled="true">
         <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
           <path d="m5.5 3.5-4 4.5 4 4.5M10.5 3.5l4 4.5-4 4.5M9.5 1.8 6.5 14.2"></path>
         </svg>
-        <span>Code</span>
-      </a>
+        <span>Code (coming soon)</span>
+      </span>
       <a class="btn" href="#cite">
         <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
           <path d="M2.5 3.5h11v9h-11zM5 6h6M5 8h6M5 10h3.5"></path>
@@ -110,7 +110,16 @@
 
 <div id="split">
 
-  <section id="viewer-panel" aria-label="Interactive scene">
+  <section id="viewer-panel" aria-label="Interactive scene"
+           data-short-viewport="(min-width: 900px) and (max-height: 760px)" data-narrow-panel="600">
+    <script>
+      (function (panel) {
+        var short = window.matchMedia(panel.dataset.shortViewport).matches;
+        var style = getComputedStyle(panel);
+        var width = panel.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        panel.dataset.bandForm = short || width <= Number(panel.dataset.narrowPanel) ? "compact" : "wide";
+      })(document.currentScript.parentNode);
+    </script>
     <div id="stage">
       <iframe id="viewer"
               data-src="viewer/scenes/index.html?present=bootstrap"
@@ -357,11 +366,11 @@ swapped for a better one. → <a href="#pipeline">How it works</a></li>
 schemes. It earns the largest share of the reduction, before any encoding happens. →
 <a href="#popspa">Compaction</a></li>
 <li><strong>SOG-XT: attributes stored as sorted images.</strong> Extends the popular Self-Organizing Gaussians
-format with a view-dependent colour codebook that is itself sorted into a 2D image, so its
+format with a view-dependent color codebook that is itself sorted into a 2D image, so its
 indices compress like every other plane. → <a href="#sorting">Encoding</a></li>
 <li><strong>PRAS: one spelling per Gaussian.</strong> A Gaussian’s rotation and scale can be written
 48 equivalent ways. PRAS picks, for every primitive, the one that makes the
-attribute images smoothest, so they survive a coarser quantiser. → <a href="#symmetry">PRAS</a></li>
+attribute images smoothest, so they survive a coarser quantizer. → <a href="#symmetry">PRAS</a></li>
 </ul>
 <p>Decoding is a few image decodes and lookups, nothing more. Whether that counts as
 <a href="#simple">keeping it simple</a> is a question we come back to at the end.</p>
@@ -447,7 +456,7 @@ doubling of the last, which is why the size axis is logarithmic and the points s
 it.</p>
 <p>One shared encoding recipe covers all seven, from a few thousand primitives to several million,
 and it is the same recipe that encodes the vanilla INRIA baseline. The budget is the primary knob
-and not the only parameter: the colour codebook’s side length is derived from the primitive count
+and not the only parameter: the color codebook’s side length is derived from the primitive count
 and then clamped, and the smallest budget is set lower for the Blender objects than for the real
 captures.</p>
 <p>The scene beside this text is at <span data-stat="bytes">3.94 MB</span>, and the slider above moves the one in the renderer
@@ -494,7 +503,7 @@ closing it is why KISS-GS is built the way it is.</p>
         <span class="stage-n" aria-hidden="true">3</span>
         <b>Encoding</b>
         <span class="stage-module">SOG-XT</span>
-        <small class="stage-detail">sort, quantise, save as images</small>
+        <small class="stage-detail">sort, quantize, save as images</small>
         <span class="stage-hands"><span aria-hidden="true">→</span> nine images and a metadata file</span>
         <small class="stage-swap">Replaceable: any post-training encoder</small>
       </li>
@@ -554,7 +563,7 @@ pipeline starts from a gsplat reconstruction of the same scenes.</p>
       <li data-stage-step>
         <div class="who">
           <b>SOG-XT</b>
-          <small>encoding — sort, quantise, save as images</small>
+          <small>encoding — sort, quantize, save as images</small>
         </div>
         <div class="track">
           <div class="bar s3" data-stage-bar
@@ -668,7 +677,7 @@ methods differ from each other. KISS-GS and HAC++ are recomputed under it in the
 the other literature curves are self-reported and marked as such.</p>
 <p>Pick any scene above and the recipe behind it is the same one. There is no per-scene tuning. The
 two places the settings do vary are stated: the smallest primitive budget is lower for the
-Blender objects than for the real captures, and the initial over-parameterised model is capped
+Blender objects than for the real captures, and the initial over-parameterized model is capped
 per dataset. A method with a knob per scene has 21 separate results and no
 general one.</p>
 </div>
@@ -694,7 +703,7 @@ finished 3DGS scene: score and prune, optimize and sparsify, score and prune aga
           <b>Score, then prune</b>
           <a class="recipe-credit" href="https://arxiv.org/abs/2602.06830" rel="noopener">GaussianPOP</a>
         </div>
-        <p class="small">For every primitive, estimate how much the rendered image would change if it were removed — the squared colour difference between the render with it and the render without it, accumulated over all the training views. One efficient single pass produces that score for every primitive at once, and the lowest-scoring fraction goes.
+        <p class="small">For every primitive, estimate how much the rendered image would change if it were removed — the squared color difference between the render with it and the render without it, accumulated over all the training views. One efficient single pass produces that score for every primitive at once, and the lowest-scoring fraction goes.
 </p>
       </li>
       <li data-recipe-step>
@@ -703,7 +712,7 @@ finished 3DGS scene: score and prune, optimize and sparsify, score and prune aga
           <b>Optimize and sparsify</b>
 <span class="recipe-iters">5k iterations</span>          <a class="recipe-credit" href="https://arxiv.org/abs/2411.06019" rel="noopener">GaussianSpa</a>
         </div>
-        <p class="small">Pruning that hard leaves damage. So the survivors get 5k iterations that alternate between an ordinary reconstruction step and a sparsification step, which is how GaussianSpa states primitive selection: minimise the rendering loss subject to a hard limit on how many primitives may keep their opacity. Nearby Gaussians redistribute opacity and geometry to cover what was removed.
+        <p class="small">Pruning that hard leaves damage. So the survivors get 5k iterations that alternate between an ordinary reconstruction step and a sparsification step, which is how GaussianSpa states primitive selection: minimize the rendering loss subject to a hard limit on how many primitives may keep their opacity. Nearby Gaussians redistribute opacity and geometry to cover what was removed.
 </p>
       </li>
       <li data-recipe-step>
@@ -746,7 +755,7 @@ be checked on its own, and each can be beaten on its own.</p>
 
     <div class="prose"><p><strong>A KISS-GS scene is nine ordinary images and a small text file describing them.</strong> Every
 Gaussian is one pixel in every image, and every Gaussian <em>attribute</em> is one image plane in the
-set: where it is, how big, which way round, what colour, and how that colour changes with your
+set: where it is, how big, which way round, what color, and how that color changes with your
 viewing angle.</p>
 </div>
     <figure id="attribute-breakdown" class="attribute-breakdown" data-attribute-breakdown data-breakdown-source="build"
@@ -900,9 +909,9 @@ entropy budget and no interleaved bitstream to unpick, so each attribute has a b
 point at. The bar above is measured from the file itself: the last segment is the container’s
 own metadata and its active mask, which is why the segments add up to the megabytes on the scene
 card.</p>
-<p><strong>View-dependent colour</strong> dominates everything else. These are the spherical-harmonic
+<p><strong>View-dependent color</strong> dominates everything else. These are the spherical-harmonic
 coefficients that make a surface look wet or metallic, and they are the one attribute the
-encoder gives a codebook rather than a plain quantiser.</p>
+encoder gives a codebook rather than a plain quantizer.</p>
 <p><strong>Position</strong> is the floor. It is the one plane that cannot be given up, because a scene without
 positions is noise. It is also two planes, a coarse byte and a detail byte, and the next section
 depends on that split.</p>
@@ -1266,18 +1275,18 @@ data-plane-probeable>
       <section class="plane-codebook" data-plane-group="codebook" aria-labelledby="plane-codebook-title">
         <header>
           <div>
-            <h4 id="plane-codebook-title">View-dependent colour lookup</h4>
+            <h4 id="plane-codebook-title">View-dependent color lookup</h4>
             <p>Each index selects one centroid in every coefficient tile.</p>
           </div>
           <span class="plane-card-toggle">
             <button type="button" class="switch" role="switch" data-attribute-toggle="shAc"
         aria-checked="true"
-        aria-label="View-dependent colour"
+        aria-label="View-dependent color"
 disabled>
   <span class="switch-track" data-switch-track aria-hidden="true">
     <i class="switch-thumb" data-switch-thumb></i>
   </span>
-  <span class="plane-toggle-label">View-dependent colour</span></button>
+  <span class="plane-toggle-label">View-dependent color</span></button>
 
           </span>
         </header>
@@ -1367,7 +1376,7 @@ data-plane-probeable>
   </div>
 
 
-    <div class="prose"><p><strong>Sorted images compress; SOG-XT sorts both the primitives and the colour codebook with PLAS.</strong>
+    <div class="prose"><p><strong>Sorted images compress; SOG-XT sorts both the primitives and the color codebook with PLAS.</strong>
 A 3D scene has no natural order. Training hands you the primitives as a list in whatever order
 they happened to be created, and if you pour that list into a 2D grid you get noise. Image codecs
 are good at many things; noise is not one of them.</p>
@@ -1403,8 +1412,8 @@ alone is worth.</p>
 Bicycle at 256k primitives, with no measurable change in quality.</p>
 <h3>Where SOG-XT stands</h3>
 <p>If you know SOG you may wonder what is new. Two things happened after it was published. The
-original coupled its layout to training, with densification, a smoothness regulariser and
-quantisation in one loop, so it could not easily be pointed at a scene you already had. And the
+original coupled its layout to training, with densification, a smoothness regularizer and
+quantization in one loop, so it could not easily be pointed at a scene you already had. And the
 community turned the image-storage idea into a deployed format,
 <a href="https://developer.playcanvas.com/user-manual/gaussian-splatting/formats/sog/"><code>.sog</code></a>, a pure
 post-training encoder that orders primitives along a <strong>Morton</strong> curve and reduces the spherical
@@ -1416,7 +1425,7 @@ sort by the coarse byte alone. We sort by <strong>both</strong>, the coarse byte
 byte lightly, and apply that one permutation to every attribute. The fine byte gets a vote, so it
 stops being pure noise.</p>
 <h3>The codebook gets sorted too</h3>
-<p>View-dependent colour is far too big to store per primitive, so it is vector-quantised: k-means
+<p>View-dependent color is far too big to store per primitive, so it is vector-quantized: k-means
 reduces the spherical-harmonic coefficients to a codebook and each primitive keeps an index.
 <code>.sog</code> stores that codebook as a lexicographically sorted list, an order the codec cannot use,
 because two centroids next to each other in it need not look anything alike.</p>
@@ -1438,7 +1447,7 @@ active primitives and is clamped, so it has at most 256 ×
   </div>
 
     <div class="prose"><p><strong>Every Gaussian has 48 equivalent spellings; PRAS picks the smooth one, so a
-coarser quantiser suffices.</strong> Here is the quirk behind that. A primitive’s shape is a covariance
+coarser quantizer suffices.</strong> Here is the quirk behind that. A primitive’s shape is a covariance
 matrix, but nobody stores the matrix. Everyone stores a rotation quaternion and three scales, and
 that mapping is <strong>one-to-many</strong>: permute the scales, flip the eigenvector directions, negate the
 quaternion, and you get completely different numbers describing <em>exactly</em> the same ellipsoid.</p>
@@ -1452,16 +1461,16 @@ coarse-to-fine: blur the current grids to get a smooth target, then for every pr
 48 spellings and keep the one closest to that target. The search never leaves
 the equivalence class, so <strong>every covariance stays unchanged up to floating-point round-off</strong>.
 Geometry and grid positions are untouched; only the spelling changes.</p>
-<p>What do we get for it? A coarser quantiser. A smoother grid survives coarser quantisation, so
+<p>What do we get for it? A coarser quantizer. A smoother grid survives coarser quantization, so
 with PRAS the quaternions are stored at <strong>q=99</strong>
 (100 levels per channel), where without it we find that
 q=255, the full 8-bit 256, is
-needed for comparable quality. On Bicycle at 256k primitives that coarser quantiser is worth
+needed for comparable quality. On Bicycle at 256k primitives that coarser quantizer is worth
 <strong>161,748 B</strong>.</p>
 <p>To be fair to the leave-one-out table, PRAS’s own row points the other way. Remove PRAS but keep
 q=99, and the file gets 11,810 B <em>smaller</em> and
 0.1104 dB worse, because the smoothed values sit a little away from where the
-rest of the pipeline had settled. Same measurement, two sides: the saving is in the quantiser
+rest of the pipeline had settled. Same measurement, two sides: the saving is in the quantizer
 setting, and the direct row is what it costs to be allowed to use it.</p>
 </div>
 
@@ -1483,7 +1492,7 @@ setting, and the direct row is what it costs to be allowed to use it.</p>
       </li>
       <li class="total">
         <span class="factor">=48</span>
-        <b>parameterisations per Gaussian</b>
+        <b>parameterizations per Gaussian</b>
         <span class="small">all describing an identical ellipsoid</span>
       </li>
     </ul>
@@ -1571,7 +1580,7 @@ everywhere wins at every operating point.</p>
 
 <div class="prose prose-after">
 <p>The horizontal INRIA-Q rule is the uncompressed reference: vanilla INRIA 3DGS, trained for 40k
-iterations to match our own total optimisation budget. The question the table below answers is
+iterations to match our own total optimization budget. The question the table below answers is
 how small a file each method needs to <em>reach</em> that rule.</p>
 <p>KISS-GS and HAC++ are both recomputed here, on the same images, at the same resolutions, with the
 same metric implementations. The faint curves are values their authors published; we plot them
@@ -1833,8 +1842,8 @@ turn, on Bicycle at 256k primitives, and each line below is what removing it doe
 </div>
 
     <ul class="claims" data-ablation-claims>
-      <li data-ablation-claim="view-dependent colour codebooks" data-ablation-bytes="3434816">
-        <p class="claim">Coding view-dependent colour through a codebook is worth 3.43 MB, and it costs 0.232 dB of quality.</p>
+      <li data-ablation-claim="view-dependent color codebooks" data-ablation-bytes="3434816">
+        <p class="claim">Coding view-dependent color through a codebook is worth 3.43 MB, and it costs 0.232 dB of quality.</p>
 <p class="claim-note small">the file nearly doubles without it — the single biggest lever here</p>        <div class="claim-bar" aria-hidden="true">
           <i class="grow"
              style="width: 100.0%"></i>
@@ -1877,14 +1886,14 @@ turn, on Bicycle at 256k primitives, and each line below is what removing it doe
       </li>
       <li data-ablation-claim="PRAS" data-ablation-bytes="-11810">
         <p class="claim">PRAS costs 11.8 kB, and it buys 0.110 dB.</p>
-<p class="claim-note small">the only row that trades the other way, and its own row is not its argument — what PRAS is really worth is the coarser quaternion quantiser it makes possible</p>        <div class="claim-bar" aria-hidden="true">
+<p class="claim-note small">the only row that trades the other way, and its own row is not its argument — what PRAS is really worth is the coarser quaternion quantizer it makes possible</p>        <div class="claim-bar" aria-hidden="true">
           <i class="shrink"
              style="width: 0.3%"></i>
         </div>
       </li>
       <li data-ablation-claim="means signed-log remapping" data-ablation-bytes="-519272">
         <p class="claim">Remapping the positions through a signed logarithm costs 519.3 kB, and it buys 7.551 dB.</p>
-<p class="claim-note small">not really a switch: without it 16-bit quantisation spends its precision on empty space instead of on the surfaces, and the reconstruction collapses</p>        <div class="claim-bar" aria-hidden="true">
+<p class="claim-note small">not really a switch: without it 16-bit quantization spends its precision on empty space instead of on the surfaces, and the reconstruction collapses</p>        <div class="claim-bar" aria-hidden="true">
           <i class="shrink"
              style="width: 15.1%"></i>
         </div>
@@ -1909,7 +1918,7 @@ turn, on Bicycle at 256k primitives, and each line below is what removing it doe
           </thead>
           <tbody>
             <tr>
-              <th scope="row">view-dependent colour codebooks</th>
+              <th scope="row">view-dependent color codebooks</th>
               <td class="num bad">+3,434,816 B</td>
               <td class="num good">+0.232</td>
             </tr>
@@ -1959,7 +1968,7 @@ turn, on Bicycle at 256k primitives, and each line below is what removing it doe
 
 <div class="prose prose-after">
 <p>Two of these cost nothing at all: sorting the codebook centroids and packing the labels as UV
-pairs save bytes with no measurable quality change, so there is no trade to weigh. The colour
+pairs save bytes with no measurable quality change, so there is no trade to weigh. The color
 codebook is the one place where compression measurably costs quality. Knowing that is more
 useful than hiding it in an average.</p>
 </div>  </div>
@@ -1981,7 +1990,7 @@ format that simple get all the way to the best methods out there, if its paramet
 to hold quality while shrinking the file? To find out we built
 <a href="https://github.com/w-m/ffsplat/">ffsplat</a>, a tool for trying post-hoc coding ideas on finished
 scenes with every result measured the same way. Most of the time went into that tool, and into a
-fine-tuning architecture where the differentiable parts (quantisation-aware training) and the
+fine-tuning architecture where the differentiable parts (quantization-aware training) and the
 non-differentiable one (the PLAS sort) had to work together in configurable experiments. The
 pipeline on this page is what survived.</p>
 <p><strong>What did not work.</strong> For every component that made it into the paper there are several we
@@ -1989,26 +1998,26 @@ tried and gave up on. Some we tried too early and they might work now; some sure
 people’s papers. A sampler:</p>
 <ul>
 <li><em>One canonical form for rotation and scale.</em> Flipping quaternion signs, fixing a canonical
-quaternion, three-channel quaternions with renormalisation, other covariance parameterisations
+quaternion, three-channel quaternions with renormalization, other covariance parameterizations
 such as the matrix logarithm. None was a clean win over the whole scene set, and the ones that
 did win were too expensive to decode. PRAS came out of giving up on it: keep every valid
 spelling and choose one per primitive.</li>
 <li><em>Sorting more than once.</em> The idea is appealing: sort with PLAS, fine-tune to repair the
-quantisation errors, then sort again because the fine-tuned values have a new structure. But
-the sort is not differentiable, so every re-sort restarts the optimisation from a new layout,
+quantization errors, then sort again because the fine-tuned values have a new structure. But
+the sort is not differentiable, so every re-sort restarts the optimization from a new layout,
 and that may be why it never paid off for us. (We do re-run PRAS during fine-tuning; it keeps
 the layout and only changes spellings.)</li>
-<li><em>More vector quantisation.</em> Codebooks for attributes other than colour, residual vector
-quantisation (standard in several 3DGS compression methods), separate codebooks per
+<li><em>More vector quantization.</em> Codebooks for attributes other than color, residual vector
+quantization (standard in several 3DGS compression methods), separate codebooks per
 spherical-harmonic band. Nothing convincing.</li>
 <li><em>Lossy image codecs.</em> The most tempting one: swap the lossless codec for a lossy one and win a
 large factor. Except the attribute grids are not natural images. Every pixel is one primitive
-and every value matters, especially after quantisation, and on scenes with few primitives lossy
+and every value matters, especially after quantization, and on scenes with few primitives lossy
 coding is actively harmful.</li>
 </ul>
 <p><strong>Small things.</strong> WebP’s slowest encoding method (<code>method=6</code>) buys a few percent over the
 <code>method=4</code> the paper uses, at a much longer encoding time; 4 is the knee, nearly as small and
-still fast. Lossless WebP, AVIF and minimised PNG land within a few percent of each other, WebP
+still fast. Lossless WebP, AVIF and minimized PNG land within a few percent of each other, WebP
 with a small edge that depends on the scene.</p>
 </div>
   </div>
@@ -2026,7 +2035,7 @@ with a small edge that depends on the scene.</p>
 
     <div class="prose"><p><strong>No. Not entirely, and it would be dishonest to claim otherwise.</strong></p>
 <p>The encoder is a whole pipeline: a compaction recipe built from two published pruning schemes, a
-vector-quantised colour codebook with its own 2D sort, a symmetry-resolution algorithm, and an
+vector-quantized color codebook with its own 2D sort, a symmetry-resolution algorithm, and an
 optional fine-tuning stage with the codec in the loop. That is a lot of machinery. We built it
 that way on purpose, so that each stage’s contribution can be measured instead of melting into
 one number nobody can take apart.</p>
@@ -2057,14 +2066,14 @@ ordinary 3D Gaussians while you read about how it got that small.</p>
       </li>
       <li data-decoder-step="rebuild the positions">
         <b>rebuild the positions</b>
-        <span class="small">two byte planes are one 16-bit word per axis, and the signed logarithm that made the distribution quantisable is undone</span>
+        <span class="small">two byte planes are one 16-bit word per axis, and the signed logarithm that made the distribution quantizable is undone</span>
       </li>
-      <li data-decoder-step="untile the colour codebook">
-        <b>untile the colour codebook</b>
+      <li data-decoder-step="untile the color codebook">
+        <b>untile the color codebook</b>
         <span class="small">fifteen tiles of three channels become 45 spherical-harmonic coefficients per centroid</span>
       </li>
-      <li data-decoder-step="look up each primitive's colour">
-        <b>look up each primitive's colour</b>
+      <li data-decoder-step="look up each primitive's color">
+        <b>look up each primitive's color</b>
         <span class="small">the label plane's two channels are the centroid's coordinates in that codebook</span>
       </li>
       <li data-decoder-step="drop the inactive cells">
@@ -2095,7 +2104,7 @@ ordinary 3D Gaussians while you read about how it got that small.</p>
       </ul>
       <p class="small">
         Reference Python decoder on a Threadripper PRO 5955WX; medians over seven kept runs, file
-        reads included, PLY writing excluded. Unoptimised and single-threaded — the point is the
+        reads included, PLY writing excluded. Unoptimized and single-threaded — the point is the
         order of magnitude, not the milliseconds.
       </p>
     </details>
@@ -2123,9 +2132,6 @@ the format and the viewer that renders this page all live in
     <footer>
       <div class="wrap">
         <p>Partly funded by the European Union’s Horizon Europe research and innovation programme (Luminous, grant no. 101135724), the German Research Foundation (3DIL, grant no. 502864329), and the Fraunhofer society (Self Structured Gaussians).</p>
-        <p class="small">
-          Rendered live by the <a href="https://github.com/w-m/ffsplat/">ffsplat</a> viewer — no video, no server.
-        </p>
       </div>
     </footer>
   </main>

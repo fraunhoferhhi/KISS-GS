@@ -491,6 +491,16 @@
     white-space: nowrap;
   }
   .btn:hover { border-color: var(--brand); color: var(--brand); text-decoration: none; }
+  /* P1.7 (V3-BM): a button that waits. Same shape as its neighbours, but no
+     fill and muted text — `--muted` on the page field clears 4.5:1, which it
+     does not on the paper fill — and nothing changes under the pointer. */
+  .btn[aria-disabled="true"],
+  .btn[aria-disabled="true"]:hover {
+    background: transparent;
+    border-color: var(--control-outline);
+    color: var(--muted);
+    cursor: default;
+  }
   .btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
   .btn.primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); color: #fff; }
   .btn-icon {
@@ -1218,9 +1228,6 @@
     border-radius: 0 0 var(--r-stage) var(--r-stage);
     background: var(--control-strip);
     overflow: hidden;
-    /* Named so its descendants can query `--band-form` (a style() container
-       query needs no size containment, only a name to address). */
-    container-name: band;
   }
   #control-band .band-row {
     display: flex;
@@ -1546,52 +1553,56 @@
   /* A narrow panel keeps both rows — the composition is the design, and a row
      that vanishes when the divider moves is a control the visitor loses without
      asking to. What it gives up is the rulers, the words, and the switch width. */
-  /* The band's short form (F2.2, V3-BJ): one rule body, keyed on a flag the
-     band carries, so the two triggers below share it and there is no third
-     layout to keep in step. All three engines resolve style() queries. */
-  @container band style(--band-form: compact) {
-    .size-ticks { display: none; }
+  /* The band's short form (F2.2, V3-BJ; re-keyed by P1.8, V3-BO): one rule
+     body, keyed on the one attribute `js/band-form.js` maintains on the panel
+     from the two triggers — the short-viewport media query and the 600 px panel
+     width — so there is no third layout to keep in step. `:where()` adds no
+     specificity, so these rules sit in the cascade exactly where the former
+     container query put them (the phone block below still overrides them). Not
+     a style-query container query: Safari 17 has none, and it drew the tip
+     folded over a band that had stayed wide. */
+    :where(#viewer-panel[data-band-form="compact"]) .size-ticks { display: none; }
     /* The headings and the ruler go, and the camera column folds back onto one
        line with its scrubber beside the buttons — which is what lets the phone
        band be two short rows of one control each (§16's deliberately simpler
        phone set) rather than the desktop composition squeezed. */
-    #control-band [data-control="camera"] > .control-label,
-    #control-band .size-control > .control-label { display: none; }
+    :where(#viewer-panel[data-band-form="compact"]) #control-band [data-control="camera"] > .control-label,
+    :where(#viewer-panel[data-band-form="compact"]) #control-band .size-control > .control-label { display: none; }
     /* Out of the shared three-row grid and back to one line per column: the
        camera's buttons with its scrubber beside them, the size rail on its own.
        The instrument line only has to be shared where both columns show one. */
-    #control-band [data-control="camera"] {
+    :where(#viewer-panel[data-band-form="compact"]) #control-band [data-control="camera"] {
       display: flex;
       flex-direction: row;
       align-items: center;
       gap: 6px;
     }
-    #control-band .size-control {
+    :where(#viewer-panel[data-band-form="compact"]) #control-band .size-control {
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-    #control-band .size-track { display: flex; flex-direction: column; }
-    #control-band .size-rail { height: var(--control-h); }
-    .tour-progress-track { align-self: center; }
-    #control-band .band-row { gap: 8px; padding-inline: 8px; }
-    #control-band .band-row[data-row="attributes"] { padding-inline: 8px; }
-    #control-band .band-slot[data-slot="camera"] {
+    :where(#viewer-panel[data-band-form="compact"]) #control-band .size-track { display: flex; flex-direction: column; }
+    :where(#viewer-panel[data-band-form="compact"]) #control-band .size-rail { height: var(--control-h); }
+    :where(#viewer-panel[data-band-form="compact"]) .tour-progress-track { align-self: center; }
+    :where(#viewer-panel[data-band-form="compact"]) #control-band .band-row { gap: 8px; padding-inline: 8px; }
+    :where(#viewer-panel[data-band-form="compact"]) #control-band .band-row[data-row="attributes"] { padding-inline: 8px; }
+    :where(#viewer-panel[data-band-form="compact"]) #control-band .band-slot[data-slot="camera"] {
       padding-top: 0;
       padding-right: 8px;
       align-items: center;
     }
-    #control-band .band-slot[data-slot="size"] { padding-top: 0; align-items: center; }
-    .attribute-control { gap: 2px; }
-    .attribute-control button.switch { padding-inline: 3px; background: transparent; }
+    :where(#viewer-panel[data-band-form="compact"]) #control-band .band-slot[data-slot="size"] { padding-top: 0; align-items: center; }
+    :where(#viewer-panel[data-band-form="compact"]) .attribute-control { gap: 2px; }
+    :where(#viewer-panel[data-band-form="compact"]) .attribute-control button.switch { padding-inline: 3px; background: transparent; }
     /* Even the symbols do not fit seven times across a phone: seven tracks and
        thumbs do, and the colour ties each one to its bar in the byte figure. */
-    #control-band .attribute-chip-short,
-    .attribute-control > .control-label { display: none; }
-    .attribute-swatch { width: 8px; height: 8px; }
-    .camera-actions { gap: 4px; flex: 0 0 auto; }
-    [data-control="camera"] .switch-label,
-    [data-action="reset-camera"] > span {
+    :where(#viewer-panel[data-band-form="compact"]) #control-band .attribute-chip-short,
+    :where(#viewer-panel[data-band-form="compact"]) .attribute-control > .control-label { display: none; }
+    :where(#viewer-panel[data-band-form="compact"]) .attribute-swatch { width: 8px; height: 8px; }
+    :where(#viewer-panel[data-band-form="compact"]) .camera-actions { gap: 4px; flex: 0 0 auto; }
+    :where(#viewer-panel[data-band-form="compact"]) [data-control="camera"] .switch-label,
+    :where(#viewer-panel[data-band-form="compact"]) [data-action="reset-camera"] > span {
       position: absolute;
       width: 1px;
       height: 1px;
@@ -1600,27 +1611,24 @@
       clip-path: inset(50%);
       white-space: nowrap;
     }
-    [data-action="reset-camera"] {
+    :where(#viewer-panel[data-band-form="compact"]) [data-action="reset-camera"] {
       width: var(--control-h);
       min-width: var(--control-h);
       padding: 0;
       justify-content: center;
     }
     /* The switch keeps its track: it is the only part of it that says anything. */
-    [data-action="toggle-tour"] {
+    :where(#viewer-panel[data-band-form="compact"]) [data-action="toggle-tour"] {
       min-width: 0;
       padding-inline: 6px;
     }
-  }
   /* Two rows, but shorter ones: with the rulers collapsed the primary row is a
      single control tall, which is the deliberately simpler phone control set of
-     §16 rather than a squeezed desktop band. */
-  @container viewer (max-width: 600px) {
-    #control-band { --band-form: compact; }
-    /* Set on the band, not on the panel: the panel is this container query's
-       own subject, and clean view's `--band-h: 0` lives on the panel too. A
-       rule that has to beat clean view is a rule that will lose one day. */
-    #viewer-panel:not([data-chrome="hidden"]) #control-band { --band-h: var(--band-compact-h); }
+     §16 rather than a squeezed desktop band. Set on the band, not on the panel:
+     clean view's `--band-h: 0` lives on the panel, and a rule that has to beat
+     clean view is a rule that will lose one day. */
+  #viewer-panel[data-band-form="compact"]:not([data-chrome="hidden"]) #control-band {
+    --band-h: var(--band-compact-h);
   }
 
   #stage-tip {
@@ -1739,20 +1747,33 @@
      whole one and the line simply gets fatter. So the line keeps its authored
      2 px and slides one pixel into the content pane instead: what it now uncovers
      on its left is the panel's own page field, the same colour, and what it
-     covers on its right is the seam. */
+     covers on its right is the seam.
+     The sealed pixel lies inside the story pane, so anything in the story that
+     is positioned with a z-index would paint over it — and the sticky
+     breadcrumb does exactly that (`z-index: 5`, a page-coloured background):
+     the line read a pixel narrower for the breadcrumb's height and kinked at
+     its top edge (P1.1, T3). The line is the renderer/content boundary and is
+     painted above everything that merely has a background; `#divider` forms no
+     stacking context of its own, so this z-index competes in the root's, one
+     above the breadcrumb and below nothing that could ever reach this pixel. */
   #divider .divider-line {
     position: absolute;
     inset: var(--divider-inset) calc(-1 * var(--divider-seal)) var(--divider-inset)
       var(--divider-seal);
+    z-index: 6;
     background: var(--line);
     pointer-events: none;
   }
+  /* The grip. Grid placement centres it on the column; the line is a seal to
+     the right of the column's centre, so the grip follows by the same amount
+     (P1.2, T4) — a handle drawn on the line it moves, at any seal value. */
   #divider::after {
     content: "";
     position: absolute;
     width: 6px;
     height: 34px;
     border-radius: 999px;
+    translate: var(--divider-seal) 0;
     background: var(--gray-200);
   }
   #divider:hover::after,
@@ -1896,12 +1917,13 @@
     #masthead .affiliations { grid-column: 1 / -1; grid-row: 3; margin-top: 2px; }
     #masthead .venue { font-size: 1rem; }
 
-    #control-band { --band-form: compact; }
-    #viewer-panel:not([data-chrome="hidden"]) #control-band { --band-h: var(--band-compact-h); }
-    #control-band .attribute-control button.switch { flex: 0 0 auto; }
+    /* The band's compact form itself comes from `data-band-form` (V3-BO), set
+       from this same media query; the fold below requires it too, so the tip
+       can never again fold into a band that stayed wide. */
+    #viewer-panel[data-band-form="compact"] #control-band .attribute-control button.switch { flex: 0 0 auto; }
 
-    #viewer-panel { --tip-h: 0px; position: relative; }
-    #stage-tip {
+    #viewer-panel[data-band-form="compact"] { --tip-h: 0px; position: relative; }
+    #viewer-panel[data-band-form="compact"] #stage-tip {
       position: absolute;
       right: calc(var(--stage-pad) + var(--component-gap));
       /* The panel's 10 px bottom padding plus the band's own, so the tip sits
@@ -2048,6 +2070,12 @@
   .prose { max-width: var(--prose-measure); }
   .prose-after { margin-top: 34px; }
   .prose > * + * { margin-top: 1em; }
+  /* Markdown lists (P1.5, T10). The reset zeroes every padding, so without
+     this the outside markers hung into the left margin and the item text stood
+     flush with the paragraphs. The list box begins at the text edge and the
+     items are indented from it, in em so print and the phone follow the type. */
+  .prose ul,
+  .prose ol { padding-inline-start: 1.375em; }
   .prose p {
     font-family: var(--font-body);
     font-size: var(--body-size);
@@ -2698,6 +2726,7 @@
     max-width: 560px;
   }
   .scene-preview {
+    position: relative;
     display: grid;
     gap: 2px;
     width: 100%;
@@ -2710,9 +2739,22 @@
     font: inherit;
     text-align: left;
     cursor: pointer;
-    transition: box-shadow 0.15s ease;
   }
   .scene-preview:disabled { cursor: default; }
+  /* The hover and pressed rings (P1.4, T8). An inset shadow on the card itself
+     paints beneath its children, and the still fills the card's top — so the
+     ring used to show only around the caption. The ring is an overlay instead:
+     an empty layer over the whole card, following its radius, that the image
+     cannot cover. The focus treatment stays the outline outside the card. */
+  .scene-preview::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 2px transparent;
+    transition: box-shadow 0.15s ease;
+  }
   .scene-preview img {
     display: block;
     width: 100%;
@@ -2725,11 +2767,11 @@
   }
   .scene-preview-name { padding: 0 10px; font-weight: 600; font-size: 0.875rem; line-height: 1.3; }
   .scene-preview-dataset { padding: 0 10px; color: var(--muted); }
-  .scene-preview:not(:disabled):hover { box-shadow: inset 0 0 0 2px var(--line); }
-  .scene-preview[aria-pressed="true"],
-  .scene-preview[aria-pressed="true"]:hover { box-shadow: inset 0 0 0 2px var(--brand); }
+  .scene-preview:not(:disabled):hover::after { box-shadow: inset 0 0 0 2px var(--line); }
+  .scene-preview[aria-pressed="true"]::after,
+  .scene-preview[aria-pressed="true"]:hover::after { box-shadow: inset 0 0 0 2px var(--brand); }
   .scene-preview:focus-visible { outline: var(--control-outline-w) solid var(--brand); outline-offset: 2px; }
-  @media (prefers-reduced-motion: reduce) { .scene-preview { transition: none; } }  .pair .pair-caption { grid-column: 1 / -1; margin: 0; color: var(--ink-soft); }
+  @media (prefers-reduced-motion: reduce) { .scene-preview::after { transition: none; } }  .pair .pair-caption { grid-column: 1 / -1; margin: 0; color: var(--ink-soft); }
   .card { background: var(--figure-surface); border-radius: var(--figure-radius); overflow: hidden; }
 
   /* ==========================================================================
@@ -2842,6 +2884,12 @@
     color: var(--muted);
   }
   .rd-chart svg { width: 100%; height: auto; overflow: visible; }
+  /* P1.6 (V3-BP): the hovered method's curve is lifted while the tip names it.
+     Plot draws each series as its own line group with the series' opacity as an
+     attribute; the attribute is what a faint literature curve has to lose. */
+  .rd-chart [aria-label="line"][data-hot] { opacity: 1; }
+  .rd-chart [aria-label="line"][data-hot] path { stroke-width: 3.2px; }
+  .rd-chart [aria-label="tip"] text { fill: var(--ink); }
   .rd-chart-status { max-width: 30ch; text-align: center; font-size: 0.875rem; }
   .rd-scene figcaption {
     padding: 10px 16px 16px;

@@ -53,6 +53,7 @@
     "fonts/inter-latin-700.woff2",
     "index.html",
     "js/attribute-breakdown.js",
+    "js/band-form.js",
     "js/controls.js",
     "js/figures.js",
     "js/gallery.js",

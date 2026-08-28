@@ -7,6 +7,7 @@ import { datasetPlot, rateDistortionPlot } from "./rd-plot.js";
 import { attributeBreakdown, planeDisclosure } from "./attribute-breakdown.js";
 import { planeProbe } from "./plane-probe.js";
 import { exploreNudge } from "./nudge.js";
+import { bandForm } from "./band-form.js";
 import {
   bandSurface,
   cameraGroup,
@@ -33,6 +34,9 @@ const need = (id) => {
 };
 
 const panel = need("viewer-panel");
+// First, and synchronously: the band's form is layout the rest builds on. The
+// template's inline script wrote the first value; this keeps it current.
+bandForm(panel);
 const frame = /** @type {HTMLIFrameElement} */ (need("viewer"));
 const statCard = need("stat-card");
 

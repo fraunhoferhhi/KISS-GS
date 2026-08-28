@@ -383,7 +383,7 @@ export const rateDistortionPlot = (host, bridge, manifest) => {
     const svg = Plot.plot({
       width: measuredWidth,
       height,
-      marginTop: 18,
+      marginTop: 34,
       marginRight: 24,
       marginBottom: 52,
       marginLeft: 64,
@@ -522,6 +522,8 @@ export const datasetPlot = (host, manifest) => {
     muted: styles.getPropertyValue("--muted").trim(),
     line: styles.getPropertyValue("--gray-200").trim(),
     paper: styles.getPropertyValue("--paper").trim(),
+    page: styles.getPropertyValue("--page").trim(),
+    ink: styles.getPropertyValue("--ink").trim(),
   };
 
   /** @param {{rateMb: number, value: number}} point @param {string} unit */
@@ -568,19 +570,31 @@ export const datasetPlot = (host, manifest) => {
     const height = Math.max(320, Math.min(520, Math.round(measuredWidth * 0.66)));
     /** One series as a line plus its points. `dot` overrides the point marks
      * only, and is kept out of the line's options rather than passed through as
-     * a channel Plot would have to ignore. */
+     * a channel Plot would have to ignore. Both marks carry the series' name as
+     * their accessible label: it is how the tip layer below finds the curve to
+     * lift, and how a spec identifies a series without a native `<title>`
+     * (P1.6, V3-BP — the hover tip replaced the title tooltips on this plot). */
     const series = (/** @type {any} */ entry, /** @type {any} */ options) => {
       const { dot, ...line } = options;
       return [
-        Plot.line(entry.points, { x: "rateMb", y: "value", ...line }),
+        Plot.line(entry.points, { x: "rateMb", y: "value", ariaLabel: () => entry.label, ...line }),
         Plot.dot(entry.points, {
           x: "rateMb", y: "value",
           fill: line.stroke, r: 3.2,
-          title: (/** @type {any} */ point) => `${entry.label}\n${readout(point, metric)}`,
+          ariaLabel: () => entry.label,
           ...(dot || {}),
         }),
       ];
     };
+    /** Every drawn point with its series' name, for the one tip layer. */
+    const named = (/** @type {any} */ entry) =>
+      entry.points.map((/** @type {any} */ point) => ({ ...point, series: entry.label }));
+    const everyPoint = [
+      ...model.literature.flatMap(named),
+      ...(model.reference ? named(model.reference) : []),
+      ...(model.hacpp ? named(model.hacpp) : []),
+      ...named(model.ours),
+    ];
     const marks = [
       Plot.frame({ stroke: theme.line }),
       Plot.gridY({ stroke: theme.line, strokeOpacity: 0.6 }),
@@ -597,8 +611,7 @@ export const datasetPlot = (host, manifest) => {
         }),
         Plot.dot(model.reference.points, {
           x: "rateMb", y: "value", fill: theme.paper, stroke: theme.blue, strokeWidth: 2, r: 5,
-          title: (/** @type {any} */ point) =>
-            `${model.reference.label}\n${readout(point, metric)}`,
+          ariaLabel: () => model.reference.label,
         }),
       ] : []),
       ...(model.hacpp ? series(model.hacpp, {
@@ -607,11 +620,25 @@ export const datasetPlot = (host, manifest) => {
       ...series(model.ours, {
         stroke: theme.greenDark, strokeWidth: 2.6, dot: { r: 4.6, fill: theme.green },
       }),
+      // The tip (V3-BP): the method's name and readout at the point nearest the
+      // pointer — over a line as much as over a dot, and on a tap — in the
+      // page's own tokens. Plot's pointer publishes the hovered datum as the
+      // SVG's `value` and fires `input`; the listener after `plot()` turns that
+      // into the lifted curve, because the pointer transform itself renders one
+      // point, never the series the point belongs to.
+      Plot.tip(everyPoint, Plot.pointer({
+        x: "rateMb", y: "value", maxRadius: 40,
+        title: (/** @type {any} */ point) =>
+          `${point.series}\n${point.rateMb.toFixed(2)} MB · ${point.value.toFixed(metric === "psnr" ? 2 : 4)}`
+          + `${metric === "psnr" ? " dB" : ""} ${metric.toUpperCase()}`,
+        fill: theme.page, stroke: theme.line, textPadding: 8, lineHeight: 1.3,
+        fontFamily: "Inter, sans-serif", fontSize: 14,
+      })),
     ];
     const svg = Plot.plot({
       width: measuredWidth,
       height,
-      marginTop: 18,
+      marginTop: 34,
       marginRight: 24,
       marginBottom: 52,
       marginLeft: 66,
@@ -635,6 +662,13 @@ export const datasetPlot = (host, manifest) => {
     svg.setAttribute("role", "img");
     svg.setAttribute("aria-labelledby", `${host.id}-title ${host.id}-description`);
     inheritTextSize(svg);
+    const lines = [...svg.querySelectorAll('[aria-label="line"] path')];
+    svg.addEventListener("input", () => {
+      const hot = /** @type {{series?: string} | null} */ (/** @type {any} */ (svg).value)?.series ?? null;
+      for (const path of lines) {
+        path.parentElement?.toggleAttribute("data-hot", hot !== null && path.getAttribute("aria-label") === hot);
+      }
+    });
     chart.replaceChildren(svg);
     chart.setAttribute("aria-busy", "false");
     if (caption) {
