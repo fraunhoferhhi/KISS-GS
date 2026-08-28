@@ -1,5 +1,14 @@
 // @ts-check
 /**
+ * A point the visitor asked for that is still on its way. A point that never
+ * landed is not still arriving: the indicator stops, and the figures stay
+ * covered because they are the scene the viewer never left, under controls that
+ * now name a different one. Shared by the card and the phone strip (P2.1).
+ * @param {PageState} state
+ */
+export const arriving = (state) => Boolean(state.arriving) && state.renderer === "ready" && !state.selectionError;
+
+/**
  * The page-drawn widgets. Under decision A the iframe renders the canvas and
  * nothing else, so every control on this page is here.
  *
@@ -269,11 +278,8 @@ export const sceneArrival = (card, bridge) => {
 
   return (/** @type {PageState} */ state) => {
     const error = state.selectionError;
-    // A point that never landed is not still arriving: the indicator stops, and
-    // the figures stay covered because they are the scene the viewer never left,
-    // under controls that now name a different one.
-    const arriving = state.arriving && state.renderer === "ready" && !error;
-    if (arriving) card.dataset.loading = "";
+    const onWay = arriving(state);
+    if (onWay) card.dataset.loading = "";
     else delete card.dataset.loading;
     if (error) card.dataset.selectionError = error.status;
     else delete card.dataset.selectionError;
@@ -288,10 +294,10 @@ export const sceneArrival = (card, bridge) => {
     }
     // The figures are hidden from the eye by the stylesheet; this hides them from
     // a screen reader too, which would otherwise read out the old megabytes.
-    if (figures) figures.setAttribute("aria-hidden", String(arriving || Boolean(error)));
-    if (indicator) indicator.setAttribute("aria-hidden", String(!arriving));
+    if (figures) figures.setAttribute("aria-hidden", String(onWay || Boolean(error)));
+    if (indicator) indicator.setAttribute("aria-hidden", String(!onWay));
     if (!indicator || !bar) return;
-    const fraction = arriving ? state.progress : null;
+    const fraction = onWay ? state.progress : null;
     if (fraction === null) indicator.setAttribute("data-indeterminate", "");
     else indicator.removeAttribute("data-indeterminate");
     bar.style.setProperty("--load", `${Math.round(Math.min(1, Math.max(0, fraction ?? 0)) * 100)}%`);
@@ -617,13 +623,17 @@ export const sizeSlider = (slot, bridge, manifest, options = {}) => {
  * matters for a ragged export: asking for Train while M is selected may land
  * Train at S, and the control must describe Train/S rather than the request.
  *
+ * `plain` names the scene only (the phone strip, P2.1): the size is the byte
+ * figure beside it, and a 320 px line has no room to say it twice.
+ *
  * @param {HTMLElement} host
  * @param {{apply: (intent: {scene?: string}) => unknown}} bridge
  * @param {SizeManifest | null} manifest
- * @param {{gate?: boolean}} [options]
+ * @param {{gate?: boolean, plain?: boolean}} [options]
  */
 export const scenePicker = (host, bridge, manifest, options = {}) => {
   const gate = options.gate ?? true;
+  const plain = options.plain ?? false;
   const group = /** @type {HTMLElement | null} */ (host.querySelector('[data-control="scenes"]'));
   const select = /** @type {HTMLSelectElement | null} */ (host.querySelector("[data-scene-input]"));
   /** @type {string | null} */
@@ -640,9 +650,9 @@ export const scenePicker = (host, bridge, manifest, options = {}) => {
           const option = document.createElement("option");
           const point = manifest?.scenes?.[scene.name]?.points.find((item) => item.tier === tier);
           option.value = scene.name;
-          option.textContent = point
-            ? `${scene.label} · ${formatBytes(point.bytes)}`
-            : `${scene.label} · unavailable`;
+          option.textContent = plain
+            ? scene.label
+            : point ? `${scene.label} · ${formatBytes(point.bytes)}` : `${scene.label} · unavailable`;
           return option;
         });
         const optgroup = document.createElement("optgroup");

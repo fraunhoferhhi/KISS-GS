@@ -60,6 +60,7 @@
     "js/lazy.js",
     "js/main.js",
     "js/nudge.js",
+    "js/phone-scene.js",
     "js/plane-probe.js",
     "js/rd-plot.js",
     "js/story.js",

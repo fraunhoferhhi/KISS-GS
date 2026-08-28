@@ -171,6 +171,10 @@ export const initStory = ({ story, breadcrumb, sections, bridge }) => {
     target.scrollIntoView({ behavior, block: "start" });
   };
 
+  // The bar pins (its `top` is where the visible story begins); the entry list
+  // inside it scrolls and fades (P2.3 gave the bar a second child, the toggle).
+  const crumbs = /** @type {HTMLElement | null} */ (breadcrumb?.querySelector("[data-crumb-list]") ?? breadcrumb);
+
   const links = new Map(
     [...(breadcrumb?.querySelectorAll("a[data-nav]") || [])].map((link) => [
       /** @type {HTMLAnchorElement} */ (link).dataset.nav || "",
@@ -188,14 +192,14 @@ export const initStory = ({ story, breadcrumb, sections, bridge }) => {
    * @param {HTMLAnchorElement} link
    */
   const revealCrumb = (link) => {
-    if (!breadcrumb) return;
-    const strip = breadcrumb.getBoundingClientRect();
+    if (!crumbs) return;
+    const strip = crumbs.getBoundingClientRect();
     const box = link.getBoundingClientRect();
     const pad = 16;
     if (box.left < strip.left + pad) {
-      breadcrumb.scrollLeft -= strip.left + pad - box.left;
+      crumbs.scrollLeft -= strip.left + pad - box.left;
     } else if (box.right > strip.right - pad) {
-      breadcrumb.scrollLeft += box.right - (strip.right - pad);
+      crumbs.scrollLeft += box.right - (strip.right - pad);
     }
     markCrumbEdges();
   };
@@ -207,15 +211,15 @@ export const initStory = ({ story, breadcrumb, sections, bridge }) => {
    * concerned, and on a narrow panel that is most of them.
    */
   const markCrumbEdges = () => {
-    if (!breadcrumb) return;
+    if (!crumbs) return;
     const slack = 2;
     const edges = [];
-    if (breadcrumb.scrollLeft > slack) edges.push("start");
-    if (breadcrumb.scrollLeft + breadcrumb.clientWidth < breadcrumb.scrollWidth - slack) {
+    if (crumbs.scrollLeft > slack) edges.push("start");
+    if (crumbs.scrollLeft + crumbs.clientWidth < crumbs.scrollWidth - slack) {
       edges.push("end");
     }
     const value = edges.join(" ");
-    if (breadcrumb.dataset.edge !== value) breadcrumb.dataset.edge = value;
+    if (crumbs.dataset.edge !== value) crumbs.dataset.edge = value;
   };
 
   /** @param {string} id */
@@ -244,7 +248,12 @@ export const initStory = ({ story, breadcrumb, sections, bridge }) => {
     // line is expressed in viewport coordinates, which is what
     // getBoundingClientRect already gives us.
     const panel = story.getBoundingClientRect();
-    const top = Math.max(panel.top, 0);
+    // The visible story begins where its sticky breadcrumb pins: 0 on the
+    // desktop, the pinned renderer panel's height on a phone (P2.2, V3-BN),
+    // where the panel covers the top of the document and a section scrolled
+    // to its scroll margin arrives below it, not at the viewport's top.
+    const pinned = breadcrumb ? Number.parseFloat(getComputedStyle(breadcrumb).top) || 0 : 0;
+    const top = Math.max(panel.top, pinned, 0);
     const bottom = Math.min(panel.bottom, document.documentElement.clientHeight);
     return {
       line: top + Math.max(bottom - top, 0) / 3,
@@ -266,7 +275,7 @@ export const initStory = ({ story, breadcrumb, sections, bridge }) => {
     });
   };
 
-  breadcrumb?.addEventListener("scroll", markCrumbEdges, { passive: true });
+  crumbs?.addEventListener("scroll", markCrumbEdges, { passive: true });
   window.addEventListener("resize", markCrumbEdges, { passive: true });
   markCrumbEdges();
 

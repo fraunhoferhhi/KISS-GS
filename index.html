@@ -111,13 +111,21 @@
 <div id="split">
 
   <section id="viewer-panel" aria-label="Interactive scene"
-           data-short-viewport="(min-width: 900px) and (max-height: 760px)" data-narrow-panel="600">
+           data-short-viewport="(min-width: 900px) and (max-height: 760px)" data-narrow-panel="600"
+           data-landscape-phone="(max-width: 899px) and (max-height: 499px)">
     <script>
       (function (panel) {
         var short = window.matchMedia(panel.dataset.shortViewport).matches;
         var style = getComputedStyle(panel);
         var width = panel.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
         panel.dataset.bandForm = short || width <= Number(panel.dataset.narrowPanel) ? "compact" : "wide";
+        // P2.3 (V3-BN): the phone's collapsed scene, in force before the first
+        // paint. A remembered choice wins; otherwise only a landscape phone
+        // starts collapsed. `js/phone-scene.js` keeps it current.
+        var stored = null;
+        try { stored = window.sessionStorage.getItem("kissgs:scene"); } catch (e) {}
+        panel.parentNode.dataset.scene = stored === "hidden" || stored === "shown"
+          ? stored : window.matchMedia(panel.dataset.landscapePhone).matches ? "hidden" : "shown";
       })(document.currentScript.parentNode);
     </script>
     <div id="stage">
@@ -131,9 +139,9 @@
         <div id="stat-card" data-card="stats" aria-label="Scene statistics">
           <p class="stat-mark">
             <svg class="stat-cube" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"></path>
-              <path d="m4 7.5 8 4.5 8-4.5M12 12v9"></path>
-            </svg>
+  <path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"></path>
+  <path d="m4 7.5 8 4.5 8-4.5M12 12v9"></path>
+</svg>
             <span>KISS-GS</span>
           </p>
           <div class="stat-readout">
@@ -200,6 +208,20 @@
           <button type="button" data-action="retry-renderer" hidden>Retry renderer</button>
         </div>
       </div>
+    </div>
+
+    <div id="stage-strip" role="group" aria-label="Scene statistics">
+      <p class="strip-mark"><svg class="stat-cube" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  <path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"></path>
+  <path d="m4 7.5 8 4.5 8-4.5M12 12v9"></path>
+</svg><span>KISS-GS</span></p>
+      <span class="strip-bytes" data-stat="bytes">3.94 MB</span>
+      <span class="strip-line"><span data-stat="count" data-compact-stat aria-label="256,000 Gaussians">256k splats</span><span class="strip-live"> &middot; <span data-fps>&ndash;</span> fps</span></span>
+      <div class="strip-scene" data-control="scenes" hidden>  <label class="sr-only"
+         for="scene-strip-input">Scene</label>
+  <select id="scene-strip-input" disabled data-scene-input aria-label="Scene"></select>
+</div>
+
     </div>
 
     <div id="control-band" role="group" aria-label="Viewer controls">
@@ -332,6 +354,7 @@ disabled>
 
   <main id="story" tabindex="-1">
     <nav id="breadcrumb" aria-label="Sections">
+      <div id="breadcrumb-list" data-crumb-list>
       <a href="#tldr" data-nav="tldr">In short</a>
       <a href="#intro" data-nav="intro">Intro</a>
       <a href="#size" data-nav="size">Size vs quality</a>
@@ -341,6 +364,12 @@ disabled>
       <a href="#sorting" data-nav="sorting">Encoding</a>
       <a href="#results" data-nav="results">Results</a>
       <a href="#cite" data-nav="cite">Paper & code</a>
+      </div>
+      <button type="button" id="scene-toggle" data-action="toggle-scene" aria-pressed="true"
+              aria-label="Hide scene" title="Hide scene" disabled><svg class="stat-cube" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+  <path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"></path>
+  <path d="m4 7.5 8 4.5 8-4.5M12 12v9"></path>
+</svg></button>
     </nav>
 
 <section id="tldr" data-section tabindex="-1" aria-labelledby="tldr-title" class="band">
@@ -382,7 +411,7 @@ attribute images smoothest, so they survive a coarser quantizer. → <a href="#s
     <h2 id="intro-title">A full 3DGS scene, in <span data-stat="bytes">3.94 MB</span></h2>
   </div>
 
-    <div class="prose"><p><strong>The scene on the left is the whole file, <span data-stat="bytes">3.94 MB</span>, decoded and rendering live in your
+    <div class="prose"><p><strong>The scene in the renderer is the whole file, <span data-stat="bytes">3.94 MB</span>, decoded and rendering live in your
 browser.</strong> It is the <span data-scene-label="dataset">Mip-NeRF 360</span> <strong><span data-scene-label="scene">Garden</span></strong> scene, and it arrived as a SOG-XT container: nine
 ordinary images and a small text file. <a href="#bytes">What is inside</a> shows the images themselves.</p>
 <p>Go on, drag it. <code>WASD</code> moves you around. It is a renderer, not a video.</p>
@@ -404,7 +433,7 @@ the pipeline gets there.</p>
 size-and-quality number cannot rank them, because every method can trade one for the other. So
 the paper plots quality against file size, one curve per method, and if one curve sits above
 another everywhere, that method is better at every operating point. Here is the curve for the
-scene beside this text; the other methods join it in the <a href="#results">results</a>.</p>
+live scene; the other methods join it in the <a href="#results">results</a>.</p>
 </div>
 
     <div class="control-mirror-row" id="size-mirror">
@@ -459,8 +488,7 @@ and it is the same recipe that encodes the vanilla INRIA baseline. The budget is
 and not the only parameter: the color codebook’s side length is derived from the primitive count
 and then clamped, and the smallest budget is set lower for the Blender objects than for the real
 captures.</p>
-<p>The scene beside this text is at <span data-stat="bytes">3.94 MB</span>, and the slider above moves the one in the renderer
-as well. Two encodings seen from two different positions cannot be compared, so turn <strong>Motion</strong>
+<p>The live scene is at <span data-stat="bytes">3.94 MB</span>, and the slider above moves it as well. Two encodings seen from two different positions cannot be compared, so turn <strong>Motion</strong>
 off when you want the camera to hold still.</p>
 <p>Quality stops climbing before the track runs out. On 4 of the
 21 scenes the paper’s best measured PSNR is not at the largest size:
@@ -2046,7 +2074,7 @@ doing this:</p>
 <p>That asymmetry is the point of the paper. Put the complexity where it runs once; keep it out of
 the place that runs everywhere. State-of-the-art 3DGS compression does not need a complicated
 deployment stack.</p>
-<p>You have been looking at the proof the whole time. The scene on the left arrived as those same
+<p>You have been looking at the proof the whole time. The live scene arrived as those same
 nine images, went through those same operations in your browser, and has been rendering as
 ordinary 3D Gaussians while you read about how it got that small.</p>
 </div>

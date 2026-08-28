@@ -1097,6 +1097,18 @@ export const createBridge = ({ panel, frame, initialStats }) => {
       return ensureViewer();
     },
     /** Retry after a failed boot, from the same intent the page last wanted. */
+    /**
+     * P2.3 (V3-BN): the phone's collapsed panel. Nothing can see a hidden scene,
+     * so its camera path ramps out the way it does for a scene change (V3-BA),
+     * and expanding rides the same ramp back. That is all this does: the iframe
+     * stays alive and nothing is re-decoded.
+     * @param {boolean} hidden
+     */
+    setSceneHidden(hidden) {
+      if (!viewer) return;
+      if (hidden) suspendMotion(viewer);
+      else resumeMotion(viewer);
+    },
     retry() {
       if (state.renderer === "off" && state.reason === "user") return this.setEnabled(true);
       booting = null;

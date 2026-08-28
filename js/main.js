@@ -8,7 +8,9 @@ import { attributeBreakdown, planeDisclosure } from "./attribute-breakdown.js";
 import { planeProbe } from "./plane-probe.js";
 import { exploreNudge } from "./nudge.js";
 import { bandForm } from "./band-form.js";
+import { sceneToggle } from "./phone-scene.js";
 import {
+  arriving,
   bandSurface,
   cameraGroup,
   frameRate,
@@ -118,6 +120,17 @@ const sceneMirror = optional("scene-mirror");
 if (sceneMirror) widgets.push(scenePicker(sceneMirror, bridge, sizes, { gate: false }));
 const scenePreviewCards = optional("scene-previews");
 if (scenePreviewCards) widgets.push(scenePreviews(scenePreviewCards, bridge));
+// P2.1 (V3-BN): the phone strip. Its `[data-stat]` figures are already fed by
+// `statFigures(document)`; it needs its own frame rate, its own view of the
+// requested scene, and the arriving flag the card shows as "Loading".
+const strip = optional("stage-strip");
+if (strip) {
+  widgets.push(
+    frameRate(strip),
+    scenePicker(strip, bridge, sizes, { plain: true }),
+    (state) => { strip.toggleAttribute("data-loading", arriving(state)); },
+  );
+}
 
 bridge.subscribe((state) => {
   for (const render of widgets) render(state);
@@ -135,6 +148,10 @@ try {
 }
 
 initStory({ story: need("story"), breadcrumb: document.getElementById("breadcrumb"), sections, bridge });
+// P2.3 (V3-BN): the phone's scene toggle in the breadcrumb bar. The template's
+// inline script wrote the first collapsed state; this keeps it current.
+const toggle = /** @type {HTMLButtonElement | null} */ (optional("scene-toggle"));
+if (toggle) sceneToggle({ split: need("split"), button: toggle, bridge });
 // F3.3: the one hint the page volunteers about the camera, and only to a visitor
 // who has read on without ever touching it.
 exploreNudge({ stage: need("stage"), story: need("story"), panel, sections, bridge });

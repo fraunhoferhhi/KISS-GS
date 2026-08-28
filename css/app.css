@@ -776,6 +776,11 @@
   }
   #stat-card .stat-live-unit { letter-spacing: 0.3px; }
 
+  /* P2.1 (V3-BN): the phone's statistics strip. A sibling of the stage, so it
+     can sit between canvas and band where no child of the stage could; the
+     one-column rules below give it its form, the desktop never shows it. */
+  #stage-strip { display: none; }
+
   #viewport-actions {
     /* Above the renderer-off screen, deliberately: this cluster carries the
        switch that turns rendering back on, and a control the fallback covers is
@@ -1795,17 +1800,26 @@
     top: 0;
     z-index: 5;
     display: flex;
+    align-items: flex-start;
     gap: var(--space);
-    overflow-x: auto;
-    scrollbar-width: none;
     background: var(--page);
     padding: 0 var(--gutter) 13px;
     transform: translateY(var(--breadcrumb-optical-offset-y));
     margin-bottom: max(0px, var(--breadcrumb-optical-offset-y));
-    /* The strip scrolls sideways when the section list outgrows the panel, and
-       its scrollbar is hidden — so the edge that still has entries behind it is
-       faded instead. Both stops are 0 until story.js says otherwise, which makes
-       the gradient a no-op rather than a permanent decoration. */
+  }
+  /* The entry list is the part that scrolls (P2.3 split it from the bar so the
+     phone's scene toggle can stand at the bar's end, outside the fade). It
+     scrolls sideways when the section list outgrows the panel, and its
+     scrollbar is hidden — so the edge that still has entries behind it is
+     faded instead. Both stops are 0 until story.js says otherwise, which makes
+     the gradient a no-op rather than a permanent decoration. */
+  #breadcrumb-list {
+    display: flex;
+    gap: var(--space);
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
     --fade-start: 0px;
     --fade-end: 0px;
     -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-start),
@@ -1813,9 +1827,12 @@
     mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-start),
       #000 calc(100% - var(--fade-end)), transparent 100%);
   }
-  #breadcrumb[data-edge~="start"] { --fade-start: 30px; }
-  #breadcrumb[data-edge~="end"] { --fade-end: 30px; }
-  #breadcrumb::-webkit-scrollbar { display: none; }
+  #breadcrumb-list[data-edge~="start"] { --fade-start: 30px; }
+  #breadcrumb-list[data-edge~="end"] { --fade-end: 30px; }
+  #breadcrumb-list::-webkit-scrollbar { display: none; }
+  /* The phone's scene toggle (P2.3, V3-BN): the one-column rules give it its
+     form; the split composition has no need of it. */
+  #scene-toggle { display: none; }
   #breadcrumb::after {
     content: "";
     position: absolute;
@@ -1954,15 +1971,37 @@
     #masthead .masthead-side { align-items: flex-start; }
     #masthead .venue { text-align: left; }
     #masthead .links { justify-content: flex-start; }
-    #split { display: block; }
     #divider { display: none; }
-    #viewer-panel { border-bottom: 1px solid var(--line); }
+    /* P2.2 (V3-BN): the renderer is pinned. The panel sticks to the top of the
+       viewport while the story scrolls beneath it, and the story's sticky
+       breadcrumb sits directly under it — so the breadcrumb's `top` and every
+       section's scroll margin are the panel's height, stated once here. The
+       height is the sum of what the panel shows on a phone: the canvas
+       (`#stage` below, no top margin when pinned), the 36 px strip (P2.1), the
+       compact band, and the panel's bottom border; the tip row is gone. The
+       canvas fraction keeps the open panel under 45 % of a 390×844 viewport:
+       218 + 36 + 114 + 1 = 369 px of 844. Above the breadcrumb's 5 and above
+       any tooltip in the story (5), below nothing on this page. */
+    #split {
+      display: block;
+      --phone-canvas-h: max(200px, min(36svh, 56vw));
+      --phone-panel-h: calc(var(--phone-canvas-h) + 36px + var(--band-compact-h) + 1px);
+    }
+    #viewer-panel {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      border-bottom: 1px solid var(--line);
+      --tip-h: 0px;
+    }
+    #stage-tip { display: none; }
     #stage {
       /* svh, not dvh: a dvh stage resizes every time the mobile URL bar hides,
-         and resizing this canvas is expensive. Roughly 4:3, capped at half the
-         small viewport so the prose below it is visible without a scroll. */
-      height: min(52svh, 78vw);
-      min-height: 220px;
+         and resizing this canvas is expensive. `min-height` is the floor the
+         variable above also states, so the two cannot disagree. */
+      height: var(--phone-canvas-h);
+      min-height: 200px;
+      margin-top: 0;
     }
     /* The band still reserves its height here. How short it is comes from the
        panel-width container query above, which is the honest measure: the
@@ -1970,8 +2009,162 @@
     /* `--stage-pad` is declared on :root as var(--gutter) and resolves there, so
        a panel-level gutter alone never reached the stage or the band (F2.3). */
     #viewer-panel { --gutter: 16px; --stage-pad: 16px; }
+
+    /* P2.1 (V3-BN): the statistics leave the canvas. The card and the chip go;
+       the strip between canvas and band carries the same figures on one 36 px
+       line. The select stays a 44 px touch target (V3-BI): its box overhangs
+       the line by four pixels at either edge, into canvas and band padding, so
+       both rulings hold. `.strip-scene` is `hidden` until the Scenes chapter
+       introduces the control, exactly like the card's chip, and the explicit
+       flex display below would otherwise beat the attribute. */
+    #stat-card, #scene-card { display: none; }
+    #stage-strip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 0 0 auto;
+      height: 36px;
+      margin: 0 var(--stage-pad);
+      padding: 0 8px;
+      border-top: var(--line-w) solid var(--line);
+      background: var(--control-strip);
+      color: var(--ink);
+      font-size: 0.875rem;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    #stage-strip .strip-mark {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex: 0 0 auto;
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: var(--green-900);
+    }
+    #stage-strip .stat-cube {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    #stage-strip .strip-bytes {
+      flex: 0 0 auto;
+      font-weight: 700;
+      color: var(--stat-primary);
+      font-variant-numeric: tabular-nums;
+    }
+    #stage-strip .strip-line {
+      flex: 0 0 auto;
+      color: var(--stat-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+    #stage-strip .strip-live { color: var(--stat-live); }
+    /* Three digits of room, like the card's slot, so the unit never moves. */
+    #stage-strip [data-fps] { display: inline-block; min-width: 3ch; text-align: right; }
+    #stage-strip[data-loading] .strip-bytes,
+    #stage-strip[data-loading] .strip-line { opacity: 0.45; }
+    #stage-strip .strip-scene {
+      display: flex;
+      justify-content: flex-end;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    #stage-strip .strip-scene[hidden] { display: none; }
+    #stage-strip select {
+      max-width: 100%;
+      min-width: 0;
+      height: var(--control-h);
+      margin-block: calc((36px - var(--control-h)) / 2);
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--green-900);
+      font: inherit;
+      font-weight: 600;
+      padding: 0 18px 0 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+      /* The page's own chevron: the native menulist reserves an arrow well of
+         its own beside the padding, and on this line those ~20 px are the
+         difference between "Garden" and "Ga…". */
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5 5 6.5 8 3.5' fill='none' stroke='%23107059' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
+      background-size: 10px 10px;
+    }
+    #stage-strip select:disabled { cursor: default; opacity: 0.55; }
+    #stage-strip select:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px var(--gray-200); }
+    /* The line is over-full on a portrait phone: at the 14 px floor the mark
+       (92), the byte figure (74) and "1.2M splats · 144 fps" (146) leave a
+       390 px panel two pixels for the select. Two parts yield, by the panel's
+       width, in the order of what the page would rather the visitor read
+       last: the frame rate goes first (the card's own quietest figure), then
+       the wordmark's text while the cube stays. The byte figure, the count and
+       the select never go, and the select keeps ≥ 44 px on every phone. */
+    @container viewer (max-width: 419px) {
+      #stage-strip .strip-live { display: none; }
+    }
+    @container viewer (max-width: 339px) {
+      #stage-strip .strip-mark span { display: none; }
+    }
+
     #story { margin-top: 0; border-radius: 0; }
-    #breadcrumb { top: 0; }
+    #breadcrumb { top: var(--phone-panel-h); }
+
+    /* P2.3 (V3-BN): the scene toggle, a 44 px target at the bar's right end,
+       and the collapsed panel it controls. Collapsed, the panel is zero pixels
+       tall and invisible, but nothing inside it changes size or display: the
+       stage keeps its height under the clip (`flex: none`, or the column
+       would shrink it and resize the canvas), the iframe stays alive and the
+       scene stays decoded. The breadcrumb's `top` and the sections' scroll
+       margins follow through the one variable. */
+    #scene-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    #scene-toggle svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    #scene-toggle[aria-pressed="true"] { color: var(--brand); }
+    #scene-toggle:disabled { cursor: default; opacity: 0.55; }
+    #split[data-scene="hidden"] { --phone-panel-h: 0px; }
+    #split[data-scene="hidden"] #viewer-panel {
+      height: 0;
+      min-height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      border-bottom: 0;
+    }
+    #split[data-scene="hidden"] #stage { flex: none; }
+    /* A jump to a section lands its heading under the breadcrumb, which is
+       under the panel: the desktop's 56 px plus the pinned panel. */
+    #story > section { scroll-margin-top: calc(var(--phone-panel-h) + 56px); }
 
     /* F2.3 (V3-BI): a phone is a touch page. Every control is a 44 px target
        — one token lifts the buttons, selects, tabs and the band's rows at once,
@@ -2016,11 +2209,12 @@
       color: #000;
     }
     .skip-link, #divider, #viewer, #control-band, #stage-tip, #breadcrumb, #viewport-actions,
-    #scene-card, #stage-status { display: none !important; }
+    #scene-card, #stage-status, #stage-strip select { display: none !important; }
     #masthead { padding: 0 var(--gutter) 12px; }
     #masthead h1, #masthead .authors, #masthead .affiliations, #masthead .venue { color: #000; }
     .btn { background: none; border-color: #000; color: #000; }
-    #viewer-panel { border-bottom: 0; }
+    /* Nothing is pinned on paper (P2.2). */
+    #viewer-panel { position: static; border-bottom: 0; }
     #stage {
       height: 56vw;
       max-height: 520px;
@@ -2031,7 +2225,10 @@
     #stage-fallback { background: #fff; }
     #stage-fallback img { opacity: 1; }
     #stage-fallback .fallback-inner { display: none; }
-    #stat-card { color: #000; }
+    /* The strip prints the figures (P2.1): black, no surface, a hairline above. */
+    #stage-strip, #stage-strip .strip-mark, #stage-strip .strip-bytes,
+    #stage-strip .strip-line, #stage-strip .strip-live { color: #000; }
+    #stage-strip { background: none; border-color: #000; }
   }
 }
 
