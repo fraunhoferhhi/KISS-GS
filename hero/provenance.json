@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "generator": "poster-assets",
+  "generator_version": 1,
+  "target": "make poster-assets",
+  "source": {
+    "kind": "ffsplat GPU render of the camera-ready KISS-GS container",
+    "scene": "/data/gaussian_splatting/kiss-gs/260312-results-SOG-XT-FT-1504-qq=99-POPSpa-html/XL/MipNeRF360-Garden",
+    "dataset": "/data/gaussian_splatting/nerf_datasets/360/garden",
+    "camera": "DSC08039",
+    "ffsplat_commit": "ddd7128c653b42a82d27466afb6a1f311f078de8",
+    "note": "Selected DSC08039 for its wide view of the garden table and plant; rendered at the dataset camera aspect with scaled intrinsics."
+  },
+  "produced": [
+    {
+      "path": "hero/garden.png",
+      "sha256": "1374f5551275bd801b7a6b24f2983407f027949869c9edce8d2d426ef1cc8ab8",
+      "bytes": 8706764,
+      "source": "/data/gaussian_splatting/kiss-gs/260312-results-SOG-XT-FT-1504-qq=99-POPSpa-html/XL/MipNeRF360-Garden / DSC08039",
+      "width": 3200,
+      "height": 2072
+    }
+  ]
+}

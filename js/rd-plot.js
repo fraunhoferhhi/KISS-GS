@@ -245,6 +245,10 @@ export const datasetPlotModel = (payload, manifest, dataset, metricKey) => {
     hacpp: (hacppKey && built.get(hacppKey)) || null,
     literature,
     reference: built.get(referenceKey) || null,
+    // Every series the dataset has, for consumers that draw more of the paper's
+    // Fig. 1 than the page does (the poster: compaction alone, the encoding
+    // before fine-tuning, the .sog/.spz formats, SOG-XT on the INRIA .ply).
+    allSeries: [...built.values()],
   };
 };
 

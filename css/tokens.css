@@ -1,0 +1,256 @@
+/* KISS-GS design tokens — the page's single `:root` token block, extracted
+ * from app.css (poster/presentation stream, decision P-1/§4.1): the poster and
+ * presentation stylesheets consume these without the page's component layers.
+ * Nothing outside this file names a colour; a palette change is a change here.
+ * app.css @imports this file into `@layer base`, so the cascade is unchanged.
+ */
+
+@layer base {
+  :root {
+    color-scheme: light;
+
+    /* The four Fraunhofer highlight colours, and the ramps around them.
+       Each family carries one ANCHOR — the institute's own value, used where a
+       highlight is meant to be seen — plus an `-ink` step dark enough for small
+       text on white (AA at 4.5:1, verified), and faded steps for fills. The
+       anchors are the four the author specified: green #169c7d, orange #eb6a0a,
+       dark blue #006e92, lighter blue #26bae2. Nothing outside this block names
+       a colour, so a palette change is a change here. */
+    --green-900: #107059;
+    --green-600: #169c7d;   /* anchor: Fraunhofer green */
+    --green-500: #35796a;   /* the secondary green: AA on white at 4.8:1 */
+    --green-400: #5ec9b1;
+    --green-200: #b3e0d5;
+    --green-100: #e0f3ee;
+    --green-50: #d3ece4;
+
+    --gray-100: #eef1f0;
+    --gray-200: #dce3e0;
+    /* The mid neutral. It is a data colour, not a surface: opacity is the one
+       attribute the author gives a gray, and it has to read as "on" against the
+       switch's own off track (#c9d3d0) and as a segment against the byte bar. */
+    --gray-600: #788683;
+    --page: #f7fcf7;
+    --paper: #d9e7e1;
+    --floating: #efefef;
+    --ink: #1a1a1a;
+    --ink-soft: #2c3534;
+    --muted: #5a6b68;
+    --band: var(--page);
+    --line: #dce3e0;
+    --line-w: 0px;
+    --control-strip: #efefef;
+    --camera-panel: #efefef;
+
+    --brand: var(--green-900);
+    --brand-hover: var(--green-600);
+    --brand-active: var(--green-600);
+    --brand-subtle: var(--green-200);
+    --accent: var(--brand);
+    --accent-soft: var(--green-100);
+    --accent-ink: var(--brand);
+
+    --orange: #eb6a0a;      /* anchor: Fraunhofer orange */
+    --orange-soft: #fdeee2;
+    --orange-ink: #9a4a0c;  /* AA on white, on the soft tint (5.5:1) and on the mint (5.0:1); #b4560e failed the last two */
+    --orange-mute: #845e3c; /* the anchor, mixed 55% into the neutral gray; 5.8:1 */
+    --blue: #006e92;        /* anchor: Fraunhofer dark blue */
+    --blue-light: #26bae2;  /* anchor: Fraunhofer lighter blue */
+    --blue-soft: #eaf6fb;
+    --blue-ink: #005b79;
+
+    --dark: #132720;
+    --dark-surface: #141f1e;
+    --dark-card: #1a2826;
+    --dark-line: rgba(231, 235, 234, 0.14);
+    --dark-ink: #f4f7f6;
+    --dark-muted: #8e9f9c;
+
+    --good: var(--green-900);
+    --bad: #b91c1c;
+
+    /* The stat card, in one place. The compressed size is the page's central
+       fact (section 4), so it carries the anchor green; the splat count and the
+       bit rate support it in the secondary green; the frame rate is telemetry
+       and gets the muted orange, which is visibly a different family from the
+       two figures above it and never competes with them. */
+    --stat-primary: var(--green-600);
+    /* 4.9:1 on the control surface (F2.6); #76807c sat at 3.5. */
+    --stat-secondary: #5f6a67;
+    --stat-live: #5f6a67;
+
+    /* One radius scale, so the stage overlays read as one set of objects rather
+       than a pill among rounded rectangles. The grip on the divider keeps its
+       own fully-round form: it is a handle, not a container. */
+    --r-stage: 12px;
+    --r-card: 10px;
+    --r-control: 6px;
+    --r-chip: 10px;
+    --control-h: 32px;
+    --gutter: 24px;
+    --space: 10px;
+    --component-gap: 10px;
+    --stage-card-inset: 10px;
+    --instrument-w: 256px;
+    --card-pad-x: 12px;
+    --card-pad-y: 16px;
+    --floating-blur: 6px;
+
+    --font-heading: Charter, "Bitstream Charter", Georgia, serif;
+    --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-meta: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-controls: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --masthead-title-size: 2.25rem;
+    --masthead-title-weight: 600;
+    --author-size: 1rem;
+    --author-weight: 400;
+    --affiliation-size: 0.875rem;
+    --section-title-size: 2rem;
+    --section-title-weight: 500;
+    --body-size: 1.0625rem;
+    --body-weight: 400;
+    --body-leading: 1.65;
+    --metadata-size: 0.875rem;
+    --metadata-weight: 600;
+    --control-font-size: 0.875rem;
+    --control-font-weight: 500;
+    --breakdown-surface: #d9e7e1;
+    --breakdown-gap: 10px;
+    /* F1.6: the legend name column for engines without CSS subgrid; with
+       subgrid the column sizes itself from the widest label. */
+    --legend-name-w: 160px;
+    --breakdown-radius: 10px;
+    --breakdown-font-size: 0.875rem;
+    --attribute-chip-surface: #d9e7e1;
+    --attribute-chip-gap: 4px;
+    --attribute-chip-radius: 6px;
+    --attribute-chip-font-size: 0.875rem;
+    --attribute-rule-w: 1px;
+    /* M13's byte stack (V3-N) and raw-plane disclosure (V3-O). */
+    --stack-h: 288px;
+    --stack-bar-w: 26px;
+    --stack-gap: 10px;
+    --stack-link-w: 44px;
+    --stack-link-opacity: 0.3;
+    --plane-radius: 6px;
+    /* Q8: the bounded, page-owned attribute inspector (V3-AS). */
+    --inspector-card-min: 360px;
+    --inspector-card-pad: 10px;
+    --inspector-card-gap: 10px;
+    --inspector-card-radius: 8px;
+    --inspector-rule-w: 1px;
+    --inspector-title-size: 0.875rem;
+    --inspector-meta-size: 0.875rem;
+    --inspector-value-size: 0.875rem;
+    --inspector-cursor-size: 18px;
+    --inspector-cursor-inner-w: 2px;
+    --inspector-cursor-outer-w: 2px;
+    --figure-surface: #d9e7e1;
+    --figure-radius: 10px;
+    --figure-gap: 10px;
+    --figure-caption-size: 0.875rem;
+    --figure-caption-pad: 12px;
+    /* M14: the evidence chapter — the dataset plot's control inset and the
+       reduction table's density. */
+    --evidence-pad: 16px;
+    --evidence-gap: 28px;
+    --reduction-font-size: 0.9375rem;
+    --reduction-cell-pad: 10px;
+    /* M14's leave-one-out claims and single-frame comparison (V3-Q). */
+    --claim-gap: 18px;
+    --claim-bar-h: 8px;
+    --gallery-max-width: 800px;
+    --gallery-gap: 14px;
+    --gallery-radius: 10px;
+    --gallery-control-gap: 12px;
+    --gallery-panel-pad: 14px;
+    --gallery-nudge-inset: 12px;
+    --waterfall-gap: 14px;
+    --waterfall-bar-h: 32px;
+    /* M12: the four-stage strip that replaced the paper's Fig. 1, and the
+       compaction recipe's numbered steps. Both are authorable (DESIGN_V2 17's
+       development-tool amendment: a milestone that adds a visual widget adds its
+       decisions to the authoring schema in the same landing). */
+    --stage-strip-surface: #f7fcf7;
+    --stage-strip-gap: 10px;
+    --stage-strip-pad: 12px;
+    --recipe-gap: 14px;
+    --prose-measure: 740px;
+    --section-pad-block: 36px;
+    --masthead-pad-top: 32px;
+    --masthead-pad-bottom: 0px;
+    --tip-pad-inline: var(--gutter);
+    --breadcrumb-rule-w: 2.5px;
+    --active-nav-rule-w: 3px;
+    --author-gap-top: 8px;
+    --affiliation-gap-top: 4px;
+
+    --sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
+
+    /* Shell metrics. The strip and tip line reserve their final space from the
+       start, so progressive disclosure never resizes the renderer. */
+    --divider-w: 2px;
+    /* How far the painted divider line is pulled back from the top and bottom
+       of the split. Zero means it meets the edge, which is the default and the
+       reason the token exists (V3-H); the drag target is a separate layer and
+       does not follow it. */
+    --divider-inset: 0px;
+    /* How far the painted line slides into the content pane so a fractional
+       device pixel cannot show the page field beside it (Q7). It is a paint
+       offset only: the track width, the hit target and the inset are untouched. */
+    --divider-seal: 1px;
+    /* The final two-row strip (Q8): `--band-pad-top`, the CAMERA / ENCODED SIZE
+       heading line, `--band-row-gap`, then each column's own 48 px block — the
+       camera's buttons over its scrubber, the megabyte ruler over the track —
+       and after the rule the attribute switches with the same padding below.
+       10 + 18 + 6 + 48 + 6 + 32 + 10. */
+    --band-row-gap: 6px;
+    --band-heading-h: 18px;
+    /* The shared instrument line: the row where the camera scrubber and the size
+       track both live, so the two sliders sit on one horizontal line. */
+    --band-instrument-h: 24px;
+    --band-h: 144px;
+    /* The band's short form: two control rows, no heading line and no ruler.
+       One value, two triggers (a narrow panel, a short viewport) — see F2.2. */
+    --band-compact-h: calc(2 * var(--control-h) + var(--band-row-gap) + 2 * var(--band-pad-top));
+    /* The vertical rule between the camera and encoded-size columns. Separate
+       from `--line-w`, which is 0 by default: this one is a boundary the author
+       asked to see, and the attribute rule below it is its horizontal twin. */
+    --band-rule-w: 1px;
+    /* The drawn stops on the size track, and the thumb that lands on them. The
+       face is the surface the mark sits on, because both the unselected circles
+       and the ring inside the thumb are holes in it — the mirror on the story
+       side overrides it with its own surface. */
+    --size-stop-size: 14px;
+    --size-stop-face: var(--control-strip);
+    --size-rail-w: 2px;
+    --tip-h: 48px;
+    --stage-pad: var(--gutter);
+
+    /* The outline that belongs to interactive controls, and to nothing else.
+       It is deliberately a different token from `--line-w`/`--line`, which draw
+       panel and data boundaries: sharing one token meant that giving a button a
+       border also gave one to the inline `.ply` in the prose beside it (V3-F). */
+    --control-outline-w: 1px;
+    --control-outline: #dce3e0;
+
+    /* Switch geometry, shared by camera motion and every attribute. The track's
+       colour is the state; the thumb is where the eye reads it. */
+    --switch-w: 30px;
+    --switch-h: 16px;
+    --switch-track-off: #c9d3d0;
+    --switch-thumb: #fff;
+
+    /* Page-owned chrome controls exposed by the visual authoring panel. */
+    --breadcrumb-optical-offset-y: 0px;
+    --venue-size: 1.5rem;
+    --venue-offset-x: 0px;
+    --venue-offset-y: 0px;
+    --stat-mark-size: 0.875rem;
+    --stat-bytes-size: 2.125rem;
+    --band-pad-top: 10px;
+  }
+}
